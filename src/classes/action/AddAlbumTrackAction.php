@@ -3,18 +3,20 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
-use iutnc\deefy\audio\tracks\PodcastTrack;
-use iutnc\deefy\render\PodcastTrackRenderer;
+use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\render\AlbumTrackRenderer;
 
-class AddPodcastTrackAction extends Action {
+class AddAlbumTrackAction extends Action {
 
     #[\Override]
     public function get() : string {
         return <<<HTML
-        <form method="post" action="?action=add-track" enctype="multipart/form-data">
-            <input type="text" name="title" placeholder="nom de la piste">
-            <input type="text" name="author" placeholder="nom de l'auteur">
-            <input type="text" name="date" placeholder="date de sortie du morceaux">
+        <form method="post" action="?action=add-album-track" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="Titre">
+            <input type="text" name="artist" placeholder="Artiste">
+            <input type="text" name="album" placeholder="Album">
+            <input type="number" name="year" placeholder="Année">
+            <input type="number" name="trackNumber" placeholder="Numéro de piste">
             <input type="file" name="userfile" accept="audio/mpeg">
             <button type="submit">Ajouter une piste</button>
         </form>
@@ -36,11 +38,17 @@ class AddPodcastTrackAction extends Action {
         if (!isset($_POST['title']) || $_POST['title'] === '') {
             $error[] = 'Le titre est obligatoire.';
         }
-        if (!isset($_POST['author']) || $_POST['author'] === '') {
-            $error[] = "L'auteur est obligatoire.";
+        if (!isset($_POST['artist']) || $_POST['artist'] === '') {
+            $error[] = "L'artiste est obligatoire.";
         }
-        if (!isset($_POST['date']) || $_POST['date'] === '') {
-            $error[] = 'La date est obligatoire.';
+        if (!isset($_POST['album']) || $_POST['album'] === '') {
+            $error[] = "Le nom de l'album est obligatoire.";
+        }
+        if (!isset($_POST['year']) || $_POST['year'] === '') {
+            $error[] = "L'année est obligatoire.";
+        }
+        if (!isset($_POST['trackNumber']) || $_POST['trackNumber'] === '') {
+            $error[] = 'Le numéro de piste est obligatoire.';
         }
 
         if (!isset($_FILES['userfile'])) {
@@ -73,21 +81,26 @@ class AddPodcastTrackAction extends Action {
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
                 <ul>{$errorList}</ul>
-                <a href="?action=add-track">Retour au formulaire</a>
+                <a href="?action=add-album-track">Retour au formulaire</a>
             HTML;
         }
 
-        $track = new PodcastTrack(filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS), $audioPath);
-        $track->set('author', filter_var($_POST['author'], FILTER_SANITIZE_SPECIAL_CHARS));
-        $track->set('date', filter_var($_POST['date'], FILTER_SANITIZE_SPECIAL_CHARS));
+        $track = new AlbumTrack(
+            filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS),
+            $audioPath,
+            filter_var($_POST['album'], FILTER_SANITIZE_SPECIAL_CHARS),
+            (int) filter_var($_POST['trackNumber'], FILTER_SANITIZE_NUMBER_INT),
+        );
+        $track->set('artist', filter_var($_POST['artist'], FILTER_SANITIZE_SPECIAL_CHARS));
+        $track->set('year', (int) filter_var($_POST['year'], FILTER_SANITIZE_NUMBER_INT));
 
         $_SESSION['playlist']->addPiste($track);
         $totalTracks = count($_SESSION['playlist']->tracks);
-        $renderTrack = (new PodcastTrackRenderer($track))->render(0);
+        $renderTrack = (new AlbumTrackRenderer($track))->render(0);
         return <<<HTML
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
-            <a href="?action=add-track">Ajouter encore une piste</a>
+            <a href="?action=add-album-track">Ajouter encore un album</a>
         HTML;
     }
 }

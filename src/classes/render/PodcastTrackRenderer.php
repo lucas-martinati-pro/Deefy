@@ -17,7 +17,8 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
     protected function renderLong() : string {
-        return "<li><strong>{$this->track->get("title")}</strong> - par {$this->track->get("author")} ({$this->track->get("date")}) - {$this->track->get("duration")}s : <em>{$this->track->get("genre")}</em><br>" .
+         return "<li><strong>{$this->track->get("title")}</strong> - par {$this->track->get("author")}<br>" .
+             "<small>Date : {$this->track->get("date")} | Genre : {$this->track->get("genre")} | Durée : {$this->track->get("duration")}s</small><br>" .
                "<audio controls src=\"{$this->track->get("path")}\"></audio></li>";
     }
 }

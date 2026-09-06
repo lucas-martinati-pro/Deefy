@@ -6,6 +6,8 @@ use iutnc\deefy\action\AddPlaylistAction;
 use iutnc\deefy\action\AddPodcastTrackAction;
 use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
+use iutnc\deefy\action\AddAlbumTrackAction;
+use iutnc\deefy\action\AddUserAction;
 
 class Dispatcher {
     private string $action;
@@ -40,6 +42,8 @@ class Dispatcher {
             "playlist" => (new DisplayPlaylistAction())(),
             "add-playlist" => (new AddPlaylistAction())(),
             "add-track" => (new AddPodcastTrackAction())(),
+            "add-album-track" => (new AddAlbumTrackAction())(),
+            "add-user" => (new AddUserAction())(),
             default => (new DefaultAction())(),
         };
 
@@ -47,20 +51,24 @@ class Dispatcher {
     }
 
     private function renderPage(string $html): void {
-        $document = '<!DOCTYPE html>';
-        $document .= '<html lang="fr">';
-        $document .= '<head>';
-        $document .= '    <title>Deefy</title>';
-        $document .= '    <meta charset="utf-8">';
-        $document .= '</head>';
-        $document .= '<body>';
-        $document .= $html;
-        $document .= '  <nav>';
-        $document .= '      <a href="main.php?action=playlist">Afficher la playlist</a> | ';
-        $document .= '      <a href="main.php?action=add-playlist">Créer la playlist</a> | ';
-        $document .= '      <a href="main.php?action=add-track">Ajouter une piste</a>';
-        $document .= '  </nav>';
-        $document .= '</body>';
-        echo $document;
+        echo <<<HTML
+            <!DOCTYPE html>
+            <html lang="fr">
+            <head>
+                <title>Deefy</title>
+                <meta charset="utf-8">
+            </head>
+            <body>
+            $html
+            <ul>
+                <li><a href="main.php?action=playlist">Afficher la playlist</a></li>
+                <li><a href="main.php?action=add-playlist">Inscription</a></li>
+                <li><a href="main.php?action=add-track">Ajouter une piste</a></li>
+                <li><a href="main.php?action=add-album-track">Ajouter un album</a></li>
+                <li><a href="main.php?action=add-user">Se connecter</a></li>
+                <li><a href="main.php">Page d'acceuil</a></li>
+            </ul>
+            </body>
+        HTML;
     }
 }
