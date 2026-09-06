@@ -5,7 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
-class AddUserAction extends Action {
+class RegisterAction extends Action {
 
     #[\Override]
     public function get() : string {

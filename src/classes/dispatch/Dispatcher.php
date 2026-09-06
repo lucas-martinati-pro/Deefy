@@ -8,7 +8,7 @@ use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\PlaylistAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\AddAlbumTrackAction;
-use iutnc\deefy\action\AddUserAction;
+use iutnc\deefy\action\RegisterAction;
 use iutnc\deefy\action\Signin;
 
 class Dispatcher {
@@ -25,7 +25,7 @@ class Dispatcher {
             "add-playlist" => (new AddPlaylistAction())(),
             "add-track" => (new AddPodcastTrackAction())(),
             "add-album-track" => (new AddAlbumTrackAction())(),
-            "add-user" => (new AddUserAction())(),
+            "register" => (new RegisterAction())(),
             "signin" => (new Signin())(),
             default => (new DefaultAction())(),
         };
@@ -48,7 +48,7 @@ class Dispatcher {
                 <li><a href="main.php?action=add-playlist">Créer une playlist</a></li>
                 <li><a href="main.php?action=add-track">Ajouter une piste</a></li>
                 <li><a href="main.php?action=add-album-track">Ajouter un album</a></li>
-                <li><a href="main.php?action=add-user">Inscription</a></li>
+                <li><a href="main.php?action=register">Inscription</a></li>
                 <li><a href="main.php?action=signin">Se connecter</a></li>
                 <li><a href="main.php">Page d'acceuil</a></li>
             </ul>
