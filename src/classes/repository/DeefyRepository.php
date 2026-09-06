@@ -157,7 +157,9 @@ class DeefyRepository {
         SQL);
         $stmtPlaylist->execute(['id' => $id]);
         $res = $stmtPlaylist->fetch(\PDO::FETCH_ASSOC);
+
         if (!$res) return null;
+
         else {
             $playlist = new Playlist($res['nom']);
             $playlist->set('id', $res['id']);
@@ -171,10 +173,13 @@ class DeefyRepository {
             SQL);
             $stmtTracks->execute(['id' => $id]);
             $rows = $stmtTracks->fetchAll(\PDO::FETCH_ASSOC);
+
             $tracks = [];
+
             foreach ($rows as $row) {
                 $tracks[] = $this->findTrackById($row['id']);
             }
+
             $playlist->set('tracks', $tracks);
             return $playlist;
         }
