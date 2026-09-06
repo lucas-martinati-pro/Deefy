@@ -10,7 +10,7 @@ class RegisterAction extends Action {
     #[\Override]
     public function get() : string {
         return <<<HTML
-        <form method="post" action="?action=add-user" enctype="multipart/form-data">
+        <form method="post" action="?action=register" enctype="multipart/form-data">
             <input type="text" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Mot de passe">
             <input type="password" name="password-double" placeholder="Ressaisissez le mot de passe">
@@ -26,7 +26,7 @@ class RegisterAction extends Action {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>Les deux mots de passe doivent être identiques.</p>
-                <a href="?action=add-user">Retour au formulaire</a>
+                <a href="?action=register">Retour au formulaire</a>
             HTML;
         }
         try {
@@ -35,7 +35,7 @@ class RegisterAction extends Action {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>{$error->getMessage()}</p>
-                <a href="?action=add-user">Retour au formulaire</a>
+                <a href="?action=register">Retour au formulaire</a>
             HTML;
         }
 
