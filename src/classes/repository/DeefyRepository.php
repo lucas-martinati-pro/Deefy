@@ -7,6 +7,9 @@ use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 
+// $r = DeefyRepository::getInstance();
+// $pl = $r->findPlaylistById( $id );
+
 class DeefyRepository {
     private \PDO $pdo;
     private static ?DeefyRepository $instance = null;
@@ -32,6 +35,9 @@ class DeefyRepository {
         return self::$instance;
     }
 
+    /**============================================
+     *               GESTION DES PLAYLISTS
+     *=============================================**/
     /**
      * @return Playlist[]
      */
@@ -118,5 +124,45 @@ class DeefyRepository {
         $query = "INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste) VALUES (:idPlaylist, :idTrack, :noPiste)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idPlaylist' => $idPlaylist, 'idTrack' => $idTrack, 'noPiste' => $noPiste]);
+    }
+
+    /**============================================
+     *               GESTION DE L'AUTH
+     *=============================================**/
+    public function findByEmail(string $email) : array|bool {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT id, email, passwd, role
+            FROM User
+            WHERE email = :email
+        SQL);
+
+        $stmt->execute(['email' => $email]);
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function existByEmail(string $email) : bool {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT id
+            FROM User
+            WHERE email = :email
+        SQL);
+
+        $stmt->execute(['email' => $email]);
+
+        return $stmt->fetch() !== false;
+    }
+
+    public function addUser(string $email, string $password) : void {
+        // Double par précaution;
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $this->pdo->prepare(<<<SQL
+            INSERT INTO User (email, passwd, role) VALUES (:email, :password, 1)
+        SQL);
+
+        $stmt->execute(['email' => $email, 'password' => $password]);
     }
 }
