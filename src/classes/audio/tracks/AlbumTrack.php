@@ -2,11 +2,8 @@
 
 namespace iutnc\deefy\audio\tracks;
 
-require_once 'AudioTrack.php';
 use iutnc\deefy\exception\InvalidPropertyNameException;
-require_once 'InvalidPropertyNameException.php';
 use iutnc\deefy\exception\InvalidPropertyValueException;
-require_once 'InvalidPropertyValueException.php';
 
 class AlbumTrack extends AudioTrack {
 

@@ -1,0 +1,10 @@
+{
+    "name": "s3/deefy",
+    "description": "le meilleur streaming audio de tout l'iut",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "iutnc\\deefy\\": "classes/"
+        }
+    }
+}

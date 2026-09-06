@@ -3,9 +3,7 @@
 namespace iutnc\deefy\audio\lists;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
-require_once 'AudioList.php';
 use iutnc\deefy\exception\InvalidPropertyNameException;
-require_once 'InvalidPropertyNameException.php';
 
 class Album extends AudioList {
     protected string $artist, $date;

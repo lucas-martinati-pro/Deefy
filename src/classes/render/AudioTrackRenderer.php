@@ -3,8 +3,6 @@
 namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
-require_once 'AudioTrack.php';
-require_once 'Renderer.php';
 
 abstract class AudioTrackRenderer implements Renderer {
 

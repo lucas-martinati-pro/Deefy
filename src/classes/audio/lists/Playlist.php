@@ -2,9 +2,7 @@
 
 namespace iutnc\deefy\audio\lists;
 
-require_once 'AudioList.php';
 use iutnc\deefy\audio\tracks\AudioTrack;
-require_once 'AudioTrack.php';
 
 class Playlist extends AudioList {
 
