@@ -1,7 +1,5 @@
 <?php
 
-namespace loader;
-
 class Psr4ClassLoader {
     private string $prefixe, $basePath;
 
