@@ -62,7 +62,7 @@ class Dispatcher {
             $html
             <ul>
                 <li><a href="main.php?action=playlist">Afficher la playlist</a></li>
-                <li><a href="main.php?action=add-playlist">Inscription</a></li>
+                <li><a href="main.php?action=add-playlist">Créer une playlist</a></li>
                 <li><a href="main.php?action=add-track">Ajouter une piste</a></li>
                 <li><a href="main.php?action=add-album-track">Ajouter un album</a></li>
                 <li><a href="main.php?action=add-user">Se connecter</a></li>

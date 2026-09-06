@@ -10,6 +10,7 @@ class AudioTrack {
     protected string $title, $path, $genre;
     // duration en secondes
     protected int $duration;
+    protected ?int $id = null;
 
     public function get(string $name) : mixed {
         if (property_exists($this, $name)) return $this->$name;

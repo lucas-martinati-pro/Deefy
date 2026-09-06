@@ -8,6 +8,7 @@ use iutnc\deefy\exception\InvalidPropertyNameException;
 class AudioList {
     protected string $name;
     protected int $trackCount, $totalDuration;
+    protected ?int $id = null;
     protected array $tracks;
 
     public function __get(string $name) : mixed {
@@ -27,6 +28,13 @@ class AudioList {
         foreach ($tracks as $track) {
             $this->totalDuration += $track->get("duration");
             $this->trackCount++;
+        }
+    }
+
+    public function set(string $name, mixed $value) : void {
+        if ($name === "id") {
+            $this->id = (int) $value;
+            return;
         }
     }
 }
