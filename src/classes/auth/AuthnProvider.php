@@ -51,4 +51,12 @@ class AuthnProvider {
 
         $r->adduser($email, $password);
     }
+
+    public static function getSignedInUser() : array {
+        if (!isset($_SESSION['user'])) {
+            throw new AuthnException("Vous devez être connecté pour accéder à cette page.");
+        }
+
+        return unserialize($_SESSION['user']);
+    }
 }

@@ -126,10 +126,77 @@ class DeefyRepository {
         $stmt->execute(['idPlaylist' => $idPlaylist, 'idTrack' => $idTrack, 'noPiste' => $noPiste]);
     }
 
+    public function findTrackById(int $id) : ?AudioTrack {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT *
+            FROM track
+            where id = :id
+        SQL);
+        $stmt->execute(['id' => $id]);
+        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$res) return null;
+        // Si ces 2 attributs sont null, alors il s'agit d'un album
+        if ($res['auteur_podcast'] === null && $res['date_podcast'] === null) {
+            $album = new AlbumTrack($res['titre'], $res['filename'], $res['titre_album'], $res['numero_album']);
+            $album->set('artist', $res['artiste_album']);
+            $album->set('year', $res['annee_album']);
+            return $album;
+        } else {
+            $podcast = new PodcastTrack($res['titre'], $res['filename'], $res['auteur_podcast'], $res['date_podcast']);
+            $podcast->set('id', $res['id']);
+            return $podcast;
+        }
+    }
+
+    public function findPlaylistById(int $id) : ?Playlist {
+        $stmtPlaylist = $this->pdo->prepare(<<<SQL
+            SELECT *
+            FROM playlist
+            WHERE id = :id;
+        SQL);
+        $stmtPlaylist->execute(['id' => $id]);
+        $res = $stmtPlaylist->fetch(\PDO::FETCH_ASSOC);
+        if (!$res) return null;
+        else {
+            $playlist = new Playlist($res['nom']);
+            $playlist->set('id', $res['id']);
+
+            $stmtTracks = $this->pdo->prepare(<<<SQL
+                SELECT track.*
+                FROM track
+                INNER JOIN playlist2track ON track.id = playlist2track.id_track
+                WHERE playlist2track.id_pl = :id
+                ORDER BY playlist2track.no_piste_dans_liste;
+            SQL);
+            $stmtTracks->execute(['id' => $id]);
+            $rows = $stmtTracks->fetchAll(\PDO::FETCH_ASSOC);
+            $tracks = [];
+            foreach ($rows as $row) {
+                $tracks[] = $this->findTrackById($row['id']);
+            }
+            $playlist->set('tracks', $tracks);
+            return $playlist;
+        }
+    }
+
+    public function findPlaylistIdsByUserId(int $id) : array {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT id_pl
+            from user2playlist
+            where id_user = :id
+        SQL);
+
+        $stmt->execute(['id' => $id]);
+
+        // FETCH_COLUMN pour récupérer directement la liste des identifiants de playlists
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
     /**============================================
      *               GESTION DE L'AUTH
      *=============================================**/
-    public function findByEmail(string $email) : array|bool {
+    public function findByEmail(string $email) : ?array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id, email, passwd, role
             FROM User
@@ -138,7 +205,11 @@ class DeefyRepository {
 
         $stmt->execute(['email' => $email]);
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$res) return null;
+
+        return $res;
     }
 
     public function existByEmail(string $email) : bool {

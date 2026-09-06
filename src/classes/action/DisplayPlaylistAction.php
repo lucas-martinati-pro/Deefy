@@ -3,33 +3,39 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
+use iutnc\deefy\auth\Authz;
 use iutnc\deefy\render\AudioListRenderer;
+use iutnc\deefy\repository\DeefyRepository;
 
 class DisplayPlaylistAction extends Action {
     #[\Override]
     public function get() : string {
-        $res = "";
-        if (isset($_SESSION['playlist'])) {
-            if (empty($_SESSION['playlist']->tracks)) {
-                $res .= <<<HTML
-                <h1>Playlist : {$_SESSION['playlist']->name}</h1>
-                <p>La playlist est vide (aucune piste enregistrée).</p>
-                HTML;
-            }
-            $playlist = $_SESSION['playlist'];
-            $nbTracks = count($playlist->tracks);
-            $res .= <<<HTML
-                <h1>Playlist : {$playlist->name}</h1>
-                <p>Nombre de pistes : <strong>{$nbTracks}</strong></p>
-            HTML;
-            $res .= (new AudioListRenderer($playlist))->render();
-        } else {
-            $res .= <<<HTML
-                <h1>Playlist</h1>
-                <p>Aucune playlist n'existe actuellement en session.</p>
+        if (!isset($_GET['id'])) {
+            return <<<HTML
+            <h1>Identifiant manquant</h1>
+            <p>Veuillez sélectionner une playlist à afficher.</p>
+            <a href="?action=playlist">Retour aux playlists</a>
             HTML;
         }
-        return $res;
+
+        $r = DeefyRepository::getInstance();
+        $playlist = $r->findPlaylistById($_GET['id']);
+
+        if (!$playlist) {
+            return <<<HTML
+                <h1>Playlist introuvable</h1>
+                <p>La playlist demandée n'existe pas.</p>
+                <a href="?action=playlist">Retour aux playlists</a>
+            HTML;
+        } elseif (Authz::checkPlaylistOwner($playlist->id)) {
+            return (new AudioListRenderer($playlist))->render(1);
+        }
+
+        return <<<HTML
+            <h1>Accès refusé</h1>
+            <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
+            <a href="?action=playlist">Retour aux playlists</a>
+        HTML;
     }
 
     #[\Override]

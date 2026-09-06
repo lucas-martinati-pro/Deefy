@@ -32,9 +32,7 @@ class AudioList {
     }
 
     public function set(string $name, mixed $value) : void {
-        if ($name === "id") {
-            $this->id = (int) $value;
-            return;
-        }
+        if ($name === "artist" || $name === "date") $this->$name = $value;
+        else throw new InvalidPropertyNameException("cannot modify property : $name");
     }
 }
