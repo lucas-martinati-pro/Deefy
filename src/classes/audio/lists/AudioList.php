@@ -35,7 +35,7 @@ class AudioList implements Iterator {
     }
 
     public function set(string $name, mixed $value) : void {
-        if ($name === "artist" || $name === "date") $this->$name = $value;
+        if ($name === "artist" || $name === "date" || $name === "id") $this->$name = $value;
         else throw new InvalidPropertyNameException("cannot modify property : $name");
     }
 

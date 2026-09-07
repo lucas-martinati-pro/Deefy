@@ -4,64 +4,67 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
+use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\render\AudioListRenderer;
+use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\exception\AuthnException;
 
 class AddPlaylistAction extends Action {
     #[\Override]
     public function get() : string {
+        try {
+            AuthnProvider::getSignedInUser();
+        } catch (AuthnException $e) {
+            return <<<HTML
+                <h1>Accès refusé</h1>
+                <p>{$e->getMessage()}</p>
+                <a href="?action=signin">Se connecter</a>
+            HTML;
+        }
         return <<<HTML
-        <form method="post" action="?action=add-playlist">
-          <input type="text" name="title" placeholder="nom de la playlist">
-          <button type="submit">Créer la playlist</button>
-        </form>
+            <form method="post" action="?action=add-playlist">
+                <input type="text" name="title" placeholder="nom de la playlist">
+                <button type="submit">Créer la playlist</button>
+            </form>
         HTML;
     }
 
     #[\Override]
     public function post() : string {
-        $error = [];
-
-        if (!isset($_POST['title']) || $_POST['title'] === '') {
-            $error[] = 'Le nom de la playlist est obligatoire.';
-        }
-
-        if ($error != []) {
-            $errorList = '';
-            foreach ($error as $message) {
-                $errorList .= "<li>{$message}</li>";
-            }
-
+        if (!isset($_POST['title']) || trim($_POST['title']) === '') {
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
-                <ul>{$errorList}</ul>
+                <p>Le nom de la playlist est obligatoire.</p>
                 <a href="?action=add-playlist">Retour au formulaire</a>
             HTML;
         }
 
-        if (!isset($_SESSION['playlist'])) {
-            $_SESSION['playlist'] = new Playlist(filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS), []);
-            $totalTracks = count($_SESSION['playlist']->tracks);
-
-            $res = <<<HTML
-                <h1>Initialisation de la playlist</h1>
-                <p>Votre playlist <strong>{$_SESSION['playlist']->name}</strong> a été créée avec succès avec <strong>{$totalTracks}</strong> pistes.</p>
-            HTML;
-        } else {
-            $totalTracks = count($_SESSION['playlist']->tracks);
-
-            $res = <<<HTML
-                <h1>Playlist existante</h1>
-                <p>Votre playlist <strong>{$_SESSION['playlist']->name}</strong> existe déjà en session (contient <strong>{$totalTracks}</strong> pistes).</p>
+        $user = [];
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthnException $e) {
+            return <<<HTML
+                <h1>Accès refusé</h1>
+                <p>{$e->getMessage()}</p>
+                <a href="?action=signin">Se connecter</a>
             HTML;
         }
 
-        $listRender = (new AudioListRenderer($_SESSION['playlist']))->render();
+        $r = DeefyRepository::getInstance();
 
-        $res .= <<<HTML
+        $title = filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $playlist = $r->saveEmptyPlaylist(new Playlist($title, []));
+
+        $r->savePlaylist2User((int) $user['id'], (int) $playlist->id);
+
+        // La playlist créée devient la playlist courante en session
+        $_SESSION['playlist'] = $playlist;
+
+        $listRender = (new AudioListRenderer($playlist))->render();
+
+        return <<<HTML
             {$listRender}
             <a href="?action=add-track">Ajouter une piste</a>
         HTML;
-
-        return $res;
     }
 }

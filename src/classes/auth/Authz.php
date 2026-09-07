@@ -27,7 +27,7 @@ class Authz {
         if ((int) $user['role'] === 100) return true;
 
         $r = DeefyRepository::getInstance();
-        $listPlaylistId = $r->findPlaylistIdsByUserId((int) $user['id']);
+        $listPlaylistId = $r->findPlaylistsIdsByUserId((int) $user['id']);
 
         if (!$listPlaylistId) return false;
 

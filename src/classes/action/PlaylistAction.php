@@ -10,18 +10,7 @@ class PlaylistAction extends Action {
     public function get() : string {
         $res = "";
         if (isset($_SESSION['playlist'])) {
-            if (empty($_SESSION['playlist']->tracks)) {
-                $res .= <<<HTML
-                <h1>Playlist : {$_SESSION['playlist']->name}</h1>
-                <p>La playlist est vide (aucune piste enregistrée).</p>
-                HTML;
-            }
             $playlist = $_SESSION['playlist'];
-            $nbTracks = count($playlist->tracks);
-            $res .= <<<HTML
-                <h1>Playlist : {$playlist->name}</h1>
-                <p>Nombre de pistes : <strong>{$nbTracks}</strong></p>
-            HTML;
             $res .= (new AudioListRenderer($playlist))->render();
         } else {
             $res .= <<<HTML
