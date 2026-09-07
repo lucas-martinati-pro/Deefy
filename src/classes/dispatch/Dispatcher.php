@@ -10,6 +10,9 @@ use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\AddAlbumTrackAction;
 use iutnc\deefy\action\RegisterAction;
 use iutnc\deefy\action\Signin;
+use iutnc\deefy\action\Signout;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\exception\AuthnException;
 
 class Dispatcher {
     private string $action;
@@ -27,6 +30,7 @@ class Dispatcher {
             "add-album-track" => (new AddAlbumTrackAction())(),
             "register" => (new RegisterAction())(),
             "signin" => (new Signin())(),
+            "signout" => (new Signout())(),
             default => (new DefaultAction())(),
         };
 
@@ -34,7 +38,7 @@ class Dispatcher {
     }
 
     private function renderPage(string $html): void {
-        echo <<<HTML
+        $page = <<<HTML
             <!DOCTYPE html>
             <html lang="fr">
             <head>
@@ -44,16 +48,31 @@ class Dispatcher {
             <body>
             $html
             <ul>
+                <li><a href="main.php">Page d'acceuil</a></li>
+        HTML;
+        try {
+            AuthnProvider::getSignedInUser();
+
+            $page .= <<<HTML
                 <li><a href="main.php?action=display-playlist">Afficher mes playlists</a></li>
                 <li><a href="main.php?action=playlist">Afficher la playlist de la session</a></li>
                 <li><a href="main.php?action=add-playlist">Créer une playlist</a></li>
                 <li><a href="main.php?action=add-track">Ajouter une piste</a></li>
                 <li><a href="main.php?action=add-album-track">Ajouter un album</a></li>
+                <li><a href="main.php?action=signout">Se déconnecter</a></li>
+            HTML;
+        } catch (AuthnException $e) {
+            $page .= <<<HTML
                 <li><a href="main.php?action=register">Inscription</a></li>
                 <li><a href="main.php?action=signin">Se connecter</a></li>
-                <li><a href="main.php">Page d'acceuil</a></li>
-            </ul>
+            HTML;
+        }
+
+        $page .= <<<HTML
+                </ul>
             </body>
         HTML;
+
+        echo $page;
     }
 }

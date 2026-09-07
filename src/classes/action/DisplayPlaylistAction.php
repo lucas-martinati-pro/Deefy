@@ -38,7 +38,11 @@ class DisplayPlaylistAction extends Action {
 
             $listHtml = "<ul>";
             foreach ($playlists as $pl) {
-                $listHtml .= "<li><a href=\"?action=display-playlist&id={$pl->id}\">{$pl->name}</a></li>";
+                $listHtml .= <<<HTML
+                    <li>
+                        <a href="?action=display-playlist&id={$pl->id}">{$pl->name}</a>
+                    </li>
+                HTML;
             }
             $listHtml .= "</ul>";
 
@@ -70,7 +74,7 @@ class DisplayPlaylistAction extends Action {
             HTML;
         }
 
-        // La playlist affichée devient la playlist courante en session (Point 2 du sujet)
+        // La playlist affichée devient la playlist courante en session
         $_SESSION['playlist'] = $playlist;
 
         $renderer = (new AudioListRenderer($playlist))->render(1);
@@ -78,7 +82,8 @@ class DisplayPlaylistAction extends Action {
         return <<<HTML
             {$renderer}
             <p>
-                <a href="?action=add-track">Ajouter une piste</a> | 
+                <a href="?action=add-track">Ajouter une piste</a>
+                 | 
                 <a href="?action=display-playlist">Retour à mes playlists</a>
             </p>
         HTML;

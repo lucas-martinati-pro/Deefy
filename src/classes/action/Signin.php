@@ -55,10 +55,6 @@ class Signin extends Action {
             <h1>Connexion réussie</h1>
             <p>Bienvenue, <strong>{$_POST['email']}</strong> !</p>
             <p>Vous êtes maintenant connecté à Deefy.</p>
-            <p>
-                <a href="?action=playlist">Accéder à la playlist</a>
-                <a href="main.php">Retour à l'accueil</a>
-            </p>
         HTML;
     }
 }
