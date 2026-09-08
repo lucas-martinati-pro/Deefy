@@ -11,9 +11,9 @@ class RegisterAction extends Action {
     public function get() : string {
         return <<<HTML
         <form method="post" action="?action=register" enctype="multipart/form-data">
-            <input type="text" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Mot de passe">
-            <input type="password" name="password-double" placeholder="Ressaisissez le mot de passe">
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <input type="password" name="password-double" placeholder="Ressaisissez le mot de passe" required>
             <button type="submit">Inscription</button>
         </form>
         HTML;
@@ -21,8 +21,15 @@ class RegisterAction extends Action {
 
     #[\Override]
     public function post() : string {
-        if (!isset($_POST['password'], $_POST['password-double'])
-            || $_POST['password'] !== $_POST['password-double']) {
+        if (!isset($_POST['email'], $_POST['password'], $_POST['password-double'])) {
+            return <<<HTML
+                <h1>Échec de l'inscription</h1>
+                <p>Tous les champs sont obligatoires.</p>
+                <a href="?action=register">Retour au formulaire</a>
+            HTML;
+        }
+
+        if ($_POST['password'] !== $_POST['password-double']) {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>Les deux mots de passe doivent être identiques.</p>

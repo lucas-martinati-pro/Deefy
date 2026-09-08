@@ -93,7 +93,7 @@ class DeefyRepository {
             $query = <<<SQL
                 UPDATE track SET
                 auteur_podcast = :author,
-                date_posdcast = :date
+                date_podcast = :date
             WHERE ID = :id
             SQL;
             $stmt = $this->pdo->prepare($query);

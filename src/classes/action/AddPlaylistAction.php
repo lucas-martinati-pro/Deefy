@@ -5,7 +5,8 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\render\AudioListRenderer;
+use iutnc\deefy\render\Renderer;
+use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\exception\AuthnException;
 
@@ -60,14 +61,13 @@ class AddPlaylistAction extends Action {
         // La playlist créée devient la playlist courante en session
         $_SESSION['playlist'] = $playlist;
 
-        $listRender = (new AudioListRenderer($playlist))->render();
+        $renderer = RendererFactory::getRenderer($playlist);
+        $listRender = $renderer ? $renderer->render(Renderer::COMPACT) : '';
 
         return <<<HTML
             {$listRender}
             <p>
                 <a href="?action=add-track">Ajouter une piste</a>
-                 | 
-                 <a href="?action=add-album-track">Ajouter un album</a>
                  | 
                 <a href="?action=playlists">Retour à mes playlists</a>
             </p>

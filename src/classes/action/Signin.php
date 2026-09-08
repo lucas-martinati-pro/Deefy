@@ -9,32 +9,18 @@ class Signin extends Action {
     public function get() : string {
         return <<<HTML
         <form method="post" action="?action=signin" enctype="multipart/form-data">
-            <input type="text" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Mot de passe">
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
             <button type="submit">Connexion</button>
         </form>
         HTML;
     }
 
     public function post() : string {
-        $error = [];
-
-        if (!isset($_POST['email']) || $_POST['email'] === '') {
-            $error[] = "L'adresse email est obligatoire.";
-        }
-        if (!isset($_POST['password']) || $_POST['password'] === '') {
-            $error[] = "Le mot de passe est obligatoire";
-        }
-
-        if ($error != []) {
-            $errorList = '';
-            foreach ($error as $message) {
-                $errorList .= "<li>{$message}</li>";
-            }
-
+        if (!isset($_POST['email'], $_POST['password'])) {
             return <<<HTML
-                <h1>Erreur dans le formulaire</h1>
-                <ul>{$errorList}</ul>
+                <h1>Échec de la connexion</h1>
+                <p>Tous les champs sont obligatoires.</p>
                 <a href="?action=signin">Retour au formulaire</a>
             HTML;
         }

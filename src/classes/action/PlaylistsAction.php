@@ -45,7 +45,9 @@ class PlaylistsAction extends Action {
         return <<<HTML
             <h1>Mes playlists</h1>
             {$listHtml}
-            <p><a href="?action=add-playlist">Créer une nouvelle playlist</a></p>
+            <p>
+                <a href="?action=add-playlist">Créer une nouvelle playlist</a>
+            </p>
         HTML;
     }
 

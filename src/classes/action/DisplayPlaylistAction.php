@@ -4,7 +4,8 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\render\AudioListRenderer;
+use iutnc\deefy\render\Renderer;
+use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 
 class DisplayPlaylistAction extends Action {
@@ -34,25 +35,24 @@ class DisplayPlaylistAction extends Action {
                 HTML;
             }
 
-            if (!Authz::checkPlaylistOwner($playlist->id)) {
-                return <<<HTML
-                    <h1>Accès refusé</h1>
-                    <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
-                    <a href="?action=playlists">Retour à mes playlists</a>
-                HTML;
-            }
-
             $_SESSION['playlist'] = $playlist;
         }
 
-        $renderer = (new AudioListRenderer($playlist))->render(1);
+        if (!Authz::checkPlaylistOwner($playlist->id)) {
+            return <<<HTML
+                <h1>Accès refusé</h1>
+                <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
+                <a href="?action=playlists">Retour à mes playlists</a>
+            HTML;
+        }
+
+        $renderer = RendererFactory::getRenderer($playlist);
+        $playlistHtml = $renderer ? $renderer->render(Renderer::COMPACT) : '';
 
         return <<<HTML
-            {$renderer}
+            {$playlistHtml}
             <p>
                 <a href="?action=add-track">Ajouter une piste</a>
-                 | 
-                 <a href="?action=add-album-track">Ajouter un album</a>
                  | 
                 <a href="?action=playlists">Retour à mes playlists</a>
             </p>
