@@ -100,7 +100,13 @@ class AddAlbumTrackAction extends Action {
         return <<<HTML
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
-            <a href="?action=add-album-track">Ajouter encore un album</a>
+            <p>
+                <a href="?action=add-track">Ajouter une piste</a>
+                 | 
+                 <a href="?action=add-album-track">Ajouter encore un album</a>
+                 | 
+                <a href="?action=display-playlist">Retour à mes playlists</a>
+            </p>
         HTML;
     }
 }

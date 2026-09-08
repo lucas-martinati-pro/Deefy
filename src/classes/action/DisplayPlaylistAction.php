@@ -84,6 +84,8 @@ class DisplayPlaylistAction extends Action {
             <p>
                 <a href="?action=add-track">Ajouter une piste</a>
                  | 
+                 <a href="?action=add-album-track">Ajouter un album</a>
+                 | 
                 <a href="?action=display-playlist">Retour à mes playlists</a>
             </p>
         HTML;

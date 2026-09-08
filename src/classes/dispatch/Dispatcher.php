@@ -53,18 +53,16 @@ class Dispatcher {
         try {
             AuthnProvider::getSignedInUser();
 
+            // <li><a href="main.php?action=playlist">Afficher la playlist de la session</a></li> // TODO
             $page .= <<<HTML
-                <li><a href="main.php?action=display-playlist">Afficher mes playlists</a></li>
-                <li><a href="main.php?action=playlist">Afficher la playlist de la session</a></li>
-                <li><a href="main.php?action=add-playlist">Créer une playlist</a></li>
-                <li><a href="main.php?action=add-track">Ajouter une piste</a></li>
-                <li><a href="main.php?action=add-album-track">Ajouter un album</a></li>
-                <li><a href="main.php?action=signout">Se déconnecter</a></li>
+                <li><a href="?action=display-playlist">Afficher mes playlists</a></li>
+                <li><a href="?action=add-playlist">Créer une playlist</a></li>
+                <li><a href="?action=signout">Se déconnecter</a></li>
             HTML;
         } catch (AuthnException $e) {
             $page .= <<<HTML
-                <li><a href="main.php?action=register">Inscription</a></li>
-                <li><a href="main.php?action=signin">Se connecter</a></li>
+                <li><a href="?action=register">Inscription</a></li>
+                <li><a href="?action=signin">Se connecter</a></li>
             HTML;
         }
 
