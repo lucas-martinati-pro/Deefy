@@ -16,7 +16,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
                 <div>
                     <strong>{$this->track->get("title")}</strong> <span class="text-muted">- par {$this->track->get("author")}</span>
                 </div>
-                <audio controls src="../audio/{$this->track->get("filename")}"></audio>
+                {$this->renderAudioPlayer()}
             </li>
         HTML;
     }
@@ -29,7 +29,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
                     <strong>{$this->track->get("title")}</strong> <span class="text-muted">- par {$this->track->get("author")}</span>
                     <div class="small text-muted">Date : {$this->track->get("date")} | Genre : {$this->track->get("genre")} | Durée : {$this->track->get("duration")}s</div>
                 </div>
-                <audio controls src="../audio/{$this->track->get("filename")}"></audio>
+                {$this->renderAudioPlayer()}
             </li>
         HTML;
     }
