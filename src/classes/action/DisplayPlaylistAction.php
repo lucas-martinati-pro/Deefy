@@ -6,7 +6,7 @@ use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 
 class DisplayPlaylistAction extends Action {
         #[\Override]
@@ -24,7 +24,7 @@ class DisplayPlaylistAction extends Action {
         } else {
             // CAS 2 : Un ID est fourni -> on charge la playlist depuis la BD
             $idPlaylist = (int) $_GET['id'];
-            $r = DeefyRepository::getInstance();
+            $r = RepositoryFactory::getReader();
             $playlist = $r->findPlaylistById($idPlaylist);
 
             if (!$playlist) {

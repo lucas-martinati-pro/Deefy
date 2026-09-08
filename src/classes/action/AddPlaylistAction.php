@@ -7,7 +7,7 @@ use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 use iutnc\deefy\exception\AuthnException;
 
 class AddPlaylistAction extends Action {
@@ -55,7 +55,7 @@ class AddPlaylistAction extends Action {
             HTML;
         }
 
-        $r = DeefyRepository::getInstance();
+        $r = RepositoryFactory::getWriter();
 
         $title = filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
         $playlist = $r->saveEmptyPlaylist(new Playlist($title, []));

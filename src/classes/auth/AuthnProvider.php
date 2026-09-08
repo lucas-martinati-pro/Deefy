@@ -3,11 +3,11 @@
 namespace iutnc\deefy\auth;
 
 use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 
 class AuthnProvider {
     public static function signin(string $email, string $password) : void {
-        $r = DeefyRepository::getInstance();
+        $r = RepositoryFactory::getReader();
 
         $user = $r->findByEmail(filter_var($email, FILTER_SANITIZE_EMAIL));
 
@@ -25,7 +25,7 @@ class AuthnProvider {
             throw new AuthnException("L'adresse email n'est pas valide.");
         }
 
-        $r = DeefyRepository::getInstance();
+        $r = RepositoryFactory::getReader();
 
         if ($r->existByEmail($email)) {
             throw new AuthnException("Cette adresse email est déjà utilisée.");
@@ -49,7 +49,8 @@ class AuthnProvider {
             throw new AuthnException("Le mot de passe doit contenir au moins une lettre majuscule.");
         }
 
-        $r->adduser($email, $password);
+        $w = RepositoryFactory::getWriter();
+        $w->adduser($email, $password);
     }
 
     public static function getSignedInUser() : array {

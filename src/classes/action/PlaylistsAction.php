@@ -5,7 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 
 class PlaylistsAction extends Action {
     #[\Override]
@@ -20,7 +20,7 @@ class PlaylistsAction extends Action {
             HTML;
         }
 
-        $r = DeefyRepository::getInstance();
+        $r = RepositoryFactory::getReader();
 
         $playlists = $r->findPlaylistsByUserId((int) $user['id']);
 

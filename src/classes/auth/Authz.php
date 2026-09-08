@@ -3,7 +3,7 @@
 namespace iutnc\deefy\auth;
 
 use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 
 class Authz {
     public static function checkRole(int $role) : bool {
@@ -26,7 +26,7 @@ class Authz {
 
         if ((int) $user['role'] === 100) return true;
 
-        $r = DeefyRepository::getInstance();
+        $r = RepositoryFactory::getReader();
         $listPlaylistId = $r->findPlaylistsIdsByUserId((int) $user['id']);
 
         if (!$listPlaylistId) return false;

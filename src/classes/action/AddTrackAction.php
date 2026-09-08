@@ -7,7 +7,7 @@ use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\repository\RepositoryFactory;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 
 class AddTrackAction extends Action {
@@ -230,9 +230,9 @@ class AddTrackAction extends Action {
         $_SESSION['playlist']->addPiste($track);
 
         // Sauvegarde dans le cloud
-        $r = DeefyRepository::getInstance();
-        $r->saveAudioTrack($track);
-        $r->addTrackToPlaylist($_SESSION['playlist']->id, $track->get('id'));
+        $w = RepositoryFactory::getWriter();
+        $w->saveAudioTrack($track);
+        $w->addTrackToPlaylist($_SESSION['playlist']->id, $track->get('id'));
 
         $totalTracks = count($_SESSION['playlist']->tracks);
         $renderer = RendererFactory::getRenderer($track);
