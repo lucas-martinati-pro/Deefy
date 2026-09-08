@@ -7,8 +7,10 @@ use iutnc\deefy\exception\InvalidPropertyValueException;
 
 class AlbumTrack extends AudioTrack {
 
-    protected string $artist, $album;
-    protected int $year, $trackNumber;
+    protected ?string $artist = null;
+    protected string $album;
+    protected ?int $year = null;
+    protected int $trackNumber = 1;
 
     #[\Override]
     public function set(string $name, mixed $value) : void {

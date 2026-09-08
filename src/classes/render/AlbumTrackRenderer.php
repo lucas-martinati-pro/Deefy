@@ -10,19 +10,22 @@ use iutnc\deefy\audio\tracks\AlbumTrack;
 class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
-    protected function renderCompact() : string {
-        return <<<HTML
-            <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                <div>
-                    <strong>{$this->track->get("title")}</strong> - {$this->track->get("artist")} <span class="text-muted">({$this->track->get("album")})</span>
-                </div>
-                {$this->renderAudioPlayer()}
-            </li>
-        HTML;
+    protected function getSubtitle() : string {
+        $artist = $this->track->get("artist");
+        $album = $this->track->get("album");
+        $artistStr = !empty($artist) ? $artist : 'Artiste inconnu';
+        return "<span class=\"fw-semibold text-dark\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
     }
 
     #[\Override]
-    protected function renderLong() : string {
+    protected function getBadge() : string {
+        $trackNumber = (int) $this->track->get("trackNumber");
+        $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
+        return "<div>{$trackBadge}<span class=\"badge bg-secondary-subtle text-secondary border border-secondary-subtle\">Album</span></div>";
+    }
+
+    #[\Override]
+    protected function getDetails() : array {
         $details = [];
 
         $year = $this->track->get('year');
@@ -30,27 +33,6 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
             $details[] = "Année : {$year}";
         }
 
-        $duration = (int) $this->track->get('duration');
-        if ($duration > 0) {
-            $details[] = "Durée : {$duration}s";
-        }
-
-        $genre = trim($this->track->get('genre') ?? '');
-        if (!empty($genre)) {
-            $details[] = "Genre : {$genre}";
-        }
-
-        $infos = implode(' | ', $details);
-
-        return <<<HTML
-            <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                <div>
-                    <span class="badge text-bg-secondary me-1">#{$this->track->get("trackNumber")}</span>
-                    <strong>{$this->track->get("title")}</strong> - {$this->track->get("artist")} <span class="text-muted">({$this->track->get("album")}, {$this->track->get("year")})</span>
-                    <div class="small text-muted">{$infos}</div>
-                </div>
-                {$this->renderAudioPlayer()}
-            </li>
-        HTML;
+        return array_merge($details, parent::getDetails());
     }
 }

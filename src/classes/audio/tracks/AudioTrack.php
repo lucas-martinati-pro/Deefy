@@ -7,13 +7,15 @@ use iutnc\deefy\exception\InvalidPropertyValueException;
 
 class AudioTrack {
 
-    protected string $title, $filename, $genre = '';
+    protected string $title, $filename;
+    protected ?string $genre = null;
     // duration en secondes
     protected int $duration = 0;
     protected ?int $id = null;
+    protected ?string $image = null;
 
     public function get(string $name) : mixed {
-        if (property_exists($this, $name)) return $this->$name;
+        if (property_exists($this, $name)) return $this->$name ?? null;
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
 

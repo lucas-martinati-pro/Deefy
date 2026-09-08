@@ -47,7 +47,7 @@ class DisplayPlaylistAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render(Renderer::LONG) : '';
+        $playlistHtml = $renderer ? $renderer->render(Renderer::COMPACT) : '';
 
         return <<<HTML
             {$playlistHtml}

@@ -4,7 +4,8 @@ namespace iutnc\deefy\audio\tracks;
 
 class PodcastTrack extends AudioTrack {
 
-    protected string $author, $date;
+    protected ?string $author = null;
+    protected ?string $date = null;
 
     public function __construct(
         string $title,
@@ -16,8 +17,8 @@ class PodcastTrack extends AudioTrack {
     ) {
         parent::__construct($title, $filename);
 
-        if ($author !== null) $this->author = $author;
-        if ($date !== null) $this->date = $date;
+        $this->author = $author;
+        $this->date = $date;
         if ($duration !== null) $this->duration = $duration;
         if ($genre !== null) $this->genre = $genre;
     }

@@ -30,6 +30,7 @@ CREATE TABLE `track` (
     `duree` int(3) DEFAULT NULL,
     `filename` varchar(100) DEFAULT NULL,
     `type` varchar(30) DEFAULT NULL,
+    `image` VARCHAR(255) DEFAULT NULL,
     `artiste_album` varchar(30) DEFAULT NULL,
     `titre_album` varchar(30) DEFAULT NULL,
     `annee_album` int(4) DEFAULT NULL,

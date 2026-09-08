@@ -68,41 +68,74 @@ class DeefyRepository {
     }
 
     public function saveAudioTrack(AudioTrack $track) : AudioTrack {
-        $query = "INSERT INTO track (titre, duree, filename) VALUES (:title, :duration, :filename)";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['title' => $track->get('title'), 'duration' => $track->get('duration'), 'filename' => $track->get('filename')]);
-        $track->set('id', $this->pdo->lastInsertId());
+        $genreVal = $track->get('genre');
+        $genre = (!empty($genreVal) && trim($genreVal) !== '') ? trim($genreVal) : null;
+
+        $durationVal = (int) $track->get('duration');
+        $duree = ($durationVal > 0) ? $durationVal : null;
+
+        $imageVal = $track->get('image');
+        $image = (!empty($imageVal)) ? $imageVal : null;
+
+        $type = null;
+        $artist = null;
+        $album = null;
+        $year = null;
+        $trackNumber = null;
+        $author = null;
+        $date = null;
+
         if ($track instanceof AlbumTrack) {
-            $query = <<<SQL
-                UPDATE track SET
-                artiste_album = :artist,
-                titre_album = :album,
-                annee_album = :year,
-                numero_album = :trackNumber
-            WHERE ID = :id
-            SQL;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-                'artist' => $track->get('artist'),
-                'album' => $track->get('album'),
-                'year' => $track->get('year'),
-                'trackNumber' => $track->get('trackNumber'),
-                'id' => $track->get('id')
-            ]);
+            $type = 'A';
+            $artistVal = $track->get('artist');
+            $artist = (!empty($artistVal) && trim($artistVal) !== '') ? trim($artistVal) : null;
+
+            $albumVal = $track->get('album');
+            $album = (!empty($albumVal) && trim($albumVal) !== '') ? trim($albumVal) : null;
+
+            $yearVal = $track->get('year');
+            $year = (!empty($yearVal) && (int) $yearVal > 0) ? (int) $yearVal : null;
+
+            $trackNumVal = $track->get('trackNumber');
+            $trackNumber = (!empty($trackNumVal) && (int) $trackNumVal > 0) ? (int) $trackNumVal : null;
         } elseif ($track instanceof PodcastTrack) {
-            $query = <<<SQL
-                UPDATE track SET
-                auteur_podcast = :author,
-                date_podcast = :date
-            WHERE ID = :id
-            SQL;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-                'author' => $track->get('author'),
-                'date' => $track->get('date'),
-                'id' => $track->get('id')
-            ]);
+            $type = 'P';
+            $authorVal = $track->get('author');
+            $author = (!empty($authorVal) && trim($authorVal) !== '') ? trim($authorVal) : null;
+
+            $dateVal = $track->get('date');
+            $date = (!empty($dateVal) && trim($dateVal) !== '') ? trim($dateVal) : null;
         }
+
+        $query = <<<SQL
+            INSERT INTO track (
+                titre, genre, duree, filename, type, image,
+                artiste_album, titre_album, annee_album, numero_album,
+                auteur_podcast, date_podcast
+            ) VALUES (
+                :title, :genre, :duree, :filename, :type, :image,
+                :artist, :album, :year, :trackNumber,
+                :author, :date
+            )
+        SQL;
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            'title' => $track->get('title'),
+            'genre' => $genre,
+            'duree' => $duree,
+            'filename' => $track->get('filename'),
+            'type' => $type,
+            'image' => $image,
+            'artist' => $artist,
+            'album' => $album,
+            'year' => $year,
+            'trackNumber' => $trackNumber,
+            'author' => $author,
+            'date' => $date
+        ]);
+
+        $track->set('id', (int) $this->pdo->lastInsertId());
         return $track;
     }
 
@@ -130,25 +163,44 @@ class DeefyRepository {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT *
             FROM track
-            where id = :id
+            WHERE id = :id
         SQL);
         $stmt->execute(['id' => $id]);
         $res = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if (!$res) return null;
-        // Si ces 2 attributs sont null, alors il s'agit d'un album
-        if ($res['auteur_podcast'] === null && $res['date_podcast'] === null) {
-            $track = new AlbumTrack($res['titre'], $res['filename'], $res['titre_album'], (int) $res['numero_album']);
-            $track->set('artist', $res['artiste_album']);
-            $track->set('year', (int) $res['annee_album']);
+
+        if ($res['type'] === 'A') {
+            $track = new AlbumTrack(
+                $res['titre'],
+                $res['filename'],
+                $res['titre_album'] ?? '',
+                (!empty($res['numero_album'])) ? (int) $res['numero_album'] : 1
+            );
+            if (!empty($res['artiste_album'])) {
+                $track->set('artist', $res['artiste_album']);
+            }
+            if (!empty($res['annee_album'])) {
+                $track->set('year', (int) $res['annee_album']);
+            }
         } else {
-            $track = new PodcastTrack($res['titre'], $res['filename'], $res['auteur_podcast'], $res['date_podcast']);
+            $track = new PodcastTrack(
+                $res['titre'],
+                $res['filename'],
+                $res['auteur_podcast'] ?? null,
+                $res['date_podcast'] ?? null
+            );
         }
 
         $track->set('id', (int) $res['id']);
-        $track->set('duration', (int) ($res['duree'] ?? 0));
+        if (!empty($res['duree']) && (int) $res['duree'] > 0) {
+            $track->set('duration', (int) $res['duree']);
+        }
         if (!empty($res['genre'])) {
             $track->set('genre', $res['genre']);
+        }
+        if (!empty($res['image'])) {
+            $track->set('image', $res['image']);
         }
 
         return $track;
