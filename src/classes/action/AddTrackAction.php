@@ -54,17 +54,17 @@ class AddTrackAction extends Action {
                 $action = "?action=add-track&type=AlbumTrack";
                 $content = <<<HTML
                     <div class="mb-3">
-                        <label for="title" class="form-label">Titre du morceau</label>
+                        <label for="title" class="form-label">Titre du morceau<span style="color: red;">*</span></label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Bohemian Rhapsody" aria-describedby="titleHelp" required>
                         <div id="titleHelp" class="form-text">Saisissez le titre du morceau.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="artist" class="form-label">Artiste</label>
+                        <label for="artist" class="form-label">Artiste<span style="color: red;">*</span></label>
                         <input type="text" name="artist" class="form-control" id="artist" placeholder="Ex : Queen" aria-describedby="artistHelp" required>
                         <div id="artistHelp" class="form-text">Saisissez le nom de l'artiste ou du groupe.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="album" class="form-label">Album</label>
+                        <label for="album" class="form-label">Album<span style="color: red;">*</span></label>
                         <input type="text" name="album" class="form-control" id="album" placeholder="Ex : A Night at the Opera" aria-describedby="albumHelp" required>
                         <div id="albumHelp" class="form-text">Saisissez le nom de l'album.</div>
                     </div>
@@ -79,7 +79,7 @@ class AddTrackAction extends Action {
                         <div id="trackNumberHelp" class="form-text">Position de la piste dans l'album.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="userfile" class="form-label">Fichier audio</label>
+                        <label for="userfile" class="form-label">Fichier audio<span style="color: red;">*</span></label>
                         <input type="file" name="userfile" class="form-control" id="userfile" accept="audio/mpeg, .mp3" aria-describedby="fileHelp" required>
                         <div id="fileHelp" class="form-text">Sélectionnez un fichier audio au format MP3.</div>
                     </div>
@@ -191,6 +191,17 @@ class AddTrackAction extends Action {
                 $audioPath = basename($newName);
             } else {
                 $error[] = "Le fichier n'a pas pu être enregistré.";
+            }
+        }
+
+        if (!empty($_POST['date'])) {
+            $d = \DateTime::createFromFormat('Y-m-d', trim($_POST['date']));
+
+            if (!$d) {
+                $error[] = "La date de sortie est invalide (format attendu : AAAA-MM-JJ).";
+            } elseif ($d > new \DateTime()) {
+                // refuser une date dans le futur
+                $error[] = "La date de sortie ne peut pas être dans le futur.";
             }
         }
 
