@@ -170,7 +170,6 @@ abstract class AudioTrackRenderer implements Renderer {
                     <audio
                         slot="media"
                         src="../audio/{$this->track->get("filename")}"
-                        playsinline
                         crossorigin="anonymous"
                     ></audio>
                 </media-theme-tailwind-audio>
@@ -189,7 +188,6 @@ abstract class AudioTrackRenderer implements Renderer {
                 <audio
                     slot="media"
                     src="../audio/{$this->track->get("filename")}"
-                    playsinline
                     crossorigin="anonymous"
                 ></audio>
             </media-theme-tailwind-audio>
