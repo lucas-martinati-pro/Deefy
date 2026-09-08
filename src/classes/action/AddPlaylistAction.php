@@ -66,7 +66,7 @@ class AddPlaylistAction extends Action {
         $_SESSION['playlist'] = $playlist;
 
         $renderer = RendererFactory::getRenderer($playlist);
-        $listRender = $renderer ? $renderer->render(Renderer::COMPACT) : '';
+        $listRender = $renderer ? $renderer->render(Renderer::LONG) : '';
 
         return <<<HTML
             {$listRender}

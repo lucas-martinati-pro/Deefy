@@ -23,12 +23,31 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
     protected function renderLong() : string {
+        $details = [];
+
+        $year = $this->track->get('year');
+        if (!empty($year)) {
+            $details[] = "Année : {$year}";
+        }
+
+        $duration = (int) $this->track->get('duration');
+        if ($duration > 0) {
+            $details[] = "Durée : {$duration}s";
+        }
+
+        $genre = trim($this->track->get('genre') ?? '');
+        if (!empty($genre)) {
+            $details[] = "Genre : {$genre}";
+        }
+
+        $infos = implode(' | ', $details);
+
         return <<<HTML
             <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div>
                     <span class="badge text-bg-secondary me-1">#{$this->track->get("trackNumber")}</span>
                     <strong>{$this->track->get("title")}</strong> - {$this->track->get("artist")} <span class="text-muted">({$this->track->get("album")}, {$this->track->get("year")})</span>
-                    <div class="small text-muted">Durée : {$this->track->get("duration")}s | Genre : {$this->track->get("genre")}</div>
+                    <div class="small text-muted">{$infos}</div>
                 </div>
                 {$this->renderAudioPlayer()}
             </li>

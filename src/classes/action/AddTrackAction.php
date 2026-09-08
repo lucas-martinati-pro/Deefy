@@ -164,6 +164,7 @@ class AddTrackAction extends Action {
         }
 
         $audioPath = '';
+        $uploadFile = '';
 
         if (empty($error)) {
             $newName = uniqid('', true) . bin2hex(random_bytes(4)) . '.mp3';
@@ -198,22 +199,33 @@ class AddTrackAction extends Action {
             HTML;
         }
 
+        $getID3 = new \getID3();
+        $fileInfo = $getID3->analyze($uploadFile);
+        $genre = $fileInfo['tags']['id3v2']['genre'][0] ?? '';
+        $titre = $fileInfo['tags']['id3v2']['title'][0] ?? filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $duree = isset($fileInfo['playtime_seconds']) ? (int) round($fileInfo['playtime_seconds']) : 0;
+        $author = $fileInfo['tags']['id3v2']['artist'][0] ?? filter_var($_POST['artist'], FILTER_SANITIZE_SPECIAL_CHARS);
+
         $track = "";
         switch ($_GET['type'] ?? '') {
             case 'AlbumTrack' : {
-                    $track = new AlbumTrack(
-                    filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS),
+                $album = $fileInfo['tags']['id3v2']['album'][0] ?? filter_var($_POST['album'], FILTER_SANITIZE_SPECIAL_CHARS);
+                $trackNumber = $fileInfo['tags']['id3v2']['track_number'][0] ?? (int) filter_var($_POST['trackNumber'], FILTER_SANITIZE_NUMBER_INT);
+                $year = $fileInfo['tags']['id3v2']['year'][0] ?? (int) filter_var($_POST['year'], FILTER_SANITIZE_NUMBER_INT);
+
+                $track = new AlbumTrack(
+                    $titre,
                     $audioPath,
-                    filter_var($_POST['album'], FILTER_SANITIZE_SPECIAL_CHARS),
-                    (int) filter_var($_POST['trackNumber'], FILTER_SANITIZE_NUMBER_INT),
+                    $album,
+                    $trackNumber,
                 );
-                $track->set('artist', filter_var($_POST['artist'], FILTER_SANITIZE_SPECIAL_CHARS));
-                $track->set('year', (int) filter_var($_POST['year'], FILTER_SANITIZE_NUMBER_INT));
+                $track->set('artist', $author);
+                $track->set('year', $year);
                 break;
             }
             case 'PodcastTrack' : {
-                $track = new PodcastTrack(filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS), $audioPath);
-                $track->set('author', filter_var($_POST['author'], FILTER_SANITIZE_SPECIAL_CHARS));
+                $track = new PodcastTrack($titre, $audioPath);
+                $track->set('author', $author);
                 $track->set('date', $_POST['date']);
                 break;
             }
@@ -226,6 +238,9 @@ class AddTrackAction extends Action {
             }
         }
 
+        $track->set('duration', $duree);
+        $track->set('genre', $genre);
+
         // Sauvegarde dans la playlist locale
         $_SESSION['playlist']->addPiste($track);
 
@@ -236,7 +251,7 @@ class AddTrackAction extends Action {
 
         $totalTracks = count($_SESSION['playlist']->tracks);
         $renderer = RendererFactory::getRenderer($track);
-        $renderTrack = $renderer ? $renderer->render(Renderer::COMPACT) : '';
+        $renderTrack = $renderer ? $renderer->render(Renderer::LONG) : '';
         return <<<HTML
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
