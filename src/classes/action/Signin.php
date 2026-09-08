@@ -9,9 +9,17 @@ class Signin extends Action {
     public function get() : string {
         return <<<HTML
         <form method="post" action="?action=signin" enctype="multipart/form-data">
-            <input type="text" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Mot de passe" required>
-            <button type="submit">Connexion</button>
+            <div class="mb-3">
+                <label for="email" class="form-label">Adresse mail</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">Saisissez l'adresse e-mail associée à votre compte Deefy.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" name="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
+                <div id="passwordHelp" class="form-text">Saisissez le mot de passe associé à votre compte.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Connexion</button>
         </form>
         HTML;
     }

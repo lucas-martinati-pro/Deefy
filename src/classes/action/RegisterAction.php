@@ -11,10 +11,30 @@ class RegisterAction extends Action {
     public function get() : string {
         return <<<HTML
         <form method="post" action="?action=register" enctype="multipart/form-data">
-            <input type="text" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Mot de passe" required>
-            <input type="password" name="password-double" placeholder="Ressaisissez le mot de passe" required>
-            <button type="submit">Inscription</button>
+            <div class="mb-3">
+                <label for="email" class="form-label">Adresse mail</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">Votre adresse e-mail servira d'identifiant de connexion.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" name="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
+                <div id="passwordHelp" class="form-text">
+                    Le mot de passe doit contenir au moins 10 caractères et comporter :
+                    <ul class="mb-0 ps-3">
+                        <li>Au moins une lettre majuscule</li>
+                        <li>Au moins une lettre minuscule</li>
+                        <li>Au moins un chiffre</li>
+                        <li>Au moins un caractère spécial (ex. @, #, $, %, etc.)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password-double" class="form-label">Confirmation du mot de passe</label>
+                <input type="password" name="password-double" class="form-control" id="password-double" aria-describedby="passwordDoubleHelp" required>
+                <div id="passwordDoubleHelp" class="form-text">Ressaisissez votre mot de passe à l'identique.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Inscription</button>
         </form>
         HTML;
     }

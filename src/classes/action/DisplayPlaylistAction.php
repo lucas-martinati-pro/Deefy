@@ -52,9 +52,8 @@ class DisplayPlaylistAction extends Action {
         return <<<HTML
             {$playlistHtml}
             <p>
-                <a href="?action=add-track">Ajouter une piste</a>
-                 | 
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-secondary" href="?action=add-track">Ajouter une piste</a>
+                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;
     }

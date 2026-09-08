@@ -24,8 +24,12 @@ class AddPlaylistAction extends Action {
         }
         return <<<HTML
             <form method="post" action="?action=add-playlist">
-                <input type="text" name="title" placeholder="nom de la playlist">
-                <button type="submit">Créer la playlist</button>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Nom de la playlist</label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Mes favoris" aria-describedby="titleHelp" required>
+                    <div id="titleHelp" class="form-text">Choisissez un nom pour votre nouvelle playlist.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Créer la playlist</button>
             </form>
         HTML;
     }
@@ -36,7 +40,7 @@ class AddPlaylistAction extends Action {
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
                 <p>Le nom de la playlist est obligatoire.</p>
-                <a href="?action=add-playlist">Retour au formulaire</a>
+                <a class="btn btn-secondary" href="?action=add-playlist">Retour au formulaire</a>
             HTML;
         }
 
@@ -67,9 +71,8 @@ class AddPlaylistAction extends Action {
         return <<<HTML
             {$listRender}
             <p>
-                <a href="?action=add-track">Ajouter une piste</a>
-                 | 
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-secondary" href="?action=add-track">Ajouter une piste</a>
+                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;
     }

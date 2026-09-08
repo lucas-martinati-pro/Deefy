@@ -32,7 +32,7 @@ class AddTrackAction extends Action {
 
         if (!isset($_GET['type'])) {
             return <<<HTML
-                    <ul>
+                    <ul class="dropdown-menu show position-static">
                         <li><a href="?action=add-track&type=PodcastTrack">Ajouter un Podcast à ma playlist</a>
                         <li><a href="?action=add-track&type=AlbumTrack">Ajouter un Album à ma playlist</a>
                     </ul>
@@ -45,24 +45,64 @@ class AddTrackAction extends Action {
             case 'AlbumTrack' : {
                 $action = "?action=add-track&type=AlbumTrack";
                 $content = <<<HTML
-                    <li><input type="text" name="title" placeholder="Titre" required></li>
-                    <li><input type="text" name="artist" placeholder="Artiste" required></li>
-                    <li><input type="text" name="album" placeholder="Album" required></li>
-                    <li><input type="number" name="year" placeholder="Année" required></li>
-                    <li><input type="number" name="trackNumber" placeholder="Numéro de piste" required></li>
-                    <li>Fichier audio : <input type="file" name="userfile" accept="audio/mpeg" required></li>
-                    <button type="submit">Ajouter une piste</button>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Titre du morceau</label>
+                        <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Bohemian Rhapsody" aria-describedby="titleHelp" required>
+                        <div id="titleHelp" class="form-text">Saisissez le titre du morceau.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="artist" class="form-label">Artiste</label>
+                        <input type="text" name="artist" class="form-control" id="artist" placeholder="Ex : Queen" aria-describedby="artistHelp" required>
+                        <div id="artistHelp" class="form-text">Saisissez le nom de l'artiste ou du groupe.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="album" class="form-label">Album</label>
+                        <input type="text" name="album" class="form-control" id="album" placeholder="Ex : A Night at the Opera" aria-describedby="albumHelp" required>
+                        <div id="albumHelp" class="form-text">Saisissez le nom de l'album.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Année</label>
+                        <input type="number" name="year" class="form-control" id="year" placeholder="Ex : 1975" aria-describedby="yearHelp" required>
+                        <div id="yearHelp" class="form-text">Année de sortie de l'album.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="trackNumber" class="form-label">Numéro de piste</label>
+                        <input type="number" name="trackNumber" class="form-control" id="trackNumber" placeholder="Ex : 1" min="1" aria-describedby="trackNumberHelp" required>
+                        <div id="trackNumberHelp" class="form-text">Position de la piste dans l'album.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userfile" class="form-label">Fichier audio</label>
+                        <input type="file" name="userfile" class="form-control" id="userfile" accept="audio/mpeg, .mp3" aria-describedby="fileHelp" required>
+                        <div id="fileHelp" class="form-text">Sélectionnez un fichier audio au format MP3.</div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Ajouter la piste</button>
                 HTML;
                 break;
             }
             case 'PodcastTrack' : {
                 $action = "?action=add-track&type=PodcastTrack";
                 $content = <<<HTML
-                    <li><input type="text" name="title" placeholder="nom de la piste" required></li>
-                    <li><input type="text" name="author" placeholder="nom de l'auteur" required></li>
-                    <li>date de sortie du morceaux : <input type="date" name="date" required></li>
-                    <li>Fichier audio : <input type="file" name="userfile" accept="audio/mpeg" required></li>
-                    <button type="submit">Ajouter une piste</button>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Titre du podcast</label>
+                        <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Épisode 1 : Les origines" aria-describedby="titleHelp" required>
+                        <div id="titleHelp" class="form-text">Saisissez le nom de la piste / épisode.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Auteur</label>
+                        <input type="text" name="author" class="form-control" id="author" placeholder="Ex : Jean Dupont" aria-describedby="authorHelp" required>
+                        <div id="authorHelp" class="form-text">Nom de l'auteur ou du créateur.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date de sortie</label>
+                        <input type="date" name="date" class="form-control" id="date" aria-describedby="dateHelp" required>
+                        <div id="dateHelp" class="form-text">Date de sortie du morceau.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userfile" class="form-label">Fichier audio</label>
+                        <input type="file" name="userfile" class="form-control" id="userfile" accept="audio/mpeg, .mp3" aria-describedby="fileHelp" required>
+                        <div id="fileHelp" class="form-text">Sélectionnez un fichier audio au format MP3.</div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Ajouter le podcast</button>
                 HTML;
                 break;
             }
@@ -70,11 +110,11 @@ class AddTrackAction extends Action {
 
         return <<<HTML
             <form method="post" action="{$action}" enctype="multipart/form-data">
-                <ul>
-                    {$content}
-                </ul>
+                {$content}
             </form>
-            <a href="?action=playlists">Retour à mes playlists</a>
+            <p class="mt-3">
+                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+            </p>
         HTML;
     }
 
@@ -101,7 +141,7 @@ class AddTrackAction extends Action {
         $type = $_GET['type'] ?? '';
         if ($type === 'AlbumTrack') {
             if (empty($_POST['title']) || empty($_POST['artist']) || empty($_POST['album']) || empty($_POST['year']) || empty($_POST['trackNumber'])) {
-                $error[] = 'Tous les champs de l\'album sont obligatoires.';
+                $error[] = "Tous les champs de l'album sont obligatoires.";
             }
         } elseif ($type === 'PodcastTrack') {
             if (empty($_POST['title']) || empty($_POST['author']) || empty($_POST['date'])) {
@@ -141,8 +181,8 @@ class AddTrackAction extends Action {
 
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
-                <ul>{$errorList}</ul>
-                <a href="?action=add-track">Retour au formulaire</a>
+                <ul class="dropdown-menu show position-static">{$errorList}</ul>
+                <a class="dropdown-item" href="?action=add-track">Retour au formulaire</a>
             HTML;
         }
 
@@ -189,9 +229,8 @@ class AddTrackAction extends Action {
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
             <p>
-                <a href="?action=add-track">Ajouter une autre piste</a>
-                 | 
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-secondary" href="?action=add-track">Ajouter une autre piste</a>
+                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;
     }

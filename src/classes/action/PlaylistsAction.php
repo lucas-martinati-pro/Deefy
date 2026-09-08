@@ -32,11 +32,11 @@ class PlaylistsAction extends Action {
             HTML;
         }
 
-        $listHtml = "<ul>";
+        $listHtml = '<ul class="dropdown-menu show position-static">';
         foreach ($playlists as $pl) {
             $listHtml .= <<<HTML
                 <li>
-                    <a href="?action=display-playlist&id={$pl->id}">{$pl->name}</a>
+                    <a class="dropdown-item" href="?action=display-playlist&id={$pl->id}">{$pl->name}</a>
                 </li>
             HTML;
         }
@@ -46,7 +46,7 @@ class PlaylistsAction extends Action {
             <h1>Mes playlists</h1>
             {$listHtml}
             <p>
-                <a href="?action=add-playlist">Créer une nouvelle playlist</a>
+                <a class="btn btn-secondary" href="?action=add-playlist">Créer une nouvelle playlist</a>
             </p>
         HTML;
     }

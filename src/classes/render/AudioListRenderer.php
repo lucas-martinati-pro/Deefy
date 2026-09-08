@@ -16,11 +16,11 @@ class AudioListRenderer implements Renderer {
     public function render(int $selector = 0) : string {
         $res = <<<HTML
         <h2>{$this->audioList->name}</h2>
-        <ul>
+        <ul class="dropdown-menu show position-static">
         HTML;
 
         if (count($this->audioList->tracks) === 0) {
-            $res .= "   <li><em>Liste vide</em></li>";
+            $res .= '   <li><em class="dropdown-item">Liste vide</em></li>';
         } else {
             foreach ($this->audioList as $track) {
                 $renderPiste = RendererFactory::getRenderer($track);
@@ -29,8 +29,8 @@ class AudioListRenderer implements Renderer {
         }
 
         $res .= <<<HTML
-        </ul>
-        <p><strong>{$this->audioList->trackCount}</strong> piste(s) | Durée totale : <strong>{$this->audioList->totalDuration}s</strong></p>
+            </ul>
+            <p><strong>{$this->audioList->trackCount}</strong> piste(s) | Durée totale : <strong>{$this->audioList->totalDuration}s</strong></p>
         HTML;
 
         return $res;

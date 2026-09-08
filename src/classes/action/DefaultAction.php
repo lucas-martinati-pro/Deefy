@@ -12,21 +12,21 @@ class DefaultAction extends Action {
         $page = <<< HTML
             <h1>Bienvenue sur Deefy !</h1>
             <p>Bienvenue sur Deefy, votre plateforme de musique.</p>
-            <ul>
+            <ul class="dropdown-menu show position-static">
         HTML;
         try {
             AuthnProvider::getSignedInUser();
 
             $page .= <<<HTML
-                <li><a href="?action=playlists">Afficher mes playlists</a></li>
-                <li><a href="?action=display-playlist">Afficher la playlist courante</a></li>
-                <li><a href="?action=add-playlist">Créer une playlist</a></li>
-                <li><a href="?action=signout">Se déconnecter</a></li>
+                <li><a class="dropdown-item" href="?action=playlists">Afficher mes playlists</a></li>
+                <li><a class="dropdown-item" href="?action=display-playlist">Afficher la playlist courante</a></li>
+                <li><a class="dropdown-item" href="?action=add-playlist">Créer une playlist</a></li>
+                <li><a class="dropdown-item" href="?action=signout">Se déconnecter</a></li>
             HTML;
         } catch (AuthnException $e) {
             $page .= <<<HTML
-                <li><a href="?action=register">Inscription</a></li>
-                <li><a href="?action=signin">Se connecter</a></li>
+                <li><a class="dropdown-item" href="?action=register">Inscription</a></li>
+                <li><a class="dropdown-item" href="?action=signin">Se connecter</a></li>
             HTML;
         }
 
