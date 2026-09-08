@@ -12,7 +12,7 @@ class AlbumTrack extends AudioTrack {
 
     #[\Override]
     public function set(string $name, mixed $value) : void {
-        if (property_exists($this, $name) && $name !== "title" && $name !== "path" && $name !== "album" && $name !== "trackNumber") {
+        if (property_exists($this, $name) && $name !== "title" && $name !== "filename" && $name !== "album" && $name !== "trackNumber") {
             if ($name === "duration" && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");
             } else $this->$name = $value;
@@ -20,8 +20,8 @@ class AlbumTrack extends AudioTrack {
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
 
-    public function __construct(string $title, string $path, string $album, int $trackNumber) {
-        parent::__construct($title, $path);
+    public function __construct(string $title, string $filename, string $album, int $trackNumber) {
+        parent::__construct($title, $filename);
         $this->album = $album;
         $this->trackNumber = $trackNumber;
     }

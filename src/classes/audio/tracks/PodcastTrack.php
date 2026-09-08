@@ -8,13 +8,13 @@ class PodcastTrack extends AudioTrack {
 
     public function __construct(
         string $title,
-        string $path,
+        string $filename,
         ?string $author = null,
         ?string $date = null,
         ?int $duration = null,
         ?string $genre = null
     ) {
-        parent::__construct($title, $path);
+        parent::__construct($title, $filename);
 
         if ($author !== null) $this->author = $author;
         if ($date !== null) $this->date = $date;

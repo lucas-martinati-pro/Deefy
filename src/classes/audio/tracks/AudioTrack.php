@@ -7,9 +7,9 @@ use iutnc\deefy\exception\InvalidPropertyValueException;
 
 class AudioTrack {
 
-    protected string $title, $path, $genre;
+    protected string $title, $filename, $genre = '';
     // duration en secondes
-    protected int $duration;
+    protected int $duration = 0;
     protected ?int $id = null;
 
     public function get(string $name) : mixed {
@@ -18,16 +18,16 @@ class AudioTrack {
     }
 
     public function set(string $name, mixed $value) : void {
-        if (property_exists($this, $name) && ($name !== "title" && $name !== "path"))
+        if (property_exists($this, $name) && ($name !== "title" && $name !== "filename"))
             if ($name === "duration" && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");
             } else $this->$name = $value;
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
 
-    public function __construct(string $title, string $path) {
+    public function __construct(string $title, string $filename) {
         $this->title = $title;
-        $this->path = $path;
+        $this->filename = $filename;
     }
 
     // Utiliser json_encore() et get_onject_vars()

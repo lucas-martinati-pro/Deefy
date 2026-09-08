@@ -58,7 +58,7 @@ class AddPodcastTrackAction extends Action {
             $uploadFile = __DIR__ . '/../../../audio/' . basename($newName);
 
             if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
-                $audioPath = '../audio/' . basename($newName);
+                $audioPath = basename($newName);
             } else {
                 $error[] = "Le fichier n'a pas pu être enregistré.";
             }

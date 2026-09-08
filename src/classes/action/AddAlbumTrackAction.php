@@ -59,14 +59,14 @@ class AddAlbumTrackAction extends Action {
             $error[] = 'Le fichier doit être au format MP3.';
         }
 
-        $audioPath = '';
+        $audiofilename = '';
 
         if ($error == [] && isset($_FILES['userfile'])) {
             $newName = uniqid('', true) . bin2hex(random_bytes(4)) . '.mp3';
             $uploadFile = __DIR__ . '/../../../audio/' . basename($newName);
 
             if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
-                $audioPath = '../audio/' . basename($newName);
+                $audiofilename = basename($newName);
             } else {
                 $error[] = "Le fichier n'a pas pu être enregistré.";
             }
@@ -87,7 +87,7 @@ class AddAlbumTrackAction extends Action {
 
         $track = new AlbumTrack(
             filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS),
-            $audioPath,
+            $audiofilename,
             filter_var($_POST['album'], FILTER_SANITIZE_SPECIAL_CHARS),
             (int) filter_var($_POST['trackNumber'], FILTER_SANITIZE_NUMBER_INT),
         );
