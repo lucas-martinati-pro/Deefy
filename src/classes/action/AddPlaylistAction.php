@@ -19,7 +19,7 @@ class AddPlaylistAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>{$e->getMessage()}</p>
-                <a href="?action=signin">Se connecter</a>
+                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
             HTML;
         }
         return <<<HTML
@@ -51,7 +51,7 @@ class AddPlaylistAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>{$e->getMessage()}</p>
-                <a href="?action=signin">Se connecter</a>
+                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
             HTML;
         }
 
@@ -71,7 +71,7 @@ class AddPlaylistAction extends Action {
         return <<<HTML
             {$listRender}
             <p>
-                <a class="btn btn-secondary" href="?action=add-track">Ajouter une piste</a>
+                <a class="btn btn-primary" href="?action=add-track">Ajouter une piste</a>
                 <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;

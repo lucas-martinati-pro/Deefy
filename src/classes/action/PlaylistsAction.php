@@ -16,7 +16,7 @@ class PlaylistsAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>{$e->getMessage()}</p>
-                <a href="?action=signin">Se connecter</a>
+                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
             HTML;
         }
 
@@ -27,26 +27,31 @@ class PlaylistsAction extends Action {
         if (empty($playlists)) {
             return <<<HTML
                 <h1>Mes playlists</h1>
-                <p>Vous ne possédez aucune playlist pour le moment.</p>
-                <a href="?action=add-playlist">Créer une playlist</a>
+                <div class="alert alert-info" role="alert">
+                    Vous ne possédez aucune playlist pour le moment.
+                </div>
+                <p>
+                    <a class="btn btn-primary" href="?action=add-playlist">Créer une playlist</a>
+                </p>
             HTML;
         }
 
-        $listHtml = '<ul class="dropdown-menu show position-static">';
+        $listHtml = '<div class="list-group mb-3" style="max-width: 500px;">';
         foreach ($playlists as $pl) {
             $listHtml .= <<<HTML
-                <li>
-                    <a class="dropdown-item" href="?action=display-playlist&id={$pl->id}">{$pl->name}</a>
-                </li>
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="?action=display-playlist&id={$pl->id}">
+                    <span>{$pl->name}</span>
+                    <span class="badge text-bg-primary rounded-pill">Afficher</span>
+                </a>
             HTML;
         }
-        $listHtml .= "</ul>";
+        $listHtml .= "</div>";
 
         return <<<HTML
             <h1>Mes playlists</h1>
             {$listHtml}
             <p>
-                <a class="btn btn-secondary" href="?action=add-playlist">Créer une nouvelle playlist</a>
+                <a class="btn btn-primary" href="?action=add-playlist">Créer une nouvelle playlist</a>
             </p>
         HTML;
     }

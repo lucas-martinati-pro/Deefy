@@ -9,7 +9,7 @@ class Signout extends Action {
             return <<<HTML
                 <h1>Déconnexion</h1>
                 <p>Vous n'êtes pas connecté.</p>
-                <a href="main.php">Retour à l'accueil</a>
+                <p><a class="btn btn-secondary" href="main.php">Retour à l'accueil</a></p>
             HTML;
         }
 

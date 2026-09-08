@@ -12,19 +12,23 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
     #[\Override]
     protected function renderCompact() : string {
         return <<<HTML
-        <li>
-            <strong>{$this->track->get("title")}</strong> - par {$this->track->get("author")}<br>
-            <audio controls src="../audio/{$this->track->get("filename")}"></audio>
-        </li>
+            <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                <div>
+                    <strong>{$this->track->get("title")}</strong> <span class="text-muted">- par {$this->track->get("author")}</span>
+                </div>
+                <audio controls src="../audio/{$this->track->get("filename")}"></audio>
+            </li>
         HTML;
     }
 
     #[\Override]
     protected function renderLong() : string {
         return <<<HTML
-            <li>
-                <strong>{$this->track->get("title")}</strong> - par {$this->track->get("author")}<br>
-                <small>Date : {$this->track->get("date")} | Genre : {$this->track->get("genre")} | Durée : {$this->track->get("duration")}s</small><br>
+            <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                <div>
+                    <strong>{$this->track->get("title")}</strong> <span class="text-muted">- par {$this->track->get("author")}</span>
+                    <div class="small text-muted">Date : {$this->track->get("date")} | Genre : {$this->track->get("genre")} | Durée : {$this->track->get("duration")}s</div>
+                </div>
                 <audio controls src="../audio/{$this->track->get("filename")}"></audio>
             </li>
         HTML;

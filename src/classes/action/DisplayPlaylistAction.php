@@ -17,7 +17,7 @@ class DisplayPlaylistAction extends Action {
                 return <<<HTML
                     <h1>Playlist</h1>
                     <p>Aucune playlist n'existe actuellement en session.</p>
-                    <a href="?action=playlists">Retour à mes playlists</a>
+                    <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
                 HTML;
             }
             $playlist = $_SESSION['playlist'];
@@ -31,7 +31,7 @@ class DisplayPlaylistAction extends Action {
                 return <<<HTML
                     <h1>Playlist introuvable</h1>
                     <p>La playlist demandée n'existe pas.</p>
-                    <a href="?action=playlists">Retour à mes playlists</a>
+                    <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
                 HTML;
             }
 
@@ -42,7 +42,7 @@ class DisplayPlaylistAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
             HTML;
         }
 
@@ -52,7 +52,7 @@ class DisplayPlaylistAction extends Action {
         return <<<HTML
             {$playlistHtml}
             <p>
-                <a class="btn btn-secondary" href="?action=add-track">Ajouter une piste</a>
+                <a class="btn btn-primary" href="?action=add-track">Ajouter une piste</a>
                 <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;

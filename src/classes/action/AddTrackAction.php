@@ -18,7 +18,7 @@ class AddTrackAction extends Action {
             return <<<HTML
                 <h1>Erreur</h1>
                 <p>Aucune playlist n'a été trouvée en session. Veuillez d'abord sélectionner ou créer une playlist.</p>
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
             HTML;
         }
 
@@ -26,17 +26,25 @@ class AddTrackAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>Vous n'êtes pas autorisé à modifier cette playlist.</p>
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
             HTML;
         }
 
         if (!isset($_GET['type'])) {
             return <<<HTML
-                    <ul class="dropdown-menu show position-static">
-                        <li><a href="?action=add-track&type=PodcastTrack">Ajouter un Podcast à ma playlist</a>
-                        <li><a href="?action=add-track&type=AlbumTrack">Ajouter un Album à ma playlist</a>
-                    </ul>
-                HTML;
+                <h2>Choisir le type de piste à ajouter</h2>
+                <div class="list-group mb-3" style="max-width: 450px;">
+                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action">
+                        Ajouter un Podcast à ma playlist
+                    </a>
+                    <a href="?action=add-track&type=AlbumTrack" class="list-group-item list-group-item-action">
+                        Ajouter un Album à ma playlist
+                    </a>
+                </div>
+                <p>
+                    <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                </p>
+            HTML;
         }
 
         $action = "";
@@ -124,7 +132,7 @@ class AddTrackAction extends Action {
             return <<<HTML
                 <h1>Erreur</h1>
                 <p>Aucune playlist n'a été trouvée en session. Veuillez d'abord initialiser la playlist.</p>
-                <a href="?action=add-playlist">Ajouter une playlist</a>
+                <p><a class="btn btn-primary" href="?action=add-playlist">Créer une playlist</a></p>
             HTML;
         }
 
@@ -132,7 +140,7 @@ class AddTrackAction extends Action {
             return <<<HTML
                 <h1>Accès refusé</h1>
                 <p>Vous n'êtes pas autorisé à modifier cette playlist.</p>
-                <a href="?action=playlists">Retour à mes playlists</a>
+                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
             HTML;
         }
 
@@ -181,8 +189,12 @@ class AddTrackAction extends Action {
 
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
-                <ul class="dropdown-menu show position-static">{$errorList}</ul>
-                <a class="dropdown-item" href="?action=add-track">Retour au formulaire</a>
+                <div class="alert alert-danger" role="alert">
+                    <ul class="mb-0 ps-3">{$errorList}</ul>
+                </div>
+                <p>
+                    <a class="btn btn-secondary" href="?action=add-track">Retour au formulaire</a>
+                </p>
             HTML;
         }
 
@@ -209,7 +221,7 @@ class AddTrackAction extends Action {
                 return <<<HTML
                     <h1>Erreur</h1>
                     <p>Le type de piste sélectionné est invalide.</p>
-                    <a href="?action=add-track">Retour à l'ajout d'une piste</a>
+                    <p><a class="btn btn-secondary" href="?action=add-track">Retour à l'ajout d'une piste</a></p>
                 HTML;
             }
         }
@@ -229,7 +241,7 @@ class AddTrackAction extends Action {
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
             <p>
-                <a class="btn btn-secondary" href="?action=add-track">Ajouter une autre piste</a>
+                <a class="btn btn-primary" href="?action=add-track">Ajouter une autre piste</a>
                 <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;

@@ -34,6 +34,10 @@ class RegisterAction extends Action {
                 <input type="password" name="password-double" class="form-control" id="password-double" aria-describedby="passwordDoubleHelp" required>
                 <div id="passwordDoubleHelp" class="form-text">Ressaisissez votre mot de passe à l'identique.</div>
             </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="connect-auto" name="connect-auto" checked>
+                <label class="form-check-label" for="connect-auto">Se connecter automatiquement</label>
+            </div>
             <button type="submit" class="btn btn-primary">Inscription</button>
         </form>
         HTML;
@@ -45,7 +49,7 @@ class RegisterAction extends Action {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>Tous les champs sont obligatoires.</p>
-                <a href="?action=register">Retour au formulaire</a>
+                <p><a class="btn btn-secondary" href="?action=register">Retour au formulaire</a></p>
             HTML;
         }
 
@@ -53,23 +57,48 @@ class RegisterAction extends Action {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>Les deux mots de passe doivent être identiques.</p>
-                <a href="?action=register">Retour au formulaire</a>
+                <p><a class="btn btn-secondary" href="?action=register">Retour au formulaire</a></p>
             HTML;
         }
+
+        $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
         try {
             AuthnProvider::register($_POST['email'], $_POST['password']);
         } catch (AuthnException $error) {
             return <<<HTML
                 <h1>Échec de l'inscription</h1>
                 <p>{$error->getMessage()}</p>
-                <a href="?action=register">Retour au formulaire</a>
+                <p><a class="btn btn-secondary" href="?action=register">Retour au formulaire</a></p>
+            HTML;
+        }
+
+        if (isset($_POST['connect-auto'])) {
+            try {
+                AuthnProvider::signin($_POST['email'], $_POST['password']);
+            } catch (AuthnException $error) {
+                return <<<HTML
+                    <h1>Échec de la connexion</h1>
+                    <p>{$error->getMessage()}</p>
+                    <p><a class="btn btn-secondary" href="?action=register">Retour au formulaire</a></p>
+                HTML;
+            }
+
+            return <<<HTML
+                <h1>Connexion réussie</h1>
+                <p>Bienvenue, <strong>{$_POST['email']}</strong> !</p>
+                <p>Vous êtes maintenant connecté à Deefy.</p>
+                <p>
+                    <a class="btn btn-primary" href="?action=playlists">Mes playlists</a>
+                    <a class="btn btn-secondary" href="main.php">Accueil</a>
+                </p>
             HTML;
         }
 
         return <<<HTML
             <h1>Inscription réussie</h1>
             <p>Votre compte a bien été créé.</p>
-            <p><a href="?action=signin">Se connecter</a></p>
+            <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
         HTML;
     }
 }

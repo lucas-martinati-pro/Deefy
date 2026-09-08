@@ -10,6 +10,8 @@ use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\RegisterAction;
 use iutnc\deefy\action\Signin;
 use iutnc\deefy\action\Signout;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\exception\AuthnException;
 
 class Dispatcher {
     private string $action;
@@ -34,6 +36,44 @@ class Dispatcher {
     }
 
     private function renderPage(string $html): void {
+        $navLinks = '';
+        try {
+            $user = AuthnProvider::getSignedInUser();
+
+            $navLinks = <<<HTML
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="main.php">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=playlists">Mes playlists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=add-playlist">Créer une playlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=display-playlist">Playlist courante</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="navbar-text small text-muted me-2">{$user['email']}</span>
+                    <a class="btn btn-outline-danger btn-sm" href="?action=signout">Déconnexion</a>
+                </div>
+            HTML;
+        } catch (AuthnException $e) {
+            $navLinks = <<<HTML
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="main.php">Accueil</a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-primary btn-sm" href="?action=signin">Connexion</a>
+                    <a class="btn btn-primary btn-sm" href="?action=register">Inscription</a>
+                </div>
+            HTML;
+        }
+
         echo <<<HTML
             <!DOCTYPE html>
             <html lang="fr">
@@ -43,8 +83,23 @@ class Dispatcher {
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
                 </head>
                 <body>
-                    <h1><a href="main.php">Deefy</a></h1>
-                    $html
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+                        <div class="container">
+                            <a class="navbar-brand fw-bold text-primary text-black" href="main.php">Deefy</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                {$navLinks}
+                            </div>
+                        </div>
+                    </nav>
+
+                    <div class="container py-4">
+                        <main>
+                            $html
+                        </main>
+                    </div>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
                 </body>
             </html>

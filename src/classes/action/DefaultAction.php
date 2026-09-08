@@ -11,27 +11,27 @@ class DefaultAction extends Action {
     public function get() : string {
         $page = <<< HTML
             <h1>Bienvenue sur Deefy !</h1>
-            <p>Bienvenue sur Deefy, votre plateforme de musique.</p>
-            <ul class="dropdown-menu show position-static">
+            <p class="text-muted">Bienvenue sur Deefy, votre plateforme de musique.</p>
+            <div class="list-group mb-3" style="max-width: 450px;">
         HTML;
         try {
             AuthnProvider::getSignedInUser();
 
             $page .= <<<HTML
-                <li><a class="dropdown-item" href="?action=playlists">Afficher mes playlists</a></li>
-                <li><a class="dropdown-item" href="?action=display-playlist">Afficher la playlist courante</a></li>
-                <li><a class="dropdown-item" href="?action=add-playlist">Créer une playlist</a></li>
-                <li><a class="dropdown-item" href="?action=signout">Se déconnecter</a></li>
+                <a class="list-group-item list-group-item-action" href="?action=playlists">Afficher mes playlists</a>
+                <a class="list-group-item list-group-item-action" href="?action=display-playlist">Afficher la playlist courante</a>
+                <a class="list-group-item list-group-item-action" href="?action=add-playlist">Créer une playlist</a>
+                <a class="list-group-item list-group-item-action list-group-item-danger" href="?action=signout">Se déconnecter</a>
             HTML;
         } catch (AuthnException $e) {
             $page .= <<<HTML
-                <li><a class="dropdown-item" href="?action=register">Inscription</a></li>
-                <li><a class="dropdown-item" href="?action=signin">Se connecter</a></li>
+                <a class="list-group-item list-group-item-action" href="?action=signin">Se connecter</a>
+                <a class="list-group-item list-group-item-action" href="?action=register">Inscription</a>
             HTML;
         }
 
         $page .= <<<HTML
-                </ul>
+            </div>
         HTML;
 
         return $page;

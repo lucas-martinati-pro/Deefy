@@ -29,7 +29,7 @@ class Signin extends Action {
             return <<<HTML
                 <h1>Échec de la connexion</h1>
                 <p>Tous les champs sont obligatoires.</p>
-                <a href="?action=signin">Retour au formulaire</a>
+                <p><a class="btn btn-secondary" href="?action=signin">Retour au formulaire</a></p>
             HTML;
         }
 
@@ -39,7 +39,7 @@ class Signin extends Action {
             return <<<HTML
                 <h1>Échec de la connexion</h1>
                 <p>{$error->getMessage()}</p>
-                <a href="?action=signin">Retour au formulaire</a>
+                <p><a class="btn btn-secondary" href="?action=signin">Retour au formulaire</a></p>
             HTML;
         }
 
@@ -49,6 +49,10 @@ class Signin extends Action {
             <h1>Connexion réussie</h1>
             <p>Bienvenue, <strong>{$_POST['email']}</strong> !</p>
             <p>Vous êtes maintenant connecté à Deefy.</p>
+            <p>
+                <a class="btn btn-primary" href="?action=playlists">Mes playlists</a>
+                <a class="btn btn-secondary" href="main.php">Accueil</a>
+            </p>
         HTML;
     }
 }
