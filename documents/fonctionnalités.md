@@ -12,7 +12,7 @@
 |:--:|:---|:---|:---|:---|:---:|
 | **1** | **Mes playlists** | Affiche la liste de toutes les playlists appartenant à l'utilisateur actuellement authentifié. | Utilisateur authentifié | `PlaylistsAction` | ✅ Réalisé |
 | **2** | **Consulter une playlist** | Chaque élément de la liste est cliquable et affiche le détail de la playlist (pistes, métadonnées, lecteur audio) qui devient la playlist courante en session. | Utilisateur authentifié propriétaire | `DisplayPlaylistAction` | ✅ Réalisé |
-| **3** | **Ajouter une piste** | Formulaire accessible depuis l'affichage d'une playlist pour ajouter une nouvelle piste (Album ou Podcast) avec upload sécurisé de fichier MP3. | Utilisateur authentifié propriétaire | `AddTrackAction` | ✅ Réalisé |
+| **3** | **Ajouter une piste** | Formulaire accessible depuis l'affichage d'une playlist pour ajouter une nouvelle piste (Album ou Podcast) avec upload sécurisé de fichier MP3 et extraction automatique des métadonnées ID3 (durée, genre). | Utilisateur authentifié propriétaire | `AddTrackAction` | ✅ Réalisé |
 | **4** | **Créer une playlist vide** | Formulaire permettant de saisir le nom d'une playlist. À la validation, la playlist est créée en BD, rattachée à l'utilisateur et définie comme playlist courante. | Utilisateur authentifié | `AddPlaylistAction` | ✅ Réalisé |
 | **5** | **Afficher la playlist courante** | Permet d'afficher directement la playlist actuellement mémorisée dans la session utilisateur. | Utilisateur authentifié propriétaire | `DisplayPlaylistAction` | ✅ Réalisé |
 | **6** | **S'inscrire** | Création d'un compte utilisateur avec le rôle `STANDARD`, vérification de mot de passe complexe et option de connexion automatique. | Visiteur (Tous) | `RegisterAction` | ✅ Réalisé |
@@ -47,5 +47,11 @@
   - Validation du format MP3 obligatoire (`audio/mpeg` et extension `.mp3`).
   - Génération d'un nom de fichier aléatoire et unique (`uniqid() + random_bytes()`) pour éviter tout conflit ou écrasement.
 
-### 4. Comception
+### 4. Extraction automatique des métadonnées audio (getID3)
+- **Analyse automatique des fichiers MP3 (`AddTrackAction`)** :
+  - Intégration de la bibliothèque `james-heinrich/getid3`.
+  - Extraction automatique de la **durée exacte** du morceau en secondes (évite la saisie manuelle).
+  - Récupération du **genre musical** et des tags ID3v2/ID3v1 et utilisation des valeurs rentré par l'utilisateur en tant que valeurs de secours (titre, artiste, album, année, numéro de piste).
+
+### 5. Conception
 - **Utilisation de Factory et du Pattern CQRS pour les repository**.
