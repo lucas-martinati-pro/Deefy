@@ -26,7 +26,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
                 <strong>{$this->track->get("title")}</strong> - par {$this->track->get("author")}<br>
                 <small>Date : {$this->track->get("date")} | Genre : {$this->track->get("genre")} | Durée : {$this->track->get("duration")}s</small><br>
                 <audio controls src="../audio/{$this->track->get("filename")}"></audio>
-            </li>";
+            </li>
         HTML;
     }
 }

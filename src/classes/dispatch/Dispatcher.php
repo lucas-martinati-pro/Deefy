@@ -5,7 +5,7 @@ namespace iutnc\deefy\dispatch;
 use iutnc\deefy\action\AddPlaylistAction;
 use iutnc\deefy\action\AddPodcastTrackAction;
 use iutnc\deefy\action\DefaultAction;
-use iutnc\deefy\action\PlaylistAction;
+use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\AddAlbumTrackAction;
 use iutnc\deefy\action\RegisterAction;
@@ -23,7 +23,7 @@ class Dispatcher {
 
     public function run(): void {
         $html = match ($this->action) {
-            "playlist" => (new PlaylistAction())(),
+            "playlists" => (new PlaylistsAction())(),
             "display-playlist" => (new DisplayPlaylistAction())(),
             "add-playlist" => (new AddPlaylistAction())(),
             "add-track" => (new AddPodcastTrackAction())(),
@@ -53,9 +53,9 @@ class Dispatcher {
         try {
             AuthnProvider::getSignedInUser();
 
-            // <li><a href="main.php?action=playlist">Afficher la playlist de la session</a></li> // TODO
             $page .= <<<HTML
-                <li><a href="?action=display-playlist">Afficher mes playlists</a></li>
+                <li><a href="?action=playlists">Afficher mes playlists</a></li>
+                <li><a href="?action=display-playlist">Afficher la playlist courante</a></li>
                 <li><a href="?action=add-playlist">Créer une playlist</a></li>
                 <li><a href="?action=signout">Se déconnecter</a></li>
             HTML;
