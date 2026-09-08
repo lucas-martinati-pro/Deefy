@@ -2,7 +2,7 @@
 
 namespace iutnc\deefy\action;
 
-class Signout extends Action {
+class SignoutAction extends Action {
     public function get() : string {
         // Si l'utilisateur n'est même pas connecté
         if (!isset($_SESSION['user'])) {

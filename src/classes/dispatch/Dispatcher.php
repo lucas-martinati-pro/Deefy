@@ -8,8 +8,8 @@ use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\RegisterAction;
-use iutnc\deefy\action\Signin;
-use iutnc\deefy\action\Signout;
+use iutnc\deefy\action\SigninAction;
+use iutnc\deefy\action\SignoutAction;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
@@ -27,8 +27,8 @@ class Dispatcher {
             "add-playlist" => (new AddPlaylistAction())(),
             "add-track" => (new AddTrackAction())(),
             "register" => (new RegisterAction())(),
-            "signin" => (new Signin())(),
-            "signout" => (new Signout())(),
+            "signin" => (new SigninAction())(),
+            "signout" => (new SignoutAction())(),
             default => (new DefaultAction())(),
         };
 

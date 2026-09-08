@@ -5,7 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
-class Signin extends Action {
+class SigninAction extends Action {
     public function get() : string {
         return <<<HTML
         <form method="post" action="?action=signin" enctype="multipart/form-data">
