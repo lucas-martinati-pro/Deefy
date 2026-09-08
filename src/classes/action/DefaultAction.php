@@ -32,7 +32,6 @@ class DefaultAction extends Action {
 
         $page .= <<<HTML
                 </ul>
-            </body>
         HTML;
 
         return $page;
