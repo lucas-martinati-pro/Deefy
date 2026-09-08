@@ -6,6 +6,11 @@ SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `playlist`;
+DROP TABLE IF EXISTS `track`;
+DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `playlist2track`;
+DROP TABLE IF EXISTS `user2playlist`;
+
 CREATE TABLE `playlist` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nom` varchar(100) NOT NULL,
@@ -18,8 +23,6 @@ INSERT INTO `playlist` (`id`, `nom`) VALUES
 (3,	'Best of country music'),
 (4,	'Best of Elvis Presley');
 
-
-DROP TABLE IF EXISTS `track`;
 CREATE TABLE `track` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `titre` varchar(100) NOT NULL,
@@ -47,7 +50,6 @@ INSERT INTO `track` (`id`, `titre`, `genre`, `duree`, `filename`, `type`, `artis
 (8,	'La vie des papillons',	'docu',	200,	'papillons.mp3',	'P',	NULL,	NULL,	NULL,	NULL,	'Bolo',	'2004-10-12'),
 (9,	'La vie des libellules','docu',	200,	'libellules.mp3',	'P',	NULL,	NULL,	NULL,	NULL,	'Bolo',	'2004-10-12');
 
-DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `email` varchar(256) NOT NULL,
@@ -56,7 +58,6 @@ CREATE TABLE `User` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `playlist2track`;
 CREATE TABLE `playlist2track` (
     `id_pl` int(11) NOT NULL,
     `id_track` int(11) NOT NULL,
@@ -85,7 +86,6 @@ INSERT INTO `User` (`id`, `email`, `passwd`, `role`) VALUES
     (4,	'user4@mail.com',	'$2y$12$ltC0A0zZkD87pZ8K0e6TYOJPJeN/GcTSkUbpqq0kBvx6XdpFqzzqq',	1),
     (5,	'admin@mail.com',	'$2y$12$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a',	100);
 
-DROP TABLE IF EXISTS `user2playlist`;
 CREATE TABLE `user2playlist` (
     `id_user` int(11) NOT NULL,
     `id_pl` int(11) NOT NULL,
