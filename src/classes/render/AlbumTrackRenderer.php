@@ -30,7 +30,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
                     <strong>{$this->track->get("title")}</strong> - {$this->track->get("artist")} <span class="text-muted">({$this->track->get("album")}, {$this->track->get("year")})</span>
                     <div class="small text-muted">Durée : {$this->track->get("duration")}s | Genre : {$this->track->get("genre")}</div>
                 </div>
-                {$player = $this->renderAudioPlayer()}
+                {$this->renderAudioPlayer()}
             </li>
         HTML;
     }
