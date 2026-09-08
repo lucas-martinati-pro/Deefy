@@ -49,7 +49,7 @@ class Dispatcher {
                         <a class="nav-link" href="?action=playlists">Mes playlists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=add-playlist">Créer une playlist</a>
+                        <a class="nav-link" href="?action=add-playlist">+ Créer une playlist</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=display-playlist">Playlist courante</a>

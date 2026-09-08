@@ -21,38 +21,95 @@ class PlaylistsAction extends Action {
         }
 
         $r = DeefyRepository::getInstance();
-
         $playlists = $r->findPlaylistsByUserId((int) $user['id']);
 
         if (empty($playlists)) {
             return <<<HTML
-                <h1>Mes playlists</h1>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h2 fw-bold mb-0">Mes playlists</h1>
+                    <a class="btn btn-primary" href="?action=add-playlist">
+                        + Créer une playlist
+                    </a>
+                </div>
                 <div class="alert alert-info" role="alert">
                     Vous ne possédez aucune playlist pour le moment.
                 </div>
                 <p>
-                    <a class="btn btn-primary" href="?action=add-playlist">Créer une playlist</a>
+                    <a class="btn btn-primary" href="?action=add-playlist">Créer votre première playlist</a>
                 </p>
             HTML;
         }
 
-        $listHtml = '<div class="list-group mb-3" style="max-width: 500px;">';
+        $cardsHtml = '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">';
         foreach ($playlists as $pl) {
-            $listHtml .= <<<HTML
-                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="?action=display-playlist&id={$pl->id}">
-                    <span>{$pl->name}</span>
-                    <span class="badge text-bg-primary rounded-pill">Afficher</span>
-                </a>
+            $trackCount = (int) $pl->trackCount;
+            $totalDuration = (int) $pl->totalDuration;
+
+            // Récupérer la première pochette disponible parmi les pistes
+            $coverImage = null;
+            foreach ($pl->tracks as $t) {
+                if ($coverImage === null && !empty($t->get('image'))) {
+                    $coverImage = $t->get('image');
+                }
+            }
+
+            if ($coverImage !== null) {
+                $coverHtml = <<<HTML
+                    <img src="../image/{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
+                HTML;
+            } else {
+                $coverHtml = <<<HTML
+                    <div class="card-img-top bg-light d-flex flex-column align-items-center justify-content-center text-muted border-bottom w-100 h-100">
+                        <!-- Icône BootStrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-note-list" viewBox="0 0 16 16">
+                            <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                            <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                            <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                            <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <span class="small text-secondary">Playlist</span>
+                    </div>
+                HTML;
+            }
+
+            $cardsHtml .= <<<HTML
+                <div class="col d-flex align-items-stretch">
+                    <div class="card shadow-sm h-100 w-100 border overflow-hidden">
+                        <div class="position-relative" style="height: 180px;">
+                            {$coverHtml}
+                            <span class="position-absolute top-0 end-0 m-2 badge bg-dark bg-opacity-75">
+                                {$trackCount} piste(s)
+                            </span>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between p-3">
+                            <h5 class="card-title fw-bold mb-1 text-truncate" title="{$pl->name}">{$pl->name}</h5>
+                            <p class="card-text text-muted small mb-2">
+                                Durée : <strong>{$totalDuration}s</strong>
+                            </p>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <a href="?action=display-playlist&id={$pl->id}" class="btn btn-outline-primary btn-sm stretched-link">
+                                    Consulter la playlist
+                                </a>
+                                <span class="text-muted small">{$trackCount} morceau(x)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             HTML;
         }
-        $listHtml .= "</div>";
 
         return <<<HTML
-            <h1>Mes playlists</h1>
-            {$listHtml}
-            <p>
-                <a class="btn btn-primary" href="?action=add-playlist">Créer une nouvelle playlist</a>
-            </p>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h2 fw-bold mb-1">Mes playlists</h1>
+                        <p class="text-muted mb-0">Consultez et gérez vos listes de lecture</p>
+                    </div>
+                    <a class="btn btn-primary" href="?action=add-playlist">
+                        + Créer une playlist
+                    </a>
+                </div>
+                {$cardsHtml}
+            </div>
         HTML;
     }
 
