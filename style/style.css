@@ -10,8 +10,9 @@
 }
 
 .audio-footer {
-    border-radius: 12px 12px 0px 0px;
-    margin:0;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin: 0;
 }
 
 .audio-compact {

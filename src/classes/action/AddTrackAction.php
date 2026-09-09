@@ -34,21 +34,27 @@ class AddTrackAction extends Action {
 
         if (!isset($_GET['type'])) {
             return <<<HTML
-                <h2>Choisir le type de piste à ajouter</h2>
+                <h2 class="h3 fw-bold mb-3 d-flex align-items-center">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                    <i class="bi bi-plus-circle-fill text-primary me-2"></i>Choisir le type de piste à ajouter
+                </h2>
                 <div class="list-group mb-3" style="max-width: 450px;">
-                    <a href="?action=add-track&type=AlbumTrack" class="list-group-item list-group-item-action">
+                    <a href="?action=add-track&type=AlbumTrack" class="list-group-item list-group-item-action d-flex align-items-center">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
-                        <i class="bi bi-vinyl-fill"></i>
+                        <i class="bi bi-vinyl-fill text-primary me-2 fs-5"></i>
                         Ajouter un Album à ma playlist
                     </a>
-                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action">
+                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action d-flex align-items-center">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/mic-fill/ -->
-                         <i class="bi bi-mic-fill"></i>
+                        <i class="bi bi-mic-fill text-danger me-2 fs-5"></i>
                         Ajouter un Podcast à ma playlist
                     </a>
                 </div>
                 <p>
-                    <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                    </a>
                 </p>
             HTML;
         }
@@ -58,7 +64,10 @@ class AddTrackAction extends Action {
 
         $retour = <<<HTML
             <p>
-                <a class="btn btn-light" href="?action=add-track">< Retour</a>
+                <a class="btn btn-light border d-inline-flex align-items-center" href="?action=add-track">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                    <i class="bi bi-arrow-left me-2"></i>Retour
+                </a>
             </p>
         HTML;
         $require = '<span class="text-danger">*</span>';
@@ -102,7 +111,10 @@ class AddTrackAction extends Action {
                         <input type="file" name="coverfile" class="form-control" id="coverfile" accept="image/png, image/jpeg, image/webp" aria-describedby="coverHelp">
                         <div id="coverHelp" class="form-text">Sélectionnez une image (JPG, PNG ou WEBP).</div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Ajouter l'album</button>
+                    <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-lg/ -->
+                        <i class="bi bi-plus-lg me-1"></i>Ajouter l'album
+                    </button>
                 HTML;
                 break;
             }
@@ -135,7 +147,10 @@ class AddTrackAction extends Action {
                         <input type="file" name="coverfile" class="form-control" id="coverfile" accept="image/png, image/jpeg, image/webp" aria-describedby="coverHelp">
                         <div id="coverHelp" class="form-text">Sélectionnez une image (JPG, PNG ou WEBP).</div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Ajouter le podcast</button>
+                    <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-lg/ -->
+                        <i class="bi bi-plus-lg me-1"></i>Ajouter le podcast
+                    </button>
                 HTML;
                 break;
             }
@@ -279,7 +294,10 @@ class AddTrackAction extends Action {
                     <ul class="mb-0 ps-3">{$errorList}</ul>
                 </div>
                 <p>
-                    <a class="btn btn-secondary" href="?action=add-track">Retour au formulaire</a>
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-track">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
+                    </a>
                 </p>
             HTML;
         }
@@ -304,8 +322,14 @@ class AddTrackAction extends Action {
             <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
             <p>
-                <a class="btn btn-primary" href="?action=add-track">Ajouter une autre piste</a>
-                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                    <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une autre piste
+                </a>
+                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlists">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                    <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                </a>
             </p>
         HTML;
     }

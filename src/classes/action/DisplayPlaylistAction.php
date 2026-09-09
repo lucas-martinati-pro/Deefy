@@ -38,11 +38,30 @@ class DisplayPlaylistAction extends Action {
             $_SESSION['playlist'] = $playlist;
         }
 
+        // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
+        if (isset($_GET['track_id'])) {
+            $trackId = (int) $_GET['track_id'];
+            foreach ($playlist->tracks as $track) {
+                if ((int) $track->get('id') === $trackId) {
+                    $_SESSION['current_track'] = $track;
+                    break;
+                }
+            }
+        }
+
         if (!Authz::checkPlaylistOwner($playlist->id)) {
             return <<<HTML
-                <h1>Accès refusé</h1>
+                <h1 class="h2 fw-bold text-danger mb-3">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/ -->
+                    <i class="bi bi-shield-lock-fill me-2"></i>Accès refusé
+                </h1>
                 <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
-                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
+                <p>
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                    </a>
+                </p>
             HTML;
         }
 
@@ -52,8 +71,14 @@ class DisplayPlaylistAction extends Action {
         return <<<HTML
             {$playlistHtml}
             <p>
-                <a class="btn btn-primary" href="?action=add-track">Ajouter une piste</a>
-                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                    <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une piste
+                </a>
+                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlists">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                    <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                </a>
             </p>
         HTML;
     }

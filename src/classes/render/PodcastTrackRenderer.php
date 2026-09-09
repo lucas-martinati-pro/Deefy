@@ -17,7 +17,12 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
     protected function getBadge() : string {
-        return '<span class="badge bg-primary-subtle text-primary border border-primary-subtle">Podcast</span>';
+        return <<<HTML
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/mic-fill/ -->
+                <i class="bi bi-mic-fill me-1"></i>Podcast
+            </span>
+        HTML;
     }
 
     #[\Override]

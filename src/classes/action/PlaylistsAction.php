@@ -26,16 +26,23 @@ class PlaylistsAction extends Action {
         if (empty($playlists)) {
             return <<<HTML
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h2 fw-bold mb-0">Mes playlists</h1>
-                    <a class="btn btn-primary" href="?action=add-playlist">
-                        + Créer une playlist
+                    <h1 class="h2 fw-bold mb-0 d-flex align-items-center">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
+                        <i class="bi bi-collection-play-fill text-primary me-2"></i>Mes playlists
+                    </h1>
+                    <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                        <i class="bi bi-plus-circle-fill me-2"></i>Créer une playlist
                     </a>
                 </div>
                 <div class="alert alert-info" role="alert">
                     Vous ne possédez aucune playlist pour le moment.
                 </div>
                 <p>
-                    <a class="btn btn-primary" href="?action=add-playlist">Créer votre première playlist</a>
+                    <a class="btn btn-primary" href="?action=add-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                        <i class="bi bi-plus-circle-fill me-1"></i>Créer votre première playlist
+                    </a>
                 </p>
             HTML;
         }
@@ -60,7 +67,7 @@ class PlaylistsAction extends Action {
             } else {
                 $coverHtml = <<<HTML
                     <div class="card-img-top bg-light d-flex flex-column align-items-center justify-content-center text-muted border-bottom w-100 h-100">
-                        <!-- Icône BootStrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                         <i class="bi bi-music-note-list fs-1"></i>
                         <span class="small text-secondary">Playlist</span>
                     </div>
@@ -77,15 +84,20 @@ class PlaylistsAction extends Action {
                             </span>
                         </div>
                         <div class="card-body d-flex flex-column justify-content-between p-3">
-                            <h5 class="card-title fw-bold mb-1 text-truncate" title="{$pl->name}">{$pl->name}</h5>
+                            <h5 class="card-title fw-bold mb-1 text-truncate">{$pl->name}</h5>
                             <p class="card-text text-muted small mb-2">
-                                Durée : <strong>{$totalDuration}s</strong>
+                                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/clock/ -->
+                                <i class="bi bi-clock me-1"></i>Durée : <strong>{$totalDuration}s</strong>
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <a href="?action=display-playlist&id={$pl->id}" class="btn btn-outline-primary btn-sm stretched-link">
-                                    Consulter la playlist
+                                <a href="?action=display-playlist&id={$pl->id}" class="btn btn-outline-primary btn-sm stretched-link d-inline-flex align-items-center">
+                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-circle-fill/ -->
+                                    <i class="bi bi-play-circle-fill me-1"></i>Consulter la playlist
                                 </a>
-                                <span class="text-muted small">{$trackCount} morceau(x)</span>
+                                <span class="text-muted small">
+                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
+                                    <i class="bi bi-music-note-beamed me-1"></i>{$trackCount} morceau(x)
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -96,11 +108,15 @@ class PlaylistsAction extends Action {
         return <<<HTML
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h1 class="h2 fw-bold mb-1">Mes playlists</h1>
+                        <h1 class="h2 fw-bold mb-1 d-flex align-items-center">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
+                            <i class="bi bi-collection-play-fill text-primary me-2"></i>Mes playlists
+                        </h1>
                         <p class="text-muted mb-0">Consultez et gérez vos listes de lecture</p>
                     </div>
-                    <a class="btn btn-primary" href="?action=add-playlist">
-                        + Créer une playlist
+                    <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                        <i class="bi bi-plus-circle-fill me-2"></i>Créer une playlist
                     </a>
                 </div>
                 {$cardsHtml}

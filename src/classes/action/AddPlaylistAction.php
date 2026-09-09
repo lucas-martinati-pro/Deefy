@@ -23,13 +23,20 @@ class AddPlaylistAction extends Action {
             HTML;
         }
         return <<<HTML
+            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/ -->
+                <i class="bi bi-folder-plus text-primary me-2"></i>Créer une playlist
+            </h1>
             <form method="post" action="?action=add-playlist">
                 <div class="mb-3">
                     <label for="title" class="form-label">Nom de la playlist<span class="text-danger">*</span></label>
                     <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Mes favoris" aria-describedby="titleHelp" required>
                     <div id="titleHelp" class="form-text">Choisissez un nom pour votre nouvelle playlist.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Créer la playlist</button>
+                <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-lg/ -->
+                    <i class="bi bi-check-lg me-1"></i>Créer la playlist
+                </button>
             </form>
         HTML;
     }
@@ -40,7 +47,10 @@ class AddPlaylistAction extends Action {
             return <<<HTML
                 <h1>Erreur dans le formulaire</h1>
                 <p>Le nom de la playlist est obligatoire.</p>
-                <a class="btn btn-secondary" href="?action=add-playlist">Retour au formulaire</a>
+                <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-playlist">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
+                </a>
             HTML;
         }
 
@@ -71,8 +81,14 @@ class AddPlaylistAction extends Action {
         return <<<HTML
             {$listRender}
             <p>
-                <a class="btn btn-primary" href="?action=add-track">Ajouter une piste</a>
-                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
+                    <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une piste
+                </a>
+                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlists">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
+                    <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                </a>
             </p>
         HTML;
     }

@@ -22,7 +22,10 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
         $trackNumber = (int) $this->track->get('trackNumber');
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
         return <<<HTML
-            <div class="text-nowrap">{$trackBadge}<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Album</span></div>
+            <div class="text-nowrap">{$trackBadge}<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
+                <i class="bi bi-vinyl-fill me-1"></i>Album
+            </span></div>
         HTML;
     }
 
