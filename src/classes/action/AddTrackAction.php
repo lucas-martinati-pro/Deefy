@@ -49,22 +49,26 @@ class AddTrackAction extends Action {
 
         $action = "";
         $content = "";
+
+        $retour = '<a class="btn btn-secondary" href="?action=add-track">Retour</a>';
+        $require = '<span style="color: red;">*</span>';
         switch ($_GET['type']) {
             case 'AlbumTrack' : {
                 $action = "?action=add-track&type=AlbumTrack";
                 $content = <<<HTML
+                    $retour
                     <div class="mb-3">
-                        <label for="title" class="form-label">Titre du morceau<span style="color: red;">*</span></label>
+                        <label for="title" class="form-label">Titre du morceau$require</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Bohemian Rhapsody" aria-describedby="titleHelp" required>
                         <div id="titleHelp" class="form-text">Saisissez le titre du morceau.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="artist" class="form-label">Artiste<span style="color: red;">*</span></label>
+                        <label for="artist" class="form-label">Artiste$require</label>
                         <input type="text" name="artist" class="form-control" id="artist" placeholder="Ex : Queen" aria-describedby="artistHelp" required>
                         <div id="artistHelp" class="form-text">Saisissez le nom de l'artiste ou du groupe.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="album" class="form-label">Album<span style="color: red;">*</span></label>
+                        <label for="album" class="form-label">Album$require</label>
                         <input type="text" name="album" class="form-control" id="album" placeholder="Ex : A Night at the Opera" aria-describedby="albumHelp" required>
                         <div id="albumHelp" class="form-text">Saisissez le nom de l'album.</div>
                     </div>
@@ -79,7 +83,7 @@ class AddTrackAction extends Action {
                         <div id="trackNumberHelp" class="form-text">Position de la piste dans l'album.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="userfile" class="form-label">Fichier audio<span style="color: red;">*</span></label>
+                        <label for="userfile" class="form-label">Fichier audio$require</label>
                         <input type="file" name="userfile" class="form-control" id="userfile" accept="audio/mpeg, .mp3" aria-describedby="fileHelp" required>
                         <div id="fileHelp" class="form-text">Sélectionnez un fichier audio au format MP3.</div>
                     </div>
@@ -95,13 +99,14 @@ class AddTrackAction extends Action {
             case 'PodcastTrack' : {
                 $action = "?action=add-track&type=PodcastTrack";
                 $content = <<<HTML
+                    $retour
                     <div class="mb-3">
-                        <label for="title" class="form-label">Titre du podcast</label>
+                        <label for="title" class="form-label">Titre du podcast$require</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Épisode 1 : Les origines" aria-describedby="titleHelp" required>
                         <div id="titleHelp" class="form-text">Saisissez le nom de la piste / épisode.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="author" class="form-label">Auteur</label>
+                        <label for="author" class="form-label">Auteur$require</label>
                         <input type="text" name="author" class="form-control" id="author" placeholder="Ex : Jean Dupont" aria-describedby="authorHelp" required>
                         <div id="authorHelp" class="form-text">Nom de l'auteur ou du créateur.</div>
                     </div>
@@ -111,7 +116,7 @@ class AddTrackAction extends Action {
                         <div id="dateHelp" class="form-text">Date de sortie du morceau.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="userfile" class="form-label">Fichier audio</label>
+                        <label for="userfile" class="form-label">Fichier audio$require</label>
                         <input type="file" name="userfile" class="form-control" id="userfile" accept="audio/mpeg, .mp3" aria-describedby="fileHelp" required>
                         <div id="fileHelp" class="form-text">Sélectionnez un fichier audio au format MP3.</div>
                     </div>
