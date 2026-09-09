@@ -55,12 +55,12 @@ class AddPlaylistAction extends Action {
             HTML;
         }
 
-        $r = DeefyRepository::getInstance();
+        $w = DeefyRepository::getInstance();
 
         $title = filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $playlist = $r->saveEmptyPlaylist(new Playlist($title, []));
+        $playlist = $w->saveEmptyPlaylist(new Playlist($title, []));
 
-        $r->savePlaylist2User((int) $user['id'], (int) $playlist->id);
+        $w->savePlaylist2User((int) $user['id'], (int) $playlist->id);
 
         // La playlist créée devient la playlist courante en session
         $_SESSION['playlist'] = $playlist;

@@ -11,6 +11,8 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 
 class AddTrackAction extends Action {
+    private const string AUDIODIR = __DIR__ . '/../../../audio';
+    private const string IMAGEDIR = __DIR__ . '/../../../image';
 
     #[\Override]
     public function get() : string {
@@ -178,31 +180,6 @@ class AddTrackAction extends Action {
             $error[] = 'Le type de piste sélectionné est invalide.';
         }
 
-        if (!isset($_FILES['userfile']) || $_FILES['userfile']['error'] !== UPLOAD_ERR_OK) {
-            $error[] = "Erreur lors de l'envoi du fichier audio.";
-        } elseif (empty($_FILES['userfile']['name']) || strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION)) !== 'mp3') {
-            $error[] = 'Le fichier doit être au format MP3.';
-        }
-
-        $audioPath = '';
-        $uploadFile = '';
-
-        if (empty($error)) {
-            $newName = uniqid('', true) . bin2hex(random_bytes(4)) . '.mp3';
-            $audioDir = __DIR__ . '/../../../audio';
-            if (!is_dir($audioDir)) {
-                // Créer un dossier avec touts les droits pour Apache
-                mkdir($audioDir, 0777, true);
-            }
-            $uploadFile = $audioDir . '/' . basename($newName);
-
-            if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
-                $audioPath = basename($newName);
-            } else {
-                $error[] = "Le fichier n'a pas pu être enregistré.";
-            }
-        }
-
         if (!empty($_POST['date'])) {
             $d = \DateTime::createFromFormat('Y-m-d', trim($_POST['date']));
 
@@ -212,6 +189,78 @@ class AddTrackAction extends Action {
                 // refuser une date dans le futur
                 $error[] = "La date de sortie ne peut pas être dans le futur.";
             }
+        }
+
+        // 1. Enregistrement du fichier audio MP3
+        $audioFileName = self::saveAudioFile($_FILES['userfile']);
+        if (!$audioFileName) $error[] = "Erreur lors de l'envoi du fichier audio.";
+
+        // Analyse des métadonnées ID3
+        $getID3 = new \getID3();
+        $fileInfo = $getID3->analyze(self::AUDIODIR . '/' . $audioFileName);
+
+        // Gestion et enregistrement de l'image (ID3 ou upload manuel)
+        $coverFile = $_FILES['coverfile'] ?? null;
+        $imageName = self::saveCoverImage($fileInfo, $coverFile);
+
+        // Récupération des infos générales
+        $title = $fileInfo['tags']['id3v2']['title'][0]
+            ?? (!empty($_POST['title']) ? filter_var(trim($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS) : 'Titre inconnu');
+
+        $genre = $fileInfo['tags']['id3v2']['genre'][0]
+            ?? $fileInfo['tags']['id3v1']['genre'][0]
+            ?? null;
+
+        $duration = isset($fileInfo['playtime_seconds'])
+            ? (int) round($fileInfo['playtime_seconds'])
+            : 0;
+
+        // Création de la piste selon le type
+        $track = null;
+        switch ($type) {
+            case 'AlbumTrack' : {
+                $artist = $fileInfo['tags']['id3v2']['artist'][0]
+                    ?? (!empty($_POST['artist'])
+                    ? filter_var(trim($_POST['artist']), FILTER_SANITIZE_SPECIAL_CHARS)
+                    : null
+                );
+
+                $album = $fileInfo['tags']['id3v2']['album'][0]
+                    ?? (!empty($_POST['album'])
+                    ? filter_var(trim($_POST['album']), FILTER_SANITIZE_SPECIAL_CHARS)
+                    : ''
+                );
+
+                $year = $fileInfo['tags']['id3v2']['year'][0]
+                    ?? (!empty($_POST['year'])
+                    ? (int) $_POST['year']
+                    : null
+                );
+
+                $trackNumber = $fileInfo['tags']['id3v2']['track_number'][0]
+                    ?? (!empty($_POST['trackNumber'])
+                    ? (int) $_POST['trackNumber']
+                    : 1
+                );
+
+                $track = new AlbumTrack($title, $audioFileName, $album, (int) $trackNumber);
+                if (!empty($artist)) $track->set('artist', $artist);
+                if ($year !== null) $track->set('year', (int) $year);
+                break;
+            }
+            case 'PodcastTrack' : {
+                $author = !empty($_POST['author'])
+                    ? filter_var(trim($_POST['author']), FILTER_SANITIZE_SPECIAL_CHARS)
+                    : ($fileInfo['tags']['id3v2']['artist'][0] ?? null);
+
+                $date = !empty($_POST['date']) ? trim($_POST['date']) : null;
+
+                $track = new PodcastTrack($title, $audioFileName);
+                if (!empty($author)) $track->set('author', $author);
+                if (!empty($date)) $track->set('date', $date);
+                break;
+            }
+            default : $error[] = ("Type de piste inconnu : $type");
         }
 
         if ($error != []) {
@@ -231,132 +280,18 @@ class AddTrackAction extends Action {
             HTML;
         }
 
-        $getID3 = new \getID3();
-        $fileInfo = $getID3->analyze($uploadFile);
-
-        $genre = $fileInfo['tags']['id3v2']['genre'][0]
-            ?? $fileInfo['tags']['id3v1']['genre'][0]
-            ?? null;
-        $titre = $fileInfo['tags']['id3v2']['title'][0]
-            ?? $fileInfo['tags']['id3v2']['title'][0]
-            ?? filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $duree = isset($fileInfo['playtime_seconds'])
-            ? (int) round($fileInfo['playtime_seconds'])
-            : 0;
-
-        $imagePath = null;
-        $imageDir = __DIR__ . '/../../../image';
-        if (!is_dir($imageDir)) {
-            mkdir($imageDir, 0777, true);
-        }
-
-        // Priorité à l'image des métadonnées ID3
-        if (!empty($fileInfo['comments']['picture'][0]['data'])) {
-            $picture = $fileInfo['comments']['picture'][0];
-            $typeImg = $picture['image_mime']
-                ?? 'image/jpeg';
-            $extension = ($typeImg === 'image/png') ? 'png' : 'jpg';
-
-            $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
-            if (file_put_contents($imageDir . '/' . $imageName, $picture['data']) !== false) {
-                $imagePath = $imageName;
-            }
-        } // fichier uploadé manuellement par l'utilisateur
-        elseif (isset($_FILES['coverfile']) && $_FILES['coverfile']['error'] === UPLOAD_ERR_OK) {
-            $extension = strtolower(pathinfo($_FILES['coverfile']['name'], PATHINFO_EXTENSION));
-            $allowedExts = ['jpg', 'jpeg', 'png', 'webp'];
-            if (in_array($extension, $allowedExts)) {
-                $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
-                if (move_uploaded_file($_FILES['coverfile']['tmp_name'], $imageDir . '/' . $imageName)) {
-                    $imagePath = $imageName;
-                }
-            }
-        }
-
-        $track = null;
-        switch ($_GET['type'] ?? '') {
-            case 'AlbumTrack' : {
-                $id3Artist = $fileInfo['tags']['id3v2']['artist'][0]
-                    ?? $fileInfo['tags']['id3v1']['artist'][0]
-                    ?? null;
-                $artist = (!empty($id3Artist) && trim($id3Artist) !== '')
-                    ? filter_var(trim($id3Artist), FILTER_SANITIZE_SPECIAL_CHARS)
-                    : filter_var(trim($_POST['artist'] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $id3Album = $fileInfo['tags']['id3v2']['album'][0]
-                    ?? $fileInfo['tags']['id3v1']['album'][0]
-                    ?? null;
-                $album = (!empty($id3Album) && trim($id3Album) !== '')
-                    ? filter_var(trim($id3Album), FILTER_SANITIZE_SPECIAL_CHARS)
-                    : filter_var(trim($_POST['album'] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $id3Year = $fileInfo['tags']['id3v2']['year'][0]
-                    ?? $fileInfo['tags']['id3v1']['year'][0]
-                    ?? null;
-                $year = null;
-                if (!empty($id3Year) && (int) $id3Year > 0) $year = (int) $id3Year;
-                elseif (!empty($_POST['year']) && (int) $_POST['year'] > 0) {
-                    $year = (int) filter_var($_POST['year'], FILTER_SANITIZE_NUMBER_INT);
-                }
-
-                $id3TrackNum = $fileInfo['tags']['id3v2']['track_number'][0]
-                    ?? null;
-                $trackNumber = 1;
-                if (!empty($id3TrackNum) && (int) $id3TrackNum > 0) $trackNumber = (int) $id3TrackNum;
-                elseif (!empty($_POST['trackNumber']) && (int) $_POST['trackNumber'] > 0) {
-                    $trackNumber = (int) filter_var($_POST['trackNumber'], FILTER_SANITIZE_NUMBER_INT);
-                }
-
-                $track = new AlbumTrack(
-                    $titre,
-                    $audioPath,
-                    $album,
-                    $trackNumber
-                );
-                if (!empty($artist)) $track->set('artist', $artist);
-                if ($year !== null) $track->set('year', $year);
-                break;
-            }
-            case 'PodcastTrack' : {
-                $id3Artist = $fileInfo['tags']['id3v2']['artist'][0]
-                    ?? $fileInfo['tags']['id3v1']['artist'][0]
-                    ?? null;
-                $author = (!empty($_POST['author']) && trim($_POST['author']) !== '')
-                    ? filter_var(trim($_POST['author']), FILTER_SANITIZE_SPECIAL_CHARS)
-                    : (!empty($id3Artist)
-                    ? filter_var(trim($id3Artist), FILTER_SANITIZE_SPECIAL_CHARS)
-                    : null
-                );
-
-                $date = (!empty($_POST['date']) && trim($_POST['date']) !== '')
-                    ? filter_var(trim($_POST['date']), FILTER_SANITIZE_SPECIAL_CHARS)
-                    : null;
-
-                $track = new PodcastTrack($titre, $audioPath);
-                if (!empty($author)) $track->set('author', $author);
-                if (!empty($date)) $track->set('date', $date);
-                break;
-            }
-            default : {
-                return <<<HTML
-                    <h1>Erreur</h1>
-                    <p>Le type de piste sélectionné est invalide.</p>
-                    <p><a class="btn btn-secondary" href="?action=add-track">Retour à l'ajout d'une piste</a></p>
-                HTML;
-            }
-        }
-
-        if ($duree > 0) $track->set('duration', $duree);
+        // Propriétés communes
+        if ($duration > 0) $track->set('duration', $duration);
         if (!empty($genre)) $track->set('genre', $genre);
-        if (!empty($imagePath)) $track->set('image', $imagePath);
+        if (!empty($imageName)) $track->set('image', $imageName);
 
         // Sauvegarde dans la playlist locale
         $_SESSION['playlist']->addPiste($track);
 
         // Sauvegarde dans le cloud
-        $r = DeefyRepository::getInstance();
-        $r->saveAudioTrack($track);
-        $r->addTrackToPlaylist($_SESSION['playlist']->id, $track->get('id'));
+        $w = DeefyRepository::getInstance();
+        $w->saveAudioTrack($track);
+        $w->addTrackToPlaylist($_SESSION['playlist']->id, $track->get('id'));
 
         $totalTracks = count($_SESSION['playlist']->tracks);
         $renderer = RendererFactory::getRenderer($track);
@@ -369,5 +304,57 @@ class AddTrackAction extends Action {
                 <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
             </p>
         HTML;
+    }
+
+    /**
+     * Enregistre le fichier MP3 téléversé dans le dossier audio.
+     */
+    private static function saveAudioFile(array $file) : ?string {
+        if (!is_dir(self::AUDIODIR)) {
+            mkdir(self::AUDIODIR, 0777, true);
+        }
+
+        $newName = uniqid('track_', true) . bin2hex(random_bytes(4)) . '.mp3';
+        $destination = self::AUDIODIR . '/' . $newName;
+
+        if (!move_uploaded_file($file['tmp_name'], $destination)) {
+            return null;
+        }
+
+        return $newName;
+    }
+
+    /**
+     * Enregistre l'image (priorité aux métadonnées ID3, sinon fichier téléversé) dans le dossier image.
+     */
+    private static function saveCoverImage(array $fileInfo, ?array $coverFile) : ?string {
+        if (!is_dir(self::IMAGEDIR)) {
+            mkdir(self::IMAGEDIR, 0777, true);
+        }
+
+        // 1. Priorité à la pochette incluse dans les métadonnées ID3 du MP3
+        if (!empty($fileInfo['comments']['picture'][0]['data'])) {
+            $picture = $fileInfo['comments']['picture'][0];
+            $typeImg = $picture['image_mime'] ?? 'image/jpeg';
+            $extension = ($typeImg === 'image/png') ? 'png' : 'jpg';
+
+            $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
+            if (file_put_contents(self::IMAGEDIR . '/' . $imageName, $picture['data']) !== false) {
+                return $imageName;
+            }
+        }
+
+        // 2. Fichier envoyé manuellement dans le formulaire
+        if ($coverFile && $coverFile['error'] === UPLOAD_ERR_OK) {
+            $extension = strtolower(pathinfo($coverFile['name'], PATHINFO_EXTENSION));
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
+                if (move_uploaded_file($coverFile['tmp_name'], self::IMAGEDIR . '/' . $imageName)) {
+                    return $imageName;
+                }
+            }
+        }
+
+        return null;
     }
 }
