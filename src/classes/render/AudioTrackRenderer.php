@@ -81,7 +81,7 @@ abstract class AudioTrackRenderer implements Renderer {
 
         return <<<HTML
             <div>
-                <div class="card shadow">
+                <div class="card shadow" style="height:100%">
                     {$imageHtml}
                     <div class="card-body d-flex flex-column justify-content-between p-3">
                         <div>
@@ -165,7 +165,8 @@ abstract class AudioTrackRenderer implements Renderer {
                     --media-accent-color: #0d6efd;
                     width: 100%;
                     max-width: 1500px;
-                    border-radius: 5px;
+                    border-radius: var(--bs-border-radius);
+                    border: 2px solid #dee2e6;
                     overflow: hidden;">
                     <audio
                         slot="media"

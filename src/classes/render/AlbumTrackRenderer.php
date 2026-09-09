@@ -19,9 +19,11 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
     protected function getBadge() : string {
-        $trackNumber = (int) $this->track->get("trackNumber");
+        $trackNumber = (int) $this->track->get('trackNumber');
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
-        return "<div>{$trackBadge}<span class=\"badge bg-secondary-subtle text-secondary border border-secondary-subtle\">Album</span></div>";
+        return <<<HTML
+            <div class="text-nowrap">{$trackBadge}<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Album</span></div>
+        HTML;
     }
 
     #[\Override]
