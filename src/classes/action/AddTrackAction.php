@@ -50,7 +50,11 @@ class AddTrackAction extends Action {
         $action = "";
         $content = "";
 
-        $retour = '<a class="btn btn-secondary" href="?action=add-track">Retour</a>';
+        $retour = <<<HTML
+            <p>
+                <a class="btn btn-light" href="?action=add-track">< Retour</a>
+            </p>
+        HTML;
         $require = '<span style="color: red;">*</span>';
         switch ($_GET['type']) {
             case 'AlbumTrack' : {
