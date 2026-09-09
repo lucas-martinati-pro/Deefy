@@ -33,4 +33,22 @@ class Authz {
 
         return in_array($idPlaylist, $listPlaylistId);
     }
+
+    public static function checkTrackOwner(int $idTrack) : bool {
+        $user = [];
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthnException $e) {
+            return false;
+        }
+
+        if ((int) $user['role'] === 100) return true;
+
+        $r = DeefyRepository::getInstance();
+        $listTrackId = $r->findTracksIdsByUserId((int) $user['id']);
+
+        if (!$listTrackId) return false;
+
+        return in_array($idTrack, $listTrackId);
+    }
 }

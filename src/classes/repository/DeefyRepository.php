@@ -7,9 +7,6 @@ use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 
-// $r = DeefyRepository::getInstance();
-// $pl = $r->findPlaylistById( $id );
-
 class DeefyRepository {
     private \PDO $pdo;
     private static ?DeefyRepository $instance = null;
@@ -46,11 +43,10 @@ class DeefyRepository {
      * @return Playlist[]
      */
     public function findAllPlaylists() : array {
-        $query = <<<SQL
+        $stmt = $this->pdo->prepare(<<<SQL
             SELECT *
             FROM playlist;
-        SQL;
-        $stmt = $this->pdo->prepare($query);
+        SQL);
         $stmt->execute();
         // fetchAll pour récupéré toutes les lignes et le \PDO::FETCH_ASSOC sert à indexés par le nom des colonnes
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -74,6 +70,45 @@ class DeefyRepository {
 
         if (!$res) return null;
 
+        return $this->rowToTrack($res);
+    }
+
+    public function findPlaylistById(int $idPlaylist) : ?Playlist {
+        $stmtPlaylist = $this->pdo->prepare(<<<SQL
+            SELECT *
+            FROM playlist
+            WHERE id = :id;
+        SQL);
+        $stmtPlaylist->execute(['id' => $idPlaylist]);
+        $res = $stmtPlaylist->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$res) return null;
+
+        $stmtTracks = $this->pdo->prepare(<<<SQL
+            SELECT track.*
+            FROM track
+            INNER JOIN playlist2track ON playlist2track.id_track = track.id
+            WHERE playlist2track.id_pl = :idPlaylist
+            ORDER BY playlist2track.no_piste_dans_liste;
+        SQL);
+        $stmtTracks->execute(['idPlaylist' => $idPlaylist]);
+        $rows = $stmtTracks->fetchAll(\PDO::FETCH_ASSOC);
+
+        $tracks = [];
+        foreach ($rows as $row) {
+            $tracks[] = $this->rowToTrack($row);
+        }
+
+        $playlist = new Playlist($res['nom'], $tracks);
+        $playlist->set('id', (int) $res['id']);
+
+        return $playlist;
+    }
+
+    /**
+     * Créer un objet AudioTrack (AlbumTrack ou PodcastTrack) à partir d'une ligne SQL
+     */
+    private function rowToTrack(array $res) : AudioTrack {
         if ($res['type'] === 'A') {
             $track = new AlbumTrack(
                 $res['titre'],
@@ -110,49 +145,17 @@ class DeefyRepository {
         return $track;
     }
 
-    public function findPlaylistById(int $idPlaylist) : ?Playlist {
-        $stmtPlaylist = $this->pdo->prepare(<<<SQL
-            SELECT *
-            FROM playlist
-            WHERE id = :id;
-        SQL);
-        $stmtPlaylist->execute(['id' => $idPlaylist]);
-        $res = $stmtPlaylist->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$res) return null;
-
-        $stmtTracks = $this->pdo->prepare(<<<SQL
-            SELECT track.*
-            FROM track
-            INNER JOIN playlist2track ON track.id = playlist2track.id_track
-            WHERE playlist2track.id_pl = :idPlaylist
-            ORDER BY playlist2track.no_piste_dans_liste;
-        SQL);
-        $stmtTracks->execute(['idPlaylist' => $idPlaylist]);
-        $rows = $stmtTracks->fetchAll(\PDO::FETCH_ASSOC);
-
-        $tracks = [];
-        foreach ($rows as $row) {
-            $track = $this->findTrackById((int) $row['id']);
-            if ($track !== null) {
-                $tracks[] = $track;
-            }
-        }
-
-        $playlist = new Playlist($res['nom'], $tracks);
-        $playlist->set('id', (int) $res['id']);
-
-        return $playlist;
-    }
-
-    public function findPlaylistsIdsByUserId(int $id) : array {
+    /**
+     * @return int[]
+     */
+    public function findPlaylistsIdsByUserId(int $idUser) : array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id_pl
-            from user2playlist
-            where id_user = :id
+            FROM user2playlist
+            WHERE id_user = :id
         SQL);
 
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $idUser]);
 
         // FETCH_COLUMN pour récupérer directement la liste des identifiants de playlists
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
@@ -173,6 +176,46 @@ class DeefyRepository {
         }
 
         return $playlists;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function findTracksIdsByUserId(int $idUser) : array {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT track.id
+            FROM track
+            INNER JOIN playlist2track ON playlist2track.id_track = track.id
+            INNER JOIN user2playlist ON user2playlist.id_pl = playlist2track.id_pl
+            WHERE id_user = :id
+        SQL);
+
+        $stmt->execute(['id' => $idUser]);
+
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * @return AudioTrack[]
+     */
+    public function findTracksbyUserId(int $idUser) : array {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT track.*
+            FROM track
+            INNER JOIN playlist2track ON playlist2track.id_track = track.id
+            INNER JOIN user2playlist ON user2playlist.id_pl = playlist2track.id_pl
+            WHERE user2playlist.id_user = :id
+        SQL);
+
+        $stmt->execute(['id' => $idUser]);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $tracks = [];
+        foreach ($rows as $row) {
+            $tracks[] = $this->rowToTrack($row);
+        }
+
+        return $tracks;
     }
 
     /**============================================
@@ -215,8 +258,10 @@ class DeefyRepository {
      *=============================================**/
 
     public function saveEmptyPlaylist(Playlist $playlist) : Playlist {
-        $query = "INSERT INTO playlist (nom) VALUES (:name)";
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo->prepare(<<<SQL
+            INSERT INTO playlist (nom)
+            VALUES (:name)
+        SQL);
         $stmt->execute(['name' => $playlist->name]);
         $playlist->set('id', $this->pdo->lastInsertId());
         return $playlist;
@@ -262,7 +307,7 @@ class DeefyRepository {
             $date = (!empty($dateVal) && trim($dateVal) !== '') ? trim($dateVal) : null;
         }
 
-        $query = <<<SQL
+        $stmt = $this->pdo->prepare(<<<SQL
             INSERT INTO track (
                 titre, genre, duree, filename, type, image,
                 artiste_album, titre_album, annee_album, numero_album,
@@ -272,9 +317,7 @@ class DeefyRepository {
                 :artist, :album, :year, :trackNumber,
                 :author, :date
             )
-        SQL;
-
-        $stmt = $this->pdo->prepare($query);
+        SQL);
         $stmt->execute([
             'title' => $track->get('title'),
             'genre' => $genre,
@@ -294,10 +337,6 @@ class DeefyRepository {
         return $track;
     }
 
-    public function savePodcastTrack(PodcastTrack $track) : PodcastTrack {
-        return $this->saveAudioTrack($track);
-    }
-
     public function addTrackToPlaylist(int $idPlaylist, int $idTrack) : void {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT COALESCE(MAX(no_piste_dans_liste), 0) + 1
@@ -309,32 +348,39 @@ class DeefyRepository {
 
         $noPiste = $stmt->fetchColumn();
 
-        $query = "INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste) VALUES (:idPlaylist, :idTrack, :noPiste)";
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo->prepare(<<<SQL
+            INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste)
+            VALUES (:idPlaylist, :idTrack, :noPiste)
+        SQL);
         $stmt->execute(['idPlaylist' => $idPlaylist, 'idTrack' => $idTrack, 'noPiste' => $noPiste]);
     }
 
     public function savePlaylist2User(int $idUser, int $idPlaylist) : void {
-        $stmt = $this->pdo->prepare(<<< SQL
-            SELECT 1
-            FROM User
-            where id = :id
+        // Le IGNGORE INTO pour ignorer si le track est déjà présent dans la playlist (doublon)
+        $stmt = $this->pdo->prepare(<<<SQL
+            INSERT IGNORE INTO user2playlist (id_user, id_pl)
+            VALUES (:idUser, :idPlaylist)
         SQL);
-        $stmt->execute(['id' => $idUser]);
-        if (!$stmt->fetch()) return;
+        $stmt->execute([
+            'idUser' => $idUser,
+            'idPlaylist' => $idPlaylist
+        ]);
+    }
 
-        $stmt = $this->pdo->prepare(<<< SQL
-            SELECT 1
-            FROM playlist
-            where id = :id
+    public function deleteTrackById(int $idTrack) : void {
+        // Supprimer les références de ce morceau dans toutes les playlists
+        $stmt1 = $this->pdo->prepare(<<<SQL
+            DELETE FROM playlist2track
+            WHERE id_track = :idTrack
         SQL);
-        $stmt->execute(['id' => $idPlaylist]);
-        if (!$stmt->fetch()) return;
+        $stmt1->execute(['idTrack' => $idTrack]);
 
-        $stmt = $this->pdo->prepare(<<< SQL
-            INSERT INTO user2playlist (id_user, id_pl) VALUES (:idUser, :idPlaylist)
+        // Supprimer la piste dans la table track
+        $stmt2 = $this->pdo->prepare(<<<SQL
+            DELETE FROM track
+            WHERE id = :idTrack
         SQL);
-        $stmt->execute(['idUser' => $idUser, 'idPlaylist' => $idPlaylist]);
+        $stmt2->execute(['idTrack' => $idTrack]);
     }
 
     /**============================================

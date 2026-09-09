@@ -36,11 +36,15 @@ class AddTrackAction extends Action {
             return <<<HTML
                 <h2>Choisir le type de piste à ajouter</h2>
                 <div class="list-group mb-3" style="max-width: 450px;">
-                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action">
-                        Ajouter un Podcast à ma playlist
-                    </a>
                     <a href="?action=add-track&type=AlbumTrack" class="list-group-item list-group-item-action">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
+                        <i class="bi bi-vinyl-fill"></i>
                         Ajouter un Album à ma playlist
+                    </a>
+                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/mic-fill/ -->
+                         <i class="bi bi-mic-fill"></i>
+                        Ajouter un Podcast à ma playlist
                     </a>
                 </div>
                 <p>

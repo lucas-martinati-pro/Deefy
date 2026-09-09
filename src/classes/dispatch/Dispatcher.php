@@ -4,6 +4,7 @@ namespace iutnc\deefy\dispatch;
 
 use iutnc\deefy\action\AddPlaylistAction;
 use iutnc\deefy\action\AddTrackAction;
+use iutnc\deefy\action\DeleteTrackAction;
 use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
@@ -26,6 +27,7 @@ class Dispatcher {
             "display-playlist" => (new DisplayPlaylistAction())(),
             "add-playlist" => (new AddPlaylistAction())(),
             "add-track" => (new AddTrackAction())(),
+            "delete-track" => (new DeleteTrackAction())(),
             "register" => (new RegisterAction())(),
             "signin" => (new SigninAction())(),
             "signout" => (new SignoutAction())(),
@@ -56,6 +58,8 @@ class Dispatcher {
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-circle/ -->
+                    <i class="bi bi-person-circle"></i>
                     <span class="navbar-text small text-muted me-2">{$user['email']}</span>
                     <a class="btn btn-outline-danger btn-sm" href="?action=signout">Déconnexion</a>
                 </div>
@@ -102,8 +106,10 @@ class Dispatcher {
                     <meta charset="utf-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1">
                     <link href="../style/style.css" rel="stylesheet">
-                    <!-- Script pour Bootstrap -->
+                    <!-- css pour Bootstrap -->
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+                    <!-- css pour les icônes Boostrap -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
                 </head>

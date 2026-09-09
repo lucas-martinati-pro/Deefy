@@ -53,7 +53,7 @@ class AuthnProvider {
     }
 
     public static function getSignedInUser() : array {
-        if (!isset($_SESSION['user'])) {
+        if (!isset($_SESSION['user']) || !isset(unserialize($_SESSION['user'])['id'])) {
             throw new AuthnException("Vous devez être connecté pour accéder à cette page.");
         }
 

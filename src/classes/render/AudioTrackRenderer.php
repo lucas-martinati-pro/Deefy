@@ -67,17 +67,17 @@ abstract class AudioTrackRenderer implements Renderer {
             $imageHtml = <<<HTML
                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-secondary border-bottom" style="height: 180px;">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
-                        <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
-                        <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
-                        <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
-                    </svg>
+                    <i class="bi bi-music-note-beamed  fs-1"></i>
                 </div>
             HTML;
         }
 
         $badge = $this->getBadge();
         $subtitle = $this->getSubtitle();
+        $deleteBtn = $this->renderDeleteButton();
+        $deleteBtnHtml = !empty($deleteBtn)
+        ? "<div class=\"mt-2 text-end\">{$deleteBtn}</div>"
+        : '';
 
         return <<<HTML
             <div>
@@ -96,6 +96,7 @@ abstract class AudioTrackRenderer implements Renderer {
                         </div>
                         <div class="mt-auto pt-2">
                             {$this->renderAudioPlayer(Renderer::COMPACT)}
+                            {$deleteBtnHtml}
                         </div>
                     </div>
                 </div>
@@ -126,6 +127,7 @@ abstract class AudioTrackRenderer implements Renderer {
 
         $badge = $this->getBadge();
         $subtitle = $this->getSubtitle();
+        $deleteBtn = $this->renderDeleteButton();
 
         return <<<HTML
             <li class="list-group-item p-0 border-0 mb-3 bg-transparent">
@@ -137,7 +139,10 @@ abstract class AudioTrackRenderer implements Renderer {
                                 <div>
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
                                         <h5 class="card-title fw-bold mb-0">{$this->track->get("title")}</h5>
-                                        {$badge}
+                                        <div class="d-flex align-items-center gap-2">
+                                            {$badge}
+                                            {$deleteBtn}
+                                        </div>
                                     </div>
                                     <h6 class="card-subtitle text-muted mb-2">
                                         {$subtitle}
@@ -152,6 +157,24 @@ abstract class AudioTrackRenderer implements Renderer {
                     </div>
                 </div>
             </li>
+        HTML;
+    }
+
+    /**
+     * Bouton de suppression de la piste
+     */
+    protected function renderDeleteButton() : string {
+        $idTrack = $this->track->get('id');
+        if (empty($idTrack)) {
+            return '';
+        }
+
+        return <<<HTML
+            <a href="?action=delete-track&id={$idTrack}" class="btn btn-sm btn-outline-danger">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
+                <i class="bi bi-trash-fill"></i>
+                Supprimer
+            </a>
         HTML;
     }
 
