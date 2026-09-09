@@ -77,17 +77,20 @@ class Dispatcher {
         $player = "";
         if (isset($_SESSION['playlist'])) {
             $r = \iutnc\deefy\repository\DeefyRepository::getInstance();
-            $audioTrack = $r->findTrackById('1');
-            if ($audioTrack != null) {
-                $player = <<<HTML
-                    <media-theme-tailwind-audio class="audio-footer">
-                        <audio
-                            slot="media"
-                            src="../audio/{$audioTrack->get("filename")}"
-                            crossorigin="anonymous"
-                        ></audio>
-                    </media-theme-tailwind-audio>
-                HTML;
+            $track = $_SESSION['playlist']->tracks;
+            if (!empty($track)) {
+                $audioTrack = $track[0];
+                if ($audioTrack != null) {
+                    $player = <<<HTML
+                        <media-theme-tailwind-audio class="audio-footer">
+                            <audio
+                                slot="media"
+                                src="../audio/{$audioTrack->get("filename")}"
+                                crossorigin="anonymous"
+                            ></audio>
+                        </media-theme-tailwind-audio>
+                    HTML;
+                }
             }
         }
 
