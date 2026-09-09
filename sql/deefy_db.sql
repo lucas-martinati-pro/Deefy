@@ -41,15 +41,15 @@ CREATE TABLE `track` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `track` (`id`, `titre`, `genre`, `duree`, `filename`, `type`, `image`, `artiste_album`, `titre_album`, `annee_album`, `numero_album`, `auteur_podcast`, `date_podcast`) VALUES
-(1,	'BARBE NOIRE',	'Hardcore',	153,	'BARBE NOIRE.mp3',	'A',	'cover_barbe_noire.jpg',	'VIELUSOS',	'BARBE NOIRE',	2024,	1,	NULL,	NULL),
-(2,	'Influenceur (Hard Version)',	'Frenchcore',	220,	'Influenceur (Hard Version).mp3',	'A',	'cover_influenceur_hard_version.jpg',	'Dr. Peacock, ascendant vierge',	'Influenceur',	2025,	2,	NULL,	NULL),
-(3,	'Kino Der Toten',	'Hardcore',	181,	'Kino Der Toten.mp3',	'A',	'cover_kino_der_toten.jpg',	'VIELUSOS',	'Kino Der Toten',	2024,	3,	NULL,	NULL),
+(1,	'BARBE NOIRE',	'Hardcore',	153,	'BARBE_NOIRE.mp3',	'A',	'cover_barbe_noire.jpg',	'VIELUSOS',	'BARBE NOIRE',	2024,	1,	NULL,	NULL),
+(2,	'Influenceur (Hard Version)',	'Frenchcore',	220,	'Influenceur_Hard_Version.mp3',	'A',	'cover_influenceur_hard_version.jpg',	'Dr. Peacock, ascendant vierge',	'Influenceur',	2025,	2,	NULL,	NULL),
+(3,	'Kino Der Toten',	'Hardcore',	181,	'Kino_Der_Toten.mp3',	'A',	'cover_kino_der_toten.jpg',	'VIELUSOS',	'Kino Der Toten',	2024,	3,	NULL,	NULL),
 (4,	'LOUDERRR',	'Hardstyle',	283,	'LOUDERRR.mp3',	'A',	'cover_louderrr.jpg',	'RAGETRAIN',	'LOUDERRR',	2025,	4,	NULL,	NULL),
-(5,	'La Strasbourgeoise',	'Frenchcore',	286,	'La Strasbourgeoise.mp3',	'A',	'cover_la_strasbourgeoise.jpg',	'Vernex, Toxic Twins, Stirex',	'La Strasbourgeoise',	2026,	5,	NULL,	NULL),
+(5,	'La Strasbourgeoise',	'Frenchcore',	286,	'La_Strasbourgeoise.mp3',	'A',	'cover_la_strasbourgeoise.jpg',	'Vernex, Toxic Twins, Stirex',	'La Strasbourgeoise',	2026,	5,	NULL,	NULL),
 (6,	'MONGOL',	'Hardcore',	155,	'MONGOL.mp3',	'A',	'cover_mongol.jpg',	'vernex',	'MONGOL',	2024,	6,	NULL,	NULL),
-(7,	'Mexico en Janvier (Lushe Remix)',	'Remix',	123,	'Mexico en Janvier (Lushe Remix).mp3',	'A',	'cover_mexico_en_janvier_lushe_remix.jpg',	'Lushe, Bigflo & Oli',	'Mexico en Janvier',	2025,	7,	NULL,	NULL),
-(8,	'Pennywise (Deadly Guns Remix)',	'Hardcore',	152,	'Pennywise (Deadly Guns Remix).mp3',	'A',	'cover_pennywise_deadly_guns_remix.jpg',	'Angerfist, Deadly Guns',	'Pennywise',	2024,	8,	NULL,	NULL),
-(9,	'Aria (Hard Techno Edit)',	'Hard Techno',	274,	'Aria (Hard Techno Edit).mp3',	'A',	'cover_aria_hard_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES',	'Aria (Hard Techno Edit)',	2025,	9,	NULL,	NULL);
+(7,	'Mexico en Janvier (Lushe Remix)',	'Remix',	123,	'Mexico_en_Janvier_Lushe_Remix.mp3',	'A',	'cover_mexico_en_janvier_lushe_remix.jpg',	'Lushe, Bigflo & Oli',	'Mexico en Janvier',	2025,	7,	NULL,	NULL),
+(8,	'Pennywise (Deadly Guns Remix)',	'Hardcore',	152,	'Pennywise_Deadly_Guns_Remix.mp3',	'A',	'cover_pennywise_deadly_guns_remix.jpg',	'Angerfist, Deadly Guns',	'Pennywise',	2024,	8,	NULL,	NULL),
+(9,	'Aria (Hard Techno Edit)',	'Hard Techno',	274,	'Aria_Hard_Techno_Edit.mp3',	'A',	'cover_aria_hard_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES',	'Aria (Hard Techno Edit)',	2025,	9,	NULL,	NULL);
 
 CREATE TABLE `User` (
     `id` int(11) NOT NULL AUTO_INCREMENT,

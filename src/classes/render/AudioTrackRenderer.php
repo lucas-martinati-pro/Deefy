@@ -61,7 +61,7 @@ abstract class AudioTrackRenderer implements Renderer {
         $imageHtml = '';
         if ($hasImage) {
             $imageHtml = <<<HTML
-                <img src="../image/{$this->track->get('image')}" class="card-img-top object-fit-cover" style="height: 180px;">
+                <img src="../image/{$this->track->get('image')}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->get('title')}">
             HTML;
         } else {
             $imageHtml = <<<HTML
@@ -120,7 +120,7 @@ abstract class AudioTrackRenderer implements Renderer {
         if ($hasImage) {
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <img src="../image/{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;">
+                    <img src="../image/{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}>
                 </div>
             HTML;
             $colContent = 'col-md-9 col-lg-10';
