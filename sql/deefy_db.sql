@@ -18,10 +18,10 @@ CREATE TABLE `playlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `playlist` (`id`, `nom`) VALUES
-(1,	'Best of rock'),
-(2,	'Musique classique'),
-(3,	'Best of country music'),
-(4,	'Best of Elvis Presley');
+(1,	'Hardcore & Frenchcore'),
+(2,	'Hardstyle & Uptempo'),
+(3,	'Frenchcore & Soirée'),
+(4,	'Remixes & Bootlegs');
 
 CREATE TABLE `track` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,8 +31,8 @@ CREATE TABLE `track` (
     `filename` varchar(100) DEFAULT NULL,
     `type` varchar(30) DEFAULT NULL,
     `image` VARCHAR(255) DEFAULT NULL,
-    `artiste_album` varchar(30) DEFAULT NULL,
-    `titre_album` varchar(30) DEFAULT NULL,
+    `artiste_album` varchar(100) DEFAULT NULL,
+    `titre_album` varchar(100) DEFAULT NULL,
     `annee_album` int(4) DEFAULT NULL,
     `numero_album` int(11) DEFAULT NULL,
     `auteur_podcast` varchar(100) DEFAULT NULL,
@@ -40,16 +40,16 @@ CREATE TABLE `track` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `track` (`id`, `titre`, `genre`, `duree`, `filename`, `type`, `artiste_album`, `titre_album`, `annee_album`, `numero_album`, `auteur_podcast`, `date_podcast`) VALUES
-(1,	'Wish You Were Here',	'rock',	334,	'pink_wish.mp3',	'A',	'Pink Floyd',	'Wish You Were Here',	1975,	1,	NULL,	NULL),
-(2,	'Samba Pati',	'rock',	300,	'santana_abra.mp3',	'A',	'Santana',	'Abraxas',	1970,	1,	NULL,	NULL),
-(3,	'Danube Bleu',	'musique classique',	300,	'straus_danube.mp3',	'A',	'Johann Strauss',	'Valses',	2000,	1,	NULL,	NULL),
-(4,	'Lettre à Elise',	'musique classique',	400,	'beethoven_elise.mp3',	'A',	'Beethoven',	'Piano',	1966,	1,	NULL,	NULL),
-(5,	'Annie song',	'country',	200,	'denver_annie.mp3',	'A',	'John Denver',	'Best of J. Denver',	2001,	1,	NULL,	NULL),
-(6,	'Tequila sunrise',	'country',	300,	'eagles_teq.mp3',	'A',	'Eagles',	'Best of Eagles',	2007,	1,	NULL,	NULL),
-(7,	'In the ghetto',	'country',	200,	'elvis_annie.mp3',	'A',	'Elvis Presley',	'Best of E. Presley',	2002,	1,	NULL,	NULL),
-(8,	'La vie des papillons',	'docu',	200,	'papillons.mp3',	'P',	NULL,	NULL,	NULL,	NULL,	'Bolo',	'2004-10-12'),
-(9,	'La vie des libellules','docu',	200,	'libellules.mp3',	'P',	NULL,	NULL,	NULL,	NULL,	'Bolo',	'2004-10-12');
+INSERT INTO `track` (`id`, `titre`, `genre`, `duree`, `filename`, `type`, `image`, `artiste_album`, `titre_album`, `annee_album`, `numero_album`, `auteur_podcast`, `date_podcast`) VALUES
+(1,	'BARBE NOIRE',	'Hardcore',	153,	'BARBE NOIRE.mp3',	'A',	'cover_barbe_noire.jpg',	'VIELUSOS',	'BARBE NOIRE',	2024,	1,	NULL,	NULL),
+(2,	'Influenceur (Hard Version)',	'Frenchcore',	220,	'Influenceur (Hard Version).mp3',	'A',	'cover_influenceur_hard_version.jpg',	'Dr. Peacock, ascendant vierge',	'Influenceur',	2025,	2,	NULL,	NULL),
+(3,	'Kino Der Toten',	'Hardcore',	181,	'Kino Der Toten.mp3',	'A',	'cover_kino_der_toten.jpg',	'VIELUSOS',	'Kino Der Toten',	2024,	3,	NULL,	NULL),
+(4,	'LOUDERRR',	'Hardstyle',	283,	'LOUDERRR.mp3',	'A',	'cover_louderrr.jpg',	'RAGETRAIN',	'LOUDERRR',	2025,	4,	NULL,	NULL),
+(5,	'La Strasbourgeoise',	'Frenchcore',	286,	'La Strasbourgeoise.mp3',	'A',	'cover_la_strasbourgeoise.jpg',	'Vernex, Toxic Twins, Stirex',	'La Strasbourgeoise',	2026,	5,	NULL,	NULL),
+(6,	'MONGOL',	'Hardcore',	155,	'MONGOL.mp3',	'A',	'cover_mongol.jpg',	'vernex',	'MONGOL',	2024,	6,	NULL,	NULL),
+(7,	'Mexico en Janvier (Lushe Remix)',	'Remix',	123,	'Mexico en Janvier (Lushe Remix).mp3',	'A',	'cover_mexico_en_janvier_lushe_remix.jpg',	'Lushe, Bigflo & Oli',	'Mexico en Janvier',	2025,	7,	NULL,	NULL),
+(8,	'Pennywise (Deadly Guns Remix)',	'Hardcore',	152,	'Pennywise (Deadly Guns Remix).mp3',	'A',	'cover_pennywise_deadly_guns_remix.jpg',	'Angerfist, Deadly Guns',	'Pennywise',	2024,	8,	NULL,	NULL),
+(9,	'Aria (Hard Techno Edit)',	'Hard Techno',	274,	'Aria (Hard Techno Edit).mp3',	'A',	'cover_aria_hard_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES',	'Aria (Hard Techno Edit)',	2025,	9,	NULL,	NULL);
 
 CREATE TABLE `User` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,6 +74,7 @@ INSERT INTO `playlist2track` (`id_pl`, `id_track`, `no_piste_dans_liste`) VALUES
     (1,	2,	2),
     (2,	3,	1),
     (2,	4,	2),
+    (2,	9,	3),
     (3,	5,	1),
     (3,	6,	2),
     (4,	7,	1),
