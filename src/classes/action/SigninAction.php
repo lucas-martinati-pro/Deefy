@@ -7,15 +7,16 @@ use iutnc\deefy\exception\AuthnException;
 
 class SigninAction extends Action {
     public function get() : string {
+        $require = '<span class="text-danger">*</span>';
         return <<<HTML
         <form method="post" action="?action=signin" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="email" class="form-label">Adresse mail<span style="color: red;">*</span></label>
+                <label for="email" class="form-label">Adresse mail$require</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" aria-describedby="emailHelp" required>
                 <div id="emailHelp" class="form-text">Saisissez l'adresse e-mail associée à votre compte Deefy.</div>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe<span style="color: red;">*</span></label>
+                <label for="password" class="form-label">Mot de passe$require</label>
                 <input type="password" name="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
                 <div id="passwordHelp" class="form-text">Saisissez le mot de passe associé à votre compte.</div>
             </div>

@@ -145,7 +145,7 @@ abstract class AudioTrackRenderer implements Renderer {
                                     {$infosHtml}
                                 </div>
                                 <div class="mt-auto">
-                                    {$this->renderAudioPlayer(Renderer::COMPACT)}
+                                    {$this->renderAudioPlayer(Renderer::LONG)}
                                 </div>
                             </div>
                         </div>
@@ -158,16 +158,7 @@ abstract class AudioTrackRenderer implements Renderer {
     protected function renderAudioPlayer(int $selector) : string {
         if ($selector === Renderer::COMPACT) {
             return <<<HTML
-                <media-theme-tailwind-audio
-                    style="
-                    --media-primary-color: #212529;
-                    --media-secondary-color: #f8f9fa;
-                    --media-accent-color: #0d6efd;
-                    width: 100%;
-                    max-width: 1500px;
-                    border-radius: var(--bs-border-radius);
-                    border: 2px solid #dee2e6;
-                    overflow: hidden;">
+                <media-theme-tailwind-audio class="audio-compact">
                     <audio
                         slot="media"
                         src="../audio/{$this->track->get("filename")}"
@@ -176,16 +167,7 @@ abstract class AudioTrackRenderer implements Renderer {
                 </media-theme-tailwind-audio>
             HTML;
         } else return <<<HTML
-            <media-theme-tailwind-audio
-                style="
-                --media-primary-color: #212529;
-                --media-secondary-color: #f8f9fa;
-                --media-accent-color: #0d6efd;
-                width: 100%;
-                max-width: 700px;
-                border-radius: 12px;
-                border: 2px solid #dee2e6;
-                overflow: hidden;">
+            <media-theme-tailwind-audio class="audio-long">
                 <audio
                     slot="media"
                     src="../audio/{$this->track->get("filename")}"

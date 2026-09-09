@@ -57,7 +57,7 @@ class AddTrackAction extends Action {
                 <a class="btn btn-light" href="?action=add-track">< Retour</a>
             </p>
         HTML;
-        $require = '<span style="color: red;">*</span>';
+        $require = '<span class="text-danger">*</span>';
         switch ($_GET['type']) {
             case 'AlbumTrack' : {
                 $action = "?action=add-track&type=AlbumTrack";

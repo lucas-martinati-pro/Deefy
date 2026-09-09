@@ -25,7 +25,7 @@ class AddPlaylistAction extends Action {
         return <<<HTML
             <form method="post" action="?action=add-playlist">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Nom de la playlist<span style="color: red;">*</span></label>
+                    <label for="title" class="form-label">Nom de la playlist<span class="text-danger">*</span></label>
                     <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Mes favoris" aria-describedby="titleHelp" required>
                     <div id="titleHelp" class="form-text">Choisissez un nom pour votre nouvelle playlist.</div>
                 </div>

@@ -9,15 +9,16 @@ class RegisterAction extends Action {
 
     #[\Override]
     public function get() : string {
+        $require = '<span class="text-danger">*</span>';
         return <<<HTML
         <form method="post" action="?action=register" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="email" class="form-label">Adresse mail<span style="color: red;">*</span></label>
+                <label for="email" class="form-label">Adresse mail$require</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" aria-describedby="emailHelp" required>
                 <div id="emailHelp" class="form-text">Votre adresse e-mail servira d'identifiant de connexion.</div>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe<span style="color: red;">*</span></label>
+                <label for="password" class="form-label">Mot de passe$require</label>
                 <input type="password" name="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
                 <div id="passwordHelp" class="form-text">
                     Le mot de passe doit contenir au moins 10 caractères et comporter :
@@ -30,7 +31,7 @@ class RegisterAction extends Action {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="password-double" class="form-label">Confirmation du mot de passe<span style="color: red;">*</span></label>
+                <label for="password-double" class="form-label">Confirmation du mot de passe$require</label>
                 <input type="password" name="password-double" class="form-control" id="password-double" aria-describedby="passwordDoubleHelp" required>
                 <div id="passwordDoubleHelp" class="form-text">Ressaisissez votre mot de passe à l'identique.</div>
             </div>

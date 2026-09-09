@@ -1,16 +1,16 @@
 <?php
+
+use iutnc\deefy\dispatch\Dispatcher;
+use iutnc\deefy\repository\DeefyRepository;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use iutnc\deefy\dispatch\Dispatcher;
-
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 session_start();
 
-iutnc\deefy\repository\DeefyRepository::setConfig('config/deefy.db.ini');
+DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
 
 $dispacher = new Dispatcher($_GET['action'] ?? 'default');
-
 $dispacher->run();
