@@ -3,6 +3,7 @@
 namespace iutnc\deefy\dispatch;
 
 use iutnc\deefy\action\AddPlaylistAction;
+use iutnc\deefy\action\DeletePlaylistAction;
 use iutnc\deefy\action\AddTrackAction;
 use iutnc\deefy\action\DeleteTrackAction;
 use iutnc\deefy\action\DefaultAction;
@@ -28,6 +29,7 @@ class Dispatcher {
             "playlists" => (new PlaylistsAction())(),
             "display-playlist" => (new DisplayPlaylistAction())(),
             "add-playlist" => (new AddPlaylistAction())(),
+            "delete-playlist" => (new DeletePlaylistAction())(),
             "add-track" => (new AddTrackAction())(),
             "delete-track" => (new DeleteTrackAction())(),
             "register" => (new RegisterAction())(),

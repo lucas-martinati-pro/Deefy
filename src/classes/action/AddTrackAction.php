@@ -211,8 +211,31 @@ class AddTrackAction extends Action {
         }
 
         // 1. Enregistrement du fichier audio MP3
-        $audioFileName = self::saveAudioFile($_FILES['userfile']);
-        if (!$audioFileName) $error[] = "Erreur lors de l'envoi du fichier audio.";
+        $uploadError = null;
+        $audioFileName = self::saveAudioFile($_FILES['userfile'], $uploadError);
+        if (!$audioFileName) {
+            $error[] = $uploadError ?? "Erreur lors de l'envoi du fichier audio.";
+        }
+
+        if ($error != []) {
+            $errorList = '';
+            foreach ($error as $message) {
+                $errorList .= "<li>{$message}</li>";
+            }
+
+            return <<<HTML
+                <h1>Erreur dans le formulaire</h1>
+                <div class="alert alert-danger" role="alert">
+                    <ul class="mb-0 ps-3">{$errorList}</ul>
+                </div>
+                <p>
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-track">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
+                    </a>
+                </p>
+            HTML;
+        }
 
         // Analyse des métadonnées ID3
         $getID3 = new \getID3();
@@ -319,7 +342,14 @@ class AddTrackAction extends Action {
         $renderer = RendererFactory::getRenderer($track);
         $renderTrack = $renderer ? $renderer->render(Renderer::LONG) : '';
         return <<<HTML
-            <p>La piste {$renderTrack} a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
+            <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Piste ajoutée avec succès
+            </h1>
+            <p>La piste a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
+            <div class="my-3">
+                {$renderTrack}
+            </div>
             <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
             <p>
                 <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
@@ -337,15 +367,43 @@ class AddTrackAction extends Action {
     /**
      * Enregistre le fichier MP3 téléversé dans le dossier audio.
      */
-    private static function saveAudioFile(array $file) : ?string {
+    private static function saveAudioFile(array $file, ?string &$uploadError = null) : ?string {
+        if (!isset($file['error'])) {
+            $uploadError = "Aucun fichier audio n'a été reçu.";
+            return null;
+        }
+
+        switch ($file['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                $maxSize = ini_get('upload_max_filesize');
+                $uploadError = "Le fichier audio est trop volumineux (limite serveur : {$maxSize}).";
+                return null;
+            case UPLOAD_ERR_PARTIAL:
+                $uploadError = "Le fichier n'a été que partiellement téléversé.";
+                return null;
+            case UPLOAD_ERR_NO_FILE:
+                $uploadError = "Veuillez sélectionner un fichier audio MP3.";
+                return null;
+            default:
+                $uploadError = "Erreur lors du téléversement du fichier (code {$file['error']}).";
+                return null;
+        }
+
         if (!is_dir(self::AUDIODIR)) {
-            mkdir(self::AUDIODIR, 0777, true);
+            if (!mkdir(self::AUDIODIR, 0777, true)) {
+                $uploadError = "Impossible de créer le dossier de stockage audio.";
+                return null;
+            }
         }
 
         $newName = uniqid('track_', true) . bin2hex(random_bytes(4)) . '.mp3';
         $destination = self::AUDIODIR . '/' . $newName;
 
         if (!move_uploaded_file($file['tmp_name'], $destination)) {
+            $uploadError = "Impossible de déplacer le fichier téléversé vers le dossier audio.";
             return null;
         }
 

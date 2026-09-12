@@ -2,36 +2,36 @@
 
 namespace iutnc\deefy\action;
 
+use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\repository\DeefyRepository;
 
-class DeleteTrackAction extends Action {
+class DeletePlaylistAction extends Action {
     #[\Override]
-    public function get() : string {
+    public function get() : String {
         $error = $this->verif();
         if ($error != '') return $error;
 
-        $idTrack = (int) $_GET['id'];
+        $idPlaylist = (int) $_GET['id'];
         $r = DeefyRepository::getInstance();
-        $track = $r->findTrackById($idTrack);
+        $playlist = $r->findPlaylistById($idPlaylist);
 
         return <<<HTML
             <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash/ -->
-                <i class="bi bi-trash text-danger me-2"></i>Supprimer une piste
+                <i class="bi bi-trash text-danger me-2"></i>Supprimer une playlist
             </h1>
             <div class="alert alert-warning" role="alert">
-                Êtes-vous sûr de vouloir supprimer le morceau <strong>{$track->get('title')}</strong> ?
+                Êtes-vous sûr de vouloir supprimer la playlist <strong>{$playlist->name}</strong> ? Cela entraînera la suppression de <strong>toutes les pistes</strong> qu'elle contient.
             </div>
-            <form method="post" action="?action=delete-track&id={$idTrack}">
-                <input type="hidden" name="id" value="{$idTrack}">
+            <form method="post" action="?action=delete-playlist&id={$idPlaylist}">
+                <input type="hidden" name="id" value="{$idPlaylist}">
                 <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
                     <i class="bi bi-trash-fill me-1"></i>Confirmer la suppression
                 </button>
-                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=playlists">
+                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=display-playlist&id={$idPlaylist}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
                     <i class="bi bi-x-lg me-1"></i>Annuler
                 </a>
@@ -40,24 +40,29 @@ class DeleteTrackAction extends Action {
     }
 
     #[\Override]
-    public function post() : string {
+    public function post() : String {
         $error = $this->verif();
         if ($error != '') return $error;
 
-        $idTrack = (int) ($_POST['id']);
+        $idplaylist = (int) ($_POST['id']);
         $r = DeefyRepository::getInstance();
-        $track = $r->findTrackById($idTrack);
+        $playlist = $r->findPlaylistById($idplaylist);
+        $playlistName = $playlist ? $playlist->name : '';
 
         $w = DeefyRepository::getInstance();
-        $w->deleteTrackById($idTrack);
+        $w->deletePlaylistById($idplaylist);
+
+        if (isset($_SESSION['playlist']) && $_SESSION['playlist']->id === $idplaylist) {
+            unset($_SESSION['playlist']);
+        }
 
         return <<<HTML
             <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
-                <i class="bi bi-check-circle-fill text-success me-2"></i>Piste supprimée
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Playlist supprimée
             </h1>
             <div class="alert alert-success" role="alert">
-                Le morceau <strong>{$track->get('title')}</strong> a bien été supprimé.
+                La playlist <strong>{$playlistName}</strong> a bien été supprimée.
             </div>
             <p>
                 <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlists">
@@ -79,7 +84,7 @@ class DeleteTrackAction extends Action {
                     <i class="bi bi-shield-lock-fill text-danger me-2"></i>Accès refusé
                 </h1>
                 <div class="alert alert-warning" role="alert">
-                    Vous devez être connecté pour supprimer une piste.
+                    Vous devez être connecté pour supprimer une playlist.
                 </div>
                 <p>
                     <a class="btn btn-primary d-inline-flex align-items-center" href="?action=signin">
@@ -94,16 +99,16 @@ class DeleteTrackAction extends Action {
             HTML;
         }
 
-        // Si l'identifiant de la piste est manquant
-        $idTrack = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
-        if ($idTrack <= 0) {
+        // Si l'identifiant de la playlist est manquant
+        $idPlaylist = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
+        if ($idPlaylist <= 0) {
             return <<<HTML
                 <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/exclamation-triangle-fill/ -->
-                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Piste non spécifiée
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Playlist non spécifiée
                 </h1>
                 <div class="alert alert-danger" role="alert">
-                    Aucun identifiant de morceau n'a été fourni pour la suppression.
+                    Aucun identifiant de playlist n'a été fourni pour la suppression.
                 </div>
                 <p>
                     <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
@@ -115,16 +120,16 @@ class DeleteTrackAction extends Action {
         }
 
         $r = DeefyRepository::getInstance();
-        $track = $r->findTrackById($idTrack);
+        $playlist = $r->findPlaylistById($idPlaylist);
 
-        if (!$track) {
+        if (!$playlist) {
             return <<<HTML
                 <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/exclamation-triangle-fill/ -->
-                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Piste introuvable
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Playlist introuvable
                 </h1>
                 <div class="alert alert-danger" role="alert">
-                    Le morceau demandé n'existe pas.
+                    La playlist demandée n'existe pas.
                 </div>
                 <p>
                     <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
@@ -135,14 +140,14 @@ class DeleteTrackAction extends Action {
             HTML;
         }
 
-        if (!Authz::checkTrackOwner($idTrack)) {
+        if (!Authz::checkPlaylistOwner($idPlaylist)) {
             return <<<HTML
                 <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/ -->
                     <i class="bi bi-shield-lock-fill text-danger me-2"></i>Accès refusé
                 </h1>
                 <div class="alert alert-danger" role="alert">
-                    Vous n'êtes pas autorisé à supprimer ce morceau car il ne figure dans aucune de vos playlists.
+                    Vous n'êtes pas autorisé à supprimer cette playlist.
                 </div>
                 <p>
                     <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">

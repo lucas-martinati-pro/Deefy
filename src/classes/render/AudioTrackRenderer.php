@@ -120,7 +120,17 @@ abstract class AudioTrackRenderer implements Renderer {
         if ($hasImage) {
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <img src="../image/{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}>
+                    <img src="../image/{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}">
+                </div>
+            HTML;
+            $colContent = 'col-md-9 col-lg-10';
+        } else {
+            $imageHtml = <<<HTML
+                <div class="col-md-3 col-lg-2">
+                    <div class="bg-light d-flex align-items-center justify-content-center text-secondary rounded-start w-100 h-100 border-end" style="min-height: 140px;">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
+                        <i class="bi bi-music-note-beamed fs-1"></i>
+                    </div>
                 </div>
             HTML;
             $colContent = 'col-md-9 col-lg-10';
@@ -152,7 +162,7 @@ abstract class AudioTrackRenderer implements Renderer {
                                     </h6>
                                     {$infosHtml}
                                 </div>
-                                <div class="mt-auto">
+                                <div>
                                     {$this->renderAudioPlayer(Renderer::LONG)}
                                 </div>
                             </div>

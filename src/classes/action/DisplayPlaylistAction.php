@@ -75,6 +75,10 @@ class DisplayPlaylistAction extends Action {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une piste
                 </a>
+                <a class="btn btn-outline-danger d-inline-flex align-items-center ms-2" href="?action=delete-playlist&id={$playlist->id}">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
+                    <i class="bi bi-trash-fill me-1"></i>Supprimer la playlist
+                </a>
                 <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlists">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists

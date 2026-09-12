@@ -383,6 +383,45 @@ class DeefyRepository {
         $stmt2->execute(['idTrack' => $idTrack]);
     }
 
+    public function deletePlaylistById(int $idPlaylist) : void {
+        // Supprimer les tracks de cette playlist :
+        $stmt1 = $this->pdo->prepare(<<<SQL
+            SELECT track.id
+            FROM track
+            INNER JOIN playlist2track ON playlist2track.id_track = track.id
+            WHERE id_pl = :id
+        SQL);
+
+        $stmt1->execute(['id' => $idPlaylist]);
+
+        $idTracks = $stmt1->fetchAll(\PDO::FETCH_COLUMN);
+
+        foreach ($idTracks as $id) {
+            $this->deleteTrackById($id);
+        }
+
+        // Supprimer l'association entre la playlist et les utilisateurs
+        $stmt2 = $this->pdo->prepare(<<<SQL
+            DELETE FROM user2playlist
+            WHERE id_pl = :idPlaylist
+        SQL);
+        $stmt2->execute(['idPlaylist' => $idPlaylist]);
+
+        // Supprimer les associations des pistes liées à cette playlist
+        $stmt3 = $this->pdo->prepare(<<<SQL
+            DELETE FROM playlist2track
+            WHERE id_pl = :idPlaylist
+        SQL);
+        $stmt3->execute(['idPlaylist' => $idPlaylist]);
+
+        // Supprimer définitivement la playlist de la table playlist
+        $stmt4 = $this->pdo->prepare(<<<SQL
+            DELETE FROM playlist
+            WHERE id = :idPlaylist
+        SQL);
+        $stmt4->execute(['idPlaylist' => $idPlaylist]);
+    }
+
     /**============================================
      *               GESTION DE L'AUTH
      *=============================================**/
