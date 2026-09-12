@@ -7,7 +7,32 @@ use iutnc\deefy\exception\AuthnException;
 
 class SigninAction extends Action {
     public function get() : string {
-        $require = '<span class="text-danger">*</span>';
+        try {
+            $user = AuthnProvider::getSignedInUser();
+
+            return <<<HTML
+                <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-check-fill/ -->
+                    <i class="bi bi-person-check-fill text-primary me-2"></i>Déjà connecté
+                </h1>
+                <p>Vous êtes déjà connecté avec l'adresse <strong>{$user['email']}</strong>.</p>
+                <p>
+                    <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlists">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
+                        <i class="bi bi-collection-play-fill me-2"></i>Mes playlists
+                    </a>
+                    <a class="btn btn-danger ms-2 d-inline-flex align-items-center" href="?action=signout">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
+                        <i class="bi bi-box-arrow-right me-1"></i>Se déconnecter
+                    </a>
+                    <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
+                        <i class="bi bi-house-door-fill me-1"></i>Accueil
+                    </a>
+                </p>
+            HTML;
+        } catch (AuthnException $e) {
+            $require = '<span class="text-danger">*</span>';
         return <<<HTML
         <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
@@ -30,6 +55,7 @@ class SigninAction extends Action {
             </button>
         </form>
         HTML;
+        }
     }
 
     public function post() : string {
