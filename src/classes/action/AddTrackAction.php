@@ -9,6 +9,7 @@ use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\render\HtmlHelper;
 
 class AddTrackAction extends Action {
     private const string AUDIODIR = __DIR__ . '/../../../audio';
@@ -17,19 +18,15 @@ class AddTrackAction extends Action {
     #[\Override]
     public function get() : string {
         if (!isset($_SESSION['playlist'])) {
-            return <<<HTML
-                <h1>Erreur</h1>
-                <p>Aucune playlist n'a été trouvée en session. Veuillez d'abord sélectionner ou créer une playlist.</p>
-                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
-            HTML;
+            return HtmlHelper::errorPage(
+                message: "Aucune playlist n'a été trouvée en session. Veuillez d'abord sélectionner ou créer une playlist.",
+                backUrl: "?action=playlists",
+                backLabel: "Retour à mes playlists"
+            );
         }
 
         if (!Authz::checkPlaylistOwner($_SESSION['playlist']->id)) {
-            return <<<HTML
-                <h1>Accès refusé</h1>
-                <p>Vous n'êtes pas autorisé à modifier cette playlist.</p>
-                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
-            HTML;
+            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
         }
 
         if (!isset($_GET['type'])) {
@@ -169,19 +166,15 @@ class AddTrackAction extends Action {
     #[\Override]
     public function post() : string {
         if (!isset($_SESSION['playlist'])) {
-            return <<<HTML
-                <h1>Erreur</h1>
-                <p>Aucune playlist n'a été trouvée en session. Veuillez d'abord initialiser la playlist.</p>
-                <p><a class="btn btn-primary" href="?action=add-playlist">Créer une playlist</a></p>
-            HTML;
+            return HtmlHelper::errorPage(
+                message: "Aucune playlist n'a été trouvée en session. Veuillez d'abord initialiser la playlist.",
+                backUrl: "?action=add-playlist",
+                backLabel: "Créer une playlist"
+            );
         }
 
         if (!Authz::checkPlaylistOwner($_SESSION['playlist']->id)) {
-            return <<<HTML
-                <h1>Accès refusé</h1>
-                <p>Vous n'êtes pas autorisé à modifier cette playlist.</p>
-                <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
-            HTML;
+            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
         }
 
         $error = [];
@@ -215,26 +208,6 @@ class AddTrackAction extends Action {
         $audioFileName = self::saveAudioFile($_FILES['userfile'], $uploadError);
         if (!$audioFileName) {
             $error[] = $uploadError ?? "Erreur lors de l'envoi du fichier audio.";
-        }
-
-        if ($error != []) {
-            $errorList = '';
-            foreach ($error as $message) {
-                $errorList .= "<li>{$message}</li>";
-            }
-
-            return <<<HTML
-                <h1>Erreur dans le formulaire</h1>
-                <div class="alert alert-danger" role="alert">
-                    <ul class="mb-0 ps-3">{$errorList}</ul>
-                </div>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-track">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                    </a>
-                </p>
-            HTML;
         }
 
         // Analyse des métadonnées ID3
@@ -305,24 +278,8 @@ class AddTrackAction extends Action {
             default : $error[] = ("Type de piste inconnu : $type");
         }
 
-        if ($error != []) {
-            $errorList = '';
-            foreach ($error as $message) {
-                $errorList .= "<li>{$message}</li>";
-            }
-
-            return <<<HTML
-                <h1>Erreur dans le formulaire</h1>
-                <div class="alert alert-danger" role="alert">
-                    <ul class="mb-0 ps-3">{$errorList}</ul>
-                </div>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-track">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                    </a>
-                </p>
-            HTML;
+        if (!empty($error)) {
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track");
         }
 
         // Propriétés communes

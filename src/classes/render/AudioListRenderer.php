@@ -22,9 +22,7 @@ class AudioListRenderer implements Renderer {
         HTML;
 
         if (count($this->audioList->tracks) === 0) {
-            $res .= <<<HTML
-                <div class="alert alert-secondary">Cette liste est vide.</div>
-            HTML;
+            $res .= HtmlHelper::alert(type: 'secondary', content: 'Cette liste est vide.');
         } else {
             $divClass = ($selector === Renderer::LONG)
                 ? 'd-flex flex-column gap-3 mb-4'

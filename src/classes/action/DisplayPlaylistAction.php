@@ -7,6 +7,7 @@ use iutnc\deefy\auth\Authz;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\render\HtmlHelper;
 
 class DisplayPlaylistAction extends Action {
         #[\Override]
@@ -14,11 +15,12 @@ class DisplayPlaylistAction extends Action {
         // CAS 1 : Aucun ID -> on affiche la playlist en session
         if (!isset($_GET['id'])) {
             if (!isset($_SESSION['playlist'])) {
-                return <<<HTML
-                    <h1>Playlist</h1>
-                    <p>Aucune playlist n'existe actuellement en session.</p>
-                    <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
-                HTML;
+                return HtmlHelper::errorPage(
+                    title: "Playlist",
+                    message: "Aucune playlist n'existe actuellement en session.",
+                    backUrl: "?action=playlists",
+                    backLabel: "Retour à mes playlists"
+                );
             }
             $playlist = $_SESSION['playlist'];
         } else {
@@ -28,11 +30,7 @@ class DisplayPlaylistAction extends Action {
             $playlist = $r->findPlaylistById($idPlaylist);
 
             if (!$playlist) {
-                return <<<HTML
-                    <h1>Playlist introuvable</h1>
-                    <p>La playlist demandée n'existe pas.</p>
-                    <p><a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a></p>
-                HTML;
+                return HtmlHelper::notFound(item: "Playlist", message: "La playlist demandée n'existe pas.");
             }
 
             $_SESSION['playlist'] = $playlist;
@@ -50,19 +48,7 @@ class DisplayPlaylistAction extends Action {
         }
 
         if (!Authz::checkPlaylistOwner($playlist->id)) {
-            return <<<HTML
-                <h1 class="h2 fw-bold text-danger mb-3">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/ -->
-                    <i class="bi bi-shield-lock-fill me-2"></i>Accès refusé
-                </h1>
-                <p>Vous n'êtes pas autorisé à consulter cette playlist.</p>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à consulter cette playlist.");
         }
 
         $renderer = RendererFactory::getRenderer($playlist);

@@ -20,17 +20,25 @@ class DefaultAction extends Action {
         try {
             AuthnProvider::getSignedInUser();
 
+            $currentPlaylist = "";
+
+            if (isset($_SESSION['playlist'])) {
+                $currentPlaylist = <<<HTML
+                    <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=display-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
+                        <i class="bi bi-music-note-list text-info me-2 fs-5"></i>
+                        Afficher la playlist courante
+                    </a>
+                HTML;
+            }
+
             $page .= <<<HTML
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=playlists">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
                     <i class="bi bi-collection-play-fill text-primary me-2 fs-5"></i>
                     Afficher mes playlists
                 </a>
-                <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=display-playlist">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
-                    <i class="bi bi-music-note-list text-info me-2 fs-5"></i>
-                    Afficher la playlist courante
-                </a>
+                {$currentPlaylist}
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=add-playlist">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill text-success me-2 fs-5"></i>

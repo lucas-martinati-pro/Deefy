@@ -9,6 +9,7 @@ use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\exception\AuthnException;
+use iutnc\deefy\render\HtmlHelper;
 
 class AddPlaylistAction extends Action {
     #[\Override]
@@ -16,11 +17,7 @@ class AddPlaylistAction extends Action {
         try {
             AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
-            return <<<HTML
-                <h1>Accès refusé</h1>
-                <p>{$e->getMessage()}</p>
-                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
-            HTML;
+            return HtmlHelper::authRequired(message: $e->getMessage());
         }
         return <<<HTML
             <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
@@ -44,25 +41,14 @@ class AddPlaylistAction extends Action {
     #[\Override]
     public function post() : string {
         if (!isset($_POST['title']) || trim($_POST['title']) === '') {
-            return <<<HTML
-                <h1>Erreur dans le formulaire</h1>
-                <p>Le nom de la playlist est obligatoire.</p>
-                <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=add-playlist">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                </a>
-            HTML;
+            return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist");
         }
 
         $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
-            return <<<HTML
-                <h1>Accès refusé</h1>
-                <p>{$e->getMessage()}</p>
-                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
-            HTML;
+            return HtmlHelper::authRequired(message: $e->getMessage());
         }
 
         $w = DeefyRepository::getInstance();

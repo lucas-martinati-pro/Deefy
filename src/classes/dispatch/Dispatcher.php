@@ -43,7 +43,6 @@ class Dispatcher {
 
     private function renderPage(string $html): void {
         $navbar = $this->renderNavbar();
-
         $player = $this->renderFooterPlayer();
 
         echo <<<HTML
@@ -95,6 +94,19 @@ class Dispatcher {
         try {
             $user = AuthnProvider::getSignedInUser();
 
+            $currentPlaylist = "";
+
+            if (isset($_SESSION['playlist'])) {
+                $currentPlaylist = <<<HTML
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=display-playlist">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
+                            <i class="bi bi-music-note-list me-1"></i>Playlist courante
+                        </a>
+                    </li>
+                HTML;
+            }
+
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -115,12 +127,7 @@ class Dispatcher {
                             <i class="bi bi-plus-circle-fill me-1"></i>Créer une playlist
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?action=display-playlist">
-                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
-                            <i class="bi bi-music-note-list me-1"></i>Playlist courante
-                        </a>
-                    </li>
+                    {$currentPlaylist}
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-circle/ -->

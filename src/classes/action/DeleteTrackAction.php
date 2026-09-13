@@ -6,6 +6,7 @@ use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\render\HtmlHelper;
 
 class DeleteTrackAction extends Action {
     #[\Override]
@@ -51,106 +52,38 @@ class DeleteTrackAction extends Action {
         $w = DeefyRepository::getInstance();
         $w->deleteTrackById($idTrack);
 
-        return <<<HTML
-            <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
-                <i class="bi bi-check-circle-fill text-success me-2"></i>Piste supprimée
-            </h1>
-            <div class="alert alert-success" role="alert">
-                Le morceau <strong>{$track->get('title')}</strong> a bien été supprimé.
-            </div>
-            <p>
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlists">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                    <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                </a>
-            </p>
-        HTML;
+        return HtmlHelper::successPage(
+            title: "Piste supprimée",
+            message: "Le morceau <strong>{$track->get('title')}</strong> a bien été supprimé."
+        );
     }
 
     private function verif() : string {
-        // Si l'utilisateur n'est pas connecté
         try {
             AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
-            return <<<HTML
-                <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/ -->
-                    <i class="bi bi-shield-lock-fill text-danger me-2"></i>Accès refusé
-                </h1>
-                <div class="alert alert-warning" role="alert">
-                    Vous devez être connecté pour supprimer une piste.
-                </div>
-                <p>
-                    <a class="btn btn-primary d-inline-flex align-items-center" href="?action=signin">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Se connecter
-                    </a>
-                    <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
-                        <i class="bi bi-house-door-fill me-1"></i>Retour à l'accueil
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::authRequired(message: "Vous devez être connecté pour supprimer une piste.");
         }
 
-        // Si l'identifiant de la piste est manquant
         $idTrack = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         if ($idTrack <= 0) {
-            return <<<HTML
-                <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/exclamation-triangle-fill/ -->
-                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Piste non spécifiée
-                </h1>
-                <div class="alert alert-danger" role="alert">
-                    Aucun identifiant de morceau n'a été fourni pour la suppression.
-                </div>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::errorPage(
+                title: "Piste non spécifiée",
+                message: "Aucun identifiant de morceau n'a été fourni pour la suppression.",
+                backUrl: "?action=playlists",
+                backLabel: "Retour à mes playlists"
+            );
         }
 
         $r = DeefyRepository::getInstance();
         $track = $r->findTrackById($idTrack);
 
         if (!$track) {
-            return <<<HTML
-                <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/exclamation-triangle-fill/ -->
-                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Piste introuvable
-                </h1>
-                <div class="alert alert-danger" role="alert">
-                    Le morceau demandé n'existe pas.
-                </div>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::notFound(item: "Piste", message: "Le morceau demandé n'existe pas.");
         }
 
         if (!Authz::checkTrackOwner($idTrack)) {
-            return <<<HTML
-                <h1 class="h2 fw-bold text-danger mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/ -->
-                    <i class="bi bi-shield-lock-fill text-danger me-2"></i>Accès refusé
-                </h1>
-                <div class="alert alert-danger" role="alert">
-                    Vous n'êtes pas autorisé à supprimer ce morceau car il ne figure dans aucune de vos playlists.
-                </div>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à supprimer ce morceau car il ne figure dans aucune de vos playlists.");
         }
 
         return '';

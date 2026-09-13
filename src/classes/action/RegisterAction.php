@@ -4,6 +4,7 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
+use iutnc\deefy\render\HtmlHelper;
 
 class RegisterAction extends Action {
 
@@ -54,29 +55,11 @@ class RegisterAction extends Action {
     #[\Override]
     public function post() : string {
         if (!isset($_POST['email'], $_POST['password'], $_POST['password-double'])) {
-            return <<<HTML
-                <h1>Échec de l'inscription</h1>
-                <p>Tous les champs sont obligatoires.</p>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=register">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=register", title: "Échec de l'inscription");
         }
 
         if ($_POST['password'] !== $_POST['password-double']) {
-            return <<<HTML
-                <h1>Échec de l'inscription</h1>
-                <p>Les deux mots de passe doivent être identiques.</p>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=register">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::formError(errors: "Les deux mots de passe doivent être identiques.", backUrl: "?action=register", title: "Échec de l'inscription");
         }
 
         $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -84,66 +67,29 @@ class RegisterAction extends Action {
         try {
             AuthnProvider::register($_POST['email'], $_POST['password']);
         } catch (AuthnException $error) {
-            return <<<HTML
-                <h1>Échec de l'inscription</h1>
-                <p>{$error->getMessage()}</p>
-                <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=register">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register", title: "Échec de l'inscription");
         }
 
         if (isset($_POST['connect-auto'])) {
             try {
                 AuthnProvider::signin($_POST['email'], $_POST['password']);
             } catch (AuthnException $error) {
-                return <<<HTML
-                    <h1>Échec de la connexion</h1>
-                    <p>{$error->getMessage()}</p>
-                    <p>
-                        <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=register">
-                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-counterclockwise/ -->
-                            <i class="bi bi-arrow-counterclockwise me-1"></i>Retour au formulaire
-                        </a>
-                    </p>
-                HTML;
+                return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register", title: "Échec de la connexion");
             }
 
-            return <<<HTML
-                <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>Connexion réussie
-                </h1>
-                <p>Bienvenue, <strong>{$_POST['email']}</strong> !</p>
-                <p>Vous êtes maintenant connecté à Deefy.</p>
-                <p>
-                    <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlists">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
-                        <i class="bi bi-collection-play-fill me-2"></i>Mes playlists
-                    </a>
-                    <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
-                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
-                        <i class="bi bi-house-door-fill me-1"></i>Accueil
-                    </a>
-                </p>
-            HTML;
+            return HtmlHelper::successPage(
+                title: "Connexion réussie",
+                message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
+                nextUrl: "?action=playlists",
+                nextLabel: "Accéder à mes playlists"
+            );
         }
 
-        return <<<HTML
-            <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
-                <i class="bi bi-check-circle-fill text-success me-2"></i>Inscription réussie
-            </h1>
-            <p>Votre compte a bien été créé.</p>
-            <p>
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=signin">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
-                    <i class="bi bi-box-arrow-in-right me-1"></i>Se connecter
-                </a>
-            </p>
-        HTML;
+        return HtmlHelper::successPage(
+            title: "Inscription réussie",
+            message: "Votre compte a bien été créé.",
+            nextUrl: "?action=signin",
+            nextLabel: "Se connecter"
+        );
     }
 }

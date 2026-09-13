@@ -6,6 +6,7 @@ use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\render\HtmlHelper;
 
 class PlaylistsAction extends Action {
     #[\Override]
@@ -13,17 +14,14 @@ class PlaylistsAction extends Action {
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
-            return <<<HTML
-                <h1>Accès refusé</h1>
-                <p>{$e->getMessage()}</p>
-                <p><a class="btn btn-primary" href="?action=signin">Se connecter</a></p>
-            HTML;
+            return HtmlHelper::authRequired(message: $e->getMessage());
         }
 
         $r = DeefyRepository::getInstance();
         $playlists = $r->findPlaylistsByUserId((int) $user['id']);
 
         if (empty($playlists)) {
+            $alert = HtmlHelper::alert(type: 'info', content: 'Vous ne possédez aucune playlist pour le moment.');
             return <<<HTML
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="h2 fw-bold mb-0 d-flex align-items-center">
@@ -35,9 +33,7 @@ class PlaylistsAction extends Action {
                         <i class="bi bi-plus-circle-fill me-2"></i>Créer une playlist
                     </a>
                 </div>
-                <div class="alert alert-info" role="alert">
-                    Vous ne possédez aucune playlist pour le moment.
-                </div>
+                {$alert}
                 <p>
                     <a class="btn btn-primary" href="?action=add-playlist">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
