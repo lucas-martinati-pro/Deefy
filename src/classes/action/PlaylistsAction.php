@@ -7,6 +7,7 @@ use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
+use iutnc\deefy\render\AudioTrackRenderer;
 
 class PlaylistsAction extends Action {
     #[\Override]
@@ -56,9 +57,11 @@ class PlaylistsAction extends Action {
                 }
             }
 
+            $imagePath = AudioTrackRenderer::IMAGE_PATH;
+
             if ($coverImage !== null) {
                 $coverHtml = <<<HTML
-                    <img src="../image/{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
+                    <img src="{$imagePath}{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
                 HTML;
             } else {
                 $coverHtml = <<<HTML

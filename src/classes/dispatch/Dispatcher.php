@@ -16,6 +16,7 @@ use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
+use iutnc\deefy\render\AudioTrackRenderer;
 
 class Dispatcher {
     private string $action;
@@ -67,7 +68,7 @@ class Dispatcher {
                         <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
                             <div class="container">
                                 <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
-                                    <img src="../image/favicon.png" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
+                                    <img src="../image/favicon.ico" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
                                     Deefy
                                 </a>
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -194,10 +195,12 @@ class Dispatcher {
                         $subtitle = "Podcast • {$author}";
                     }
 
+                    $imagePath = AudioTrackRenderer::IMAGE_PATH;
+
                     // Image de couverture à gauche
                     if (!empty($image)) {
                         $coverHtml = <<<HTML
-                            <img src="../image/{$image}" class="rounded-2 object-fit-cover shadow-sm flex-shrink-0" style="width: 52px; height: 52px;" alt="{$trackTitle}">
+                            <img src="{$imagePath}{$image}" class="rounded-2 object-fit-cover shadow-sm flex-shrink-0" style="width: 52px; height: 52px;" alt="{$trackTitle}">
                         HTML;
                     } else {
                         $coverHtml = <<<HTML
@@ -207,6 +210,8 @@ class Dispatcher {
                             </div>
                         HTML;
                     }
+
+                    $audioPath = AudioTrackRenderer::AUDIO_PATH;
 
                     return <<<HTML
                         <div style="height: 85px;"></div>
@@ -226,7 +231,7 @@ class Dispatcher {
                                     <media-theme-tailwind-audio class="audio-footer">
                                         <audio
                                             slot="media"
-                                            src="../audio/{$track->get("filename")}"
+                                            src="{$audioPath}{$track->get("filename")}"
                                             crossorigin="anonymous"
                                         ></audio>
                                     </media-theme-tailwind-audio>

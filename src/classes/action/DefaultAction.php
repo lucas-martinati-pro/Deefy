@@ -11,7 +11,7 @@ class DefaultAction extends Action {
     public function get() : string {
         $page = <<< HTML
             <h1 class="h2 fw-bold mb-2">
-                <img src="../image/favicon.png" width="40" height="40" alt="Logo" class="align-text-top">
+                <img src="../image/favicon.ico" width="40" height="40" alt="Logo" class="align-text-top">
                 Bienvenue sur Deefy !
             </h1>
             <p class="text-muted">Bienvenue sur Deefy, votre plateforme de musique.</p>

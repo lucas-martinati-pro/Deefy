@@ -8,6 +8,9 @@ abstract class AudioTrackRenderer implements Renderer {
 
     protected AudioTrack $track;
 
+    public const string AUDIO_PATH = '../audio/';
+    public const string IMAGE_PATH = '../image/covers/';
+
     public function __construct(AudioTrack $track) {
         $this->track = $track;
     }
@@ -59,9 +62,10 @@ abstract class AudioTrackRenderer implements Renderer {
 
         $hasImage = !empty($this->track->get('image'));
         $imageHtml = '';
+        $imagePath = self::IMAGE_PATH;
         if ($hasImage) {
             $imageHtml = <<<HTML
-                <img src="../image/{$this->track->get('image')}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->get('title')}">
+                <img src="{$imagePath}{$this->track->get('image')}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->get('title')}">
             HTML;
         } else {
             $imageHtml = <<<HTML
@@ -118,9 +122,10 @@ abstract class AudioTrackRenderer implements Renderer {
         $colContent = 'col-12';
 
         if ($hasImage) {
+            $imagePath = self::IMAGE_PATH;
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <img src="../image/{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}">
+                    <img src="{$imagePath}{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}">
                 </div>
             HTML;
             $colContent = 'col-md-9 col-lg-10';
@@ -211,12 +216,13 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     protected function renderAudioPlayer(int $selector) : string {
+        $audioPath = self::AUDIO_PATH;
         if ($selector === Renderer::COMPACT) {
             return <<<HTML
                 <media-theme-tailwind-audio class="audio-compact">
                     <audio
                         slot="media"
-                        src="../audio/{$this->track->get("filename")}"
+                        src="{$audioPath}{$this->track->get("filename")}"
                         crossorigin="anonymous"
                     ></audio>
                 </media-theme-tailwind-audio>
@@ -225,7 +231,7 @@ abstract class AudioTrackRenderer implements Renderer {
             <media-theme-tailwind-audio class="audio-long">
                 <audio
                     slot="media"
-                    src="../audio/{$this->track->get("filename")}"
+                    src="{$audioPath}{$this->track->get("filename")}"
                     crossorigin="anonymous"
                 ></audio>
             </media-theme-tailwind-audio>

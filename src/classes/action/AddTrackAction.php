@@ -13,7 +13,7 @@ use iutnc\deefy\render\HtmlHelper;
 
 class AddTrackAction extends Action {
     private const string AUDIODIR = __DIR__ . '/../../../audio';
-    private const string IMAGEDIR = __DIR__ . '/../../../image';
+    private const string IMAGEDIR = __DIR__ . '/../../../image/covers';
 
     #[\Override]
     public function get() : string {
