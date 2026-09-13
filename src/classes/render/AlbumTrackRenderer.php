@@ -14,7 +14,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
         $artist = $this->track->get("artist");
         $album = $this->track->get("album");
         $artistStr = !empty($artist) ? $artist : 'Artiste inconnu';
-        return "<span class=\"fw-semibold text-dark\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
+        return "<span class=\"fw-semibold text-body\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
     }
 
     #[\Override]

@@ -47,16 +47,16 @@ class Dispatcher {
 
         echo <<<HTML
             <!DOCTYPE html>
-            <html lang="fr">
+            <html lang="fr" data-bs-theme="dark" id="html">
                 <head>
                     <title>Deefy</title>
                     <meta charset="utf-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <link href="../css/style.css" rel="stylesheet">
                     <!-- css pour Bootstrap -->
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
                     <!-- css pour les icônes Boostrap -->
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+                    <link href="../css/style.css" rel="stylesheet">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
                 </head>
@@ -64,7 +64,7 @@ class Dispatcher {
                     <div class="flex-grow-1">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
                             <div class="container">
-                                <a class="navbar-brand fw-bold text-primary text-black d-flex align-items-center" href="main.php">
+                                <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
                                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                                     <i class="bi bi-vinyl-fill text-primary me-2"></i>Deefy
                                 </a>
@@ -85,12 +85,20 @@ class Dispatcher {
                     </div>
                     $player
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+                    <script src="../js/script.js"></script>
                 </body>
             </html>
         HTML;
     }
 
     private function renderNavbar(): string {
+        $toggleThemeButton = <<<HTML
+            <button id="toggle-theme" class="btn btn-outline-secondary btn-sm d-flex align-items-center" type="button" title="Changer de thème">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/circle-half/ -->
+                <i class="bi bi-circle-half"></i>
+            </button>
+        HTML;
+
         try {
             $user = AuthnProvider::getSignedInUser();
 
@@ -137,6 +145,7 @@ class Dispatcher {
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
                         <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
                     </a>
+                    {$toggleThemeButton}
                 </div>
             HTML;
         } catch (AuthnException $e) {
@@ -158,6 +167,7 @@ class Dispatcher {
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/ -->
                         <i class="bi bi-person-plus-fill me-1"></i>Inscription
                     </a>
+                    {$toggleThemeButton}
                 </div>
             HTML;
         }
@@ -189,7 +199,7 @@ class Dispatcher {
                         HTML;
                     } else {
                         $coverHtml = <<<HTML
-                            <div class="rounded-2 bg-light border d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
+                            <div class="rounded-2 bg-body-tertiary border border-secondary-subtle d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
                                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                                 <i class="bi bi-vinyl-fill fs-4 text-primary"></i>
                             </div>
@@ -198,14 +208,14 @@ class Dispatcher {
 
                     return <<<HTML
                         <div style="height: 85px;"></div>
-                        <footer class="fixed-bottom bg-white border-top shadow-lg py-2 px-3 z-3">
+                        <footer class="fixed-bottom audio-footer-bar border-top shadow-lg py-2 px-3 z-3">
                             <div class="container-fluid d-flex align-items-center justify-content-between gap-3">
                                 <!-- Section Gauche : Image + Titre/Artiste (Style YouTube Music) -->
                                 <div class="d-flex align-items-center gap-3 flex-shrink-0" style="max-width: 300px;">
                                     {$coverHtml}
                                     <div class="text-truncate">
-                                        <div class="fw-semibold text-dark text-truncate small mb-0 d-none d-lg-flex" title="{$trackTitle}">{$trackTitle}</div>
-                                        <div class="text-muted text-truncate d-none d-lg-flex" style="font-size: 0.78rem;" title="{$subtitle}">{$subtitle}</div>
+                                        <div class="fw-semibold text-body text-truncate small mb-0 d-none d-lg-flex" title="{$trackTitle}">{$trackTitle}</div>
+                                        <div class="text-body-secondary text-truncate d-none d-lg-flex" style="font-size: 0.78rem;" title="{$subtitle}">{$subtitle}</div>
                                     </div>
                                 </div>
 

@@ -12,7 +12,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
     #[\Override]
     protected function getSubtitle() : string {
         $author = $this->track->get("author") ?? 'Auteur inconnu';
-        return "par <span class=\"fw-semibold text-dark\">{$author}</span>";
+        return "par <span class=\"fw-semibold text-body\">{$author}</span>";
     }
 
     #[\Override]
