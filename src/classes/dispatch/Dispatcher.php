@@ -57,6 +57,8 @@ class Dispatcher {
                     <!-- css pour les icônes Boostrap -->
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
                     <link href="../css/style.css" rel="stylesheet">
+                    <!-- Icône personnalisée pour le site -->
+                    <link rel="icon" type="image/x-icon" href="../image/favicon.ico">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
                 </head>
@@ -65,8 +67,8 @@ class Dispatcher {
                         <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
                             <div class="container">
                                 <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
-                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
-                                    <i class="bi bi-vinyl-fill text-primary me-2"></i>Deefy
+                                    <img src="../image/favicon.png" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
+                                    Deefy
                                 </a>
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>

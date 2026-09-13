@@ -11,8 +11,8 @@ class DefaultAction extends Action {
     public function get() : string {
         $page = <<< HTML
             <h1 class="h2 fw-bold mb-2">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
-                <i class="bi bi-vinyl-fill text-primary me-2"></i>Bienvenue sur Deefy !
+                <img src="../image/favicon.png" width="40" height="40" alt="Logo" class="align-text-top">
+                Bienvenue sur Deefy !
             </h1>
             <p class="text-muted">Bienvenue sur Deefy, votre plateforme de musique.</p>
             <div class="list-group mb-3" style="max-width: 450px;">
