@@ -52,6 +52,10 @@ class DeleteTrackAction extends Action {
         $w = DeefyRepository::getInstance();
         $w->deleteTrackById($idTrack);
 
+        if (isset($_SESSION['playerTrack']) && (int) $_SESSION['playerTrack']->get('id') === $idTrack) {
+            unset($_SESSION['playerTrack']);
+        }
+
         return HtmlHelper::successPage(
             title: "Piste supprimée",
             message: "Le morceau <strong>{$track->get('title')}</strong> a bien été supprimé."

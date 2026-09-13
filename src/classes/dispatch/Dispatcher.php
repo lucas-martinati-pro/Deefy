@@ -164,26 +164,22 @@ class Dispatcher {
     }
 
     private function renderFooterPlayer() : string {
-        if (isset($_SESSION['playlist'])) {
-            $tracks = $_SESSION['playlist']->tracks;
-            if (!empty($tracks)) {
-                $audioTrack = $_SESSION['current_track'] ?? $tracks[0];
-                if ($audioTrack != null) {
-                    $trackTitle = $audioTrack->get('title') ?? 'Piste audio';
-                    $image = $audioTrack->get('image');
-                    $playlistName = $_SESSION['playlist']->name ?? '';
+        if (isset($_SESSION['playerTrack'])) {
+            $track = $_SESSION['playerTrack'];
+            if (!empty($track)) {
+                if ($track != null) {
+                    $trackTitle = $track->get('title') ?? 'Piste audio';
+                    $image = $track->get('image');
 
                     // Sous-titre : Artiste/Album pour un morceau d'album, Auteur pour un podcast
                     $subtitle = "";
-                    if ($audioTrack instanceof AlbumTrack) {
-                        $artist = $audioTrack->get('artist') ?? 'Artiste inconnu';
-                        $album = $audioTrack->get('album') ?? '';
+                    if ($track instanceof AlbumTrack) {
+                        $artist = $track->get('artist') ?? 'Artiste inconnu';
+                        $album = $track->get('album') ?? '';
                         $subtitle = !empty($album) ? "{$artist} • {$album}" : $artist;
-                    } elseif ($audioTrack instanceof PodcastTrack) {
-                        $author = $audioTrack->get('author') ?? 'Auteur inconnu';
+                    } elseif ($track instanceof PodcastTrack) {
+                        $author = $track->get('author') ?? 'Auteur inconnu';
                         $subtitle = "Podcast • {$author}";
-                    } else {
-                        $subtitle = $playlistName;
                     }
 
                     // Image de couverture à gauche
@@ -196,17 +192,6 @@ class Dispatcher {
                             <div class="rounded-2 bg-light border d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
                                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                                 <i class="bi bi-vinyl-fill fs-4 text-primary"></i>
-                            </div>
-                        HTML;
-                    }
-
-                    $playlistBadge = '';
-                    if (!empty($playlistName)) {
-                        $playlistBadge = <<<HTML
-                            <div class="d-none d-lg-flex align-items-center text-muted small ms-3 flex-shrink-0" style="max-width: 220px;">
-                                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
-                                <i class="bi bi-collection-play-fill text-primary me-2"></i>
-                                <span class="text-truncate" title="{$playlistName}">{$playlistName}</span>
                             </div>
                         HTML;
                     }
@@ -229,14 +214,11 @@ class Dispatcher {
                                     <media-theme-tailwind-audio class="audio-footer">
                                         <audio
                                             slot="media"
-                                            src="../audio/{$audioTrack->get("filename")}"
+                                            src="../audio/{$track->get("filename")}"
                                             crossorigin="anonymous"
                                         ></audio>
                                     </media-theme-tailwind-audio>
                                 </div>
-
-                                <!-- Section Droite : Info Playlist -->
-                                {$playlistBadge}
                             </div>
                         </footer>
                     HTML;

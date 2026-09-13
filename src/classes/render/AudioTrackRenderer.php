@@ -182,8 +182,10 @@ abstract class AudioTrackRenderer implements Renderer {
             return '';
         }
 
+        $idParam = isset($_GET['id']) ? '&id=' . (int) $_GET['id'] : '';
+
         return <<<HTML
-            <a href="?action=display-playlist&track_id={$idTrack}" class="btn btn-sm btn-outline-primary">
+            <a href="?action=display-playlist{$idParam}&playerTrack_id={$idTrack}" class="btn btn-sm btn-outline-primary">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-fill/ -->
                 <i class="bi bi-play-fill me-1"></i>Lire
             </a>

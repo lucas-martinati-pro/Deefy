@@ -37,11 +37,11 @@ class DisplayPlaylistAction extends Action {
         }
 
         // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
-        if (isset($_GET['track_id'])) {
-            $trackId = (int) $_GET['track_id'];
+        if (isset($_GET['playerTrack_id'])) {
+            $trackId = (int) $_GET['playerTrack_id'];
             foreach ($playlist->tracks as $track) {
                 if ((int) $track->get('id') === $trackId) {
-                    $_SESSION['current_track'] = $track;
+                    $_SESSION['playerTrack'] = $track;
                     break;
                 }
             }
