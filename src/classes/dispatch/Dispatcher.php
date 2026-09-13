@@ -233,6 +233,7 @@ class Dispatcher {
                                             slot="media"
                                             src="{$audioPath}{$track->get("filename")}"
                                             crossorigin="anonymous"
+                                            autoplay
                                         ></audio>
                                     </media-theme-tailwind-audio>
                                 </div>
