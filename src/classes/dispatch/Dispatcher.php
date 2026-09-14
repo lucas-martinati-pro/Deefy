@@ -71,7 +71,7 @@ class Dispatcher {
                                     <img src="../image/favicon.ico" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
                                     Deefy
                                 </a>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
                                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -96,7 +96,7 @@ class Dispatcher {
 
     private function renderNavbar(): string {
         $toggleThemeButton = <<<HTML
-            <button id="toggle-theme" class="btn btn-outline-secondary btn-sm d-flex align-items-center" type="button" title="Changer de thème">
+            <button id="toggle-theme" class="btn btn-outline-secondary btn-sm d-flex align-items-center" title="Changer de thème">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/circle-half/ -->
                 <i class="bi bi-circle-half"></i>
             </button>
@@ -236,6 +236,16 @@ class Dispatcher {
                                             autoplay
                                         ></audio>
                                     </media-theme-tailwind-audio>
+                                </div>
+
+                                <!-- Section Droit : Supprimer le track en cours de lecture -->
+                                <div>
+                                    <form method="post" action="">
+                                        <button class="btn btn-outline-danger btn-sm" name="delete-player-track" title="Fermer le lecteur">
+                                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle/ -->
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </footer>

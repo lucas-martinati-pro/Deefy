@@ -30,7 +30,7 @@ class HtmlHelper {
             $body = $content;
         }
 
-        $dismissBtn = $dismissible ? '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' : '';
+        $dismissBtn = $dismissible ? '<button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' : '';
         $dismissClass = $dismissible ? ' alert-dismissible fade show' : '';
 
         return <<<HTML

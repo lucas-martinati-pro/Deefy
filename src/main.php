@@ -8,11 +8,24 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+/**
 // L'utilisateur reste connecté pendant 1 semaine
-session_set_cookie_params(60 * 60 * 24 * 7);
+$duree = 60 * 60 * 24 * 7;
+ini_set('session.gc_maxlifetime', $duree);
+session_set_cookie_params([
+    'lifetime' => $duree
+]);
+*/
+
 session_start();
 
 DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
+
+if (isset($_POST['delete-player-track'])) {
+    unset($_SESSION['playerTrack']);
+    header('Location: ' . $_SERVER['REQUEST_URI']);
+    exit;
+}
 
 $dispacher = new Dispatcher($_GET['action'] ?? 'default');
 $dispacher->run();
