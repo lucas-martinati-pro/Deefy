@@ -17,6 +17,7 @@ use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\AudioTrackRenderer;
+use iutnc\deefy\repository\DeefyRepository;
 
 class Dispatcher {
     private string $action;
@@ -26,6 +27,8 @@ class Dispatcher {
     }
 
     public function run(): void {
+        $this->handleUserActions();
+
         $html = match ($this->action) {
             "playlists" => (new PlaylistsAction())(),
             "display-playlist" => (new DisplayPlaylistAction())(),
@@ -40,6 +43,28 @@ class Dispatcher {
         };
 
         $this->renderPage($html);
+    }
+
+    private function handleUserActions() {
+        // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
+        if (isset($_POST['add-player-track'])) {
+            $r = DeefyRepository::getInstance();
+            $track = $r->findTrackById((int) $_POST['add-player-track']);
+            if ($track != null) $_SESSION['playerTrack'] = $track;
+
+            // Pour recharger là page là où en était
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit;
+        }
+
+        // Si l'utilisateur clique sur "x" pour supprimer la piste du lecteur principal
+        if (isset($_POST['delete-player-track'])) {
+            unset($_SESSION['playerTrack']);
+
+            // Pour recharger là page là où en était
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit;
+        }
     }
 
     private function renderPage(string $html): void {
@@ -217,7 +242,7 @@ class Dispatcher {
                         <div style="height: 85px;"></div>
                         <footer class="fixed-bottom audio-footer-bar border-top shadow-lg py-2 px-3 z-3">
                             <div class="container-fluid d-flex align-items-center justify-content-between gap-3">
-                                <!-- Section Gauche : Image + Titre/Artiste (Style YouTube Music) -->
+                                <!-- Section Gauche : Image + Titre/Artiste -->
                                 <div class="d-flex align-items-center gap-3 flex-shrink-0" style="max-width: 300px;">
                                     {$coverHtml}
                                     <div class="text-truncate">

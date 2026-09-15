@@ -36,17 +36,6 @@ class DisplayPlaylistAction extends Action {
             $_SESSION['playlist'] = $playlist;
         }
 
-        // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
-        if (isset($_GET['player-track-id'])) {
-            $trackId = (int) $_GET['player-track-id'];
-            foreach ($playlist->tracks as $track) {
-                if ((int) $track->get('id') === $trackId) {
-                    $_SESSION['playerTrack'] = $track;
-                    break;
-                }
-            }
-        }
-
         if (!Authz::checkPlaylistOwner($playlist->id)) {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à consulter cette playlist.");
         }

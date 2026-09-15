@@ -183,17 +183,16 @@ abstract class AudioTrackRenderer implements Renderer {
      */
     protected function renderPlayButton() : string {
         $idTrack = $this->track->get('id');
-        if (empty($idTrack)) {
-            return '';
-        }
-
-        $idParam = isset($_GET['id']) ? '&id=' . (int) $_GET['id'] : '';
+        if (empty($idTrack)) return '';
 
         return <<<HTML
-            <a href="?action=display-playlist{$idParam}&player-track-id={$idTrack}" class="btn btn-sm btn-outline-primary">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-fill/ -->
+            <form method="post" action="" class="d-inline">
+                <input type="hidden" name="add-player-track" value="{$idTrack}">
+                <button class="btn btn-outline-primary btn-sm" title="Ajouter le track {$idTrack} au lecteur">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-fill/ -->
                 <i class="bi bi-play-fill me-1"></i>Lire
-            </a>
+                </button>
+            </form>
         HTML;
     }
 

@@ -21,11 +21,5 @@ session_start();
 
 DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
 
-if (isset($_POST['delete-player-track'])) {
-    unset($_SESSION['playerTrack']);
-    header('Location: ' . $_SERVER['REQUEST_URI']);
-    exit;
-}
-
 $dispacher = new Dispatcher($_GET['action'] ?? 'default');
 $dispacher->run();
