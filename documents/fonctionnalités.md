@@ -6,23 +6,6 @@
 
 ---
 
-## 📋 Tableau de bord des fonctionnalités
-
-| N° | Fonctionnalité demandée | Description | Autorisation requise | Action / Classe | Statut |
-|:--:|:---|:---|:---|:---|:---:|
-| **1** | **Mes playlists** | Affiche les playlists de l'utilisateur connecté sous forme de cartes. | Utilisateur authentifié | `PlaylistsAction` | ✅ Réalisé |
-| **2** | **Consulter une playlist** | Affiche le détail et les pistes d'une playlist, qui devient la playlist courante. | Utilisateur authentifié propriétaire | `DisplayPlaylistAction` | ✅ Réalisé |
-| **3** | **Ajouter une piste** | Formulaire d'ajout d'une piste (Album ou Podcast) avec upload MP3 et extraction automatique des métadonnées (durée, genre, pochette). | Utilisateur authentifié propriétaire | `AddTrackAction` | ✅ Réalisé |
-| **4** | **Créer une playlist vide** | Formulaire pour créer une nouvelle playlist rattachée à l'utilisateur et la définir comme playlist courante. | Utilisateur authentifié | `AddPlaylistAction` | ✅ Réalisé |
-| **5** | **Afficher la playlist courante** | Affiche directement la playlist actuellement mémorisée en session. | Utilisateur authentifié propriétaire | `DisplayPlaylistAction` | ✅ Réalisé |
-| **6** | **S'inscrire** | Création de compte avec mot de passe sécurisé et connexion automatique optionnelle. | Visiteur (Tous) | `RegisterAction` | ✅ Réalisé |
-| **7** | **S'authentifier (Connexion)** | Connexion par email et mot de passe vérifié par hash sécurisé (`password_hash`). | Visiteur (Tous) | `SigninAction` | ✅ Réalisé |
-| **8** | **Supprimer une playlist** | Suppression complète d'une playlist et de ses liaisons avec contrôle de propriété. | Utilisateur authentifié propriétaire | `DeletePlaylistAction` | ✅ Réalisé |
-| **9** | **Supprimer une piste d'une playlist** | Retrait d'une piste d'une playlist avec recalcul de la durée et retrait du lecteur si elle était en cours d'écoute. | Utilisateur authentifié propriétaire | `DeleteTrackAction` | ✅ Réalisé |
-| **10** | **Changement de thème (Dark / Light)** | Bouton dans la barre de navigation permettant de basculer instantanément entre mode sombre et mode clair. | Visiteur (Tous) | `script.js` / Bootstrap 5.3 | ✅ Réalisé |
-
----
-
 ## 🚀 Fonctionnalités complémentaires & Améliorations
 
 ### 1. Lecteur audio persistant en pied de page
@@ -37,7 +20,7 @@ Barre de lecture fixe en bas de l'écran qui permet d'écouter un morceau tout e
 - **Navigation sécurisée** : Redirection et messages d'information si un utilisateur connecté tente de revenir sur la page de connexion ou d'inscription.
 
 ### 3. Interface & Ergonomie (Bootstrap 5 & JavaScript)
-- **Thème Sombre / Clair** : Bascule dynamique avec adaptation automatique de tous les composants et des lecteurs audio.
+- **Thème Sombre / Clair persistant** : Bascule dynamique en JavaScript et mémorisation du choix par cookie.
 - **Barre de navigation responsive** : Menu adapté au statut de connexion (avec affichage de l'email du compte connecté).
 - **Affichage moderne en cartes** : Présentation visuelle claire avec pochettes, badges (Album / Podcast) et durée formatée.
 - **Gestion uniforme des alertes (`HtmlHelper`)** : Retours visuels clairs et cohérents (succès, erreurs, confirmations).

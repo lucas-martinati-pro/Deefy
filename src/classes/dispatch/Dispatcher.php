@@ -70,10 +70,11 @@ class Dispatcher {
     private function renderPage(string $html): void {
         $navbar = $this->renderNavbar();
         $player = $this->renderFooterPlayer();
+        $theme = (($_COOKIE['theme'] ?? 'dark') === 'light') ? 'light' : 'dark';
 
         echo <<<HTML
             <!DOCTYPE html>
-            <html lang="fr" data-bs-theme="dark" id="html">
+            <html lang="fr" data-bs-theme="{$theme}" id="html">
                 <head>
                     <title>Deefy</title>
                     <meta charset="utf-8">
