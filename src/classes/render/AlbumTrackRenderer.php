@@ -9,15 +9,15 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[\Override]
     protected function getSubtitle() : string {
-        $artist = $this->track->get("artist");
-        $album = $this->track->get("album");
+        $artist = $this->track->artist;
+        $album = $this->track->album;
         $artistStr = !empty($artist) ? $artist : 'Artiste inconnu';
         return "<span class=\"fw-semibold text-body\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
     }
 
     #[\Override]
     protected function getBadge() : string {
-        $trackNumber = (int) $this->track->get('trackNumber');
+        $trackNumber = (int) $this->track->trackNumber;
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
         return <<<HTML
             <div class="text-nowrap">{$trackBadge}<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
@@ -31,7 +31,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
     protected function getDetails() : array {
         $details = [];
 
-        $year = $this->track->get('year');
+        $year = $this->track->year;
         if (!empty($year)) {
             $details[] = "Année : {$year}";
         }

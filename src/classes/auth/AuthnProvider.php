@@ -22,7 +22,7 @@ class AuthnProvider {
     public static function signin(string $email, string $password) : void {
         $r = DeefyRepository::getInstance();
 
-        $user = $r->findByEmail(filter_var($email, FILTER_SANITIZE_EMAIL));
+        $user = $r->findUserByEmail(filter_var($email, FILTER_SANITIZE_EMAIL));
 
         // Faire !$user au cas où user vaux false
         if (!$user || !password_verify($password, $user['passwd'])) {
@@ -51,7 +51,7 @@ class AuthnProvider {
 
         $r = DeefyRepository::getInstance();
 
-        if ($r->existByEmail($email)) {
+        if ($r->existsByEmail($email)) {
             throw new AuthnException("Cette adresse email est déjà utilisée.");
         }
 

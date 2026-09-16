@@ -22,5 +22,5 @@ session_start();
 
 DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
 
-$dispacher = new Dispatcher($_GET['action'] ?? 'default');
-$dispacher->run();
+$dispatcher = new Dispatcher($_GET['action'] ?? 'default');
+$dispatcher->run();

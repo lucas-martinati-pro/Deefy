@@ -30,7 +30,7 @@ class DeleteTrackAction extends Action {
                     <i class="bi bi-x-circle text-danger me-2"></i>Retirer une piste
                 </h1>
                 <div class="alert alert-warning" role="alert">
-                    Êtes-vous sûr de vouloir retirer le morceau <strong>{$track->get('title')}</strong> de la playlist <strong>{$playlistName}</strong> ?
+                    Êtes-vous sûr de vouloir retirer la piste <strong>{$track->title}</strong> de la playlist <strong>{$playlistName}</strong> ?
                 </div>
                 <form method="post" action="?action=delete-track&id={$idTrack}&id_pl={$idPlaylist}">
                     <input type="hidden" name="id" value="{$idTrack}">
@@ -44,13 +44,13 @@ class DeleteTrackAction extends Action {
                 </form>
             HTML;
         }
-        // Cas 2 : Supprimer définitivement de mes morceaux
+        // Cas 2 : Supprimer définitivement de mes pistes
         return <<<HTML
             <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
                 <i class="bi bi-trash text-danger me-2"></i>Supprimer une piste
             </h1>
             <div class="alert alert-warning" role="alert">
-                Êtes-vous sûr de vouloir supprimer définitivement le morceau <strong>{$track->get('title')}</strong> de vos pistes ?
+                Êtes-vous sûr de vouloir supprimer définitivement la piste <strong>{$track->title}</strong> de vos pistes ?
             </div>
             <form method="post" action="?action=delete-track&id={$idTrack}">
                 <input type="hidden" name="id" value="{$idTrack}">
@@ -82,7 +82,7 @@ class DeleteTrackAction extends Action {
             $w->removeTrackFromPlaylist($idPlaylist, $idTrack);
             return HtmlHelper::successPage(
                 title: "Piste retirée",
-                message: "Le morceau <strong>{$track->get('title')}</strong> a bien été retiré de la playlist.",
+                message: "La piste <strong>{$track->title}</strong> a bien été retirée de la playlist.",
                 backUrl: "?action=display-playlist&id={$idPlaylist}",
                 backLabel: "Retour à la playlist"
             );
@@ -90,20 +90,20 @@ class DeleteTrackAction extends Action {
 
         // Cas 2 : Suppression définitive
         $w->deleteTrackById($idTrack);
-        if (isset($_SESSION['playerTrack']) && (int) $_SESSION['playerTrack']->get('id') === $idTrack) {
+        if (isset($_SESSION['playerTrack']) && (int) $_SESSION['playerTrack']->id === $idTrack) {
             unset($_SESSION['playerTrack']);
         }
 
         return HtmlHelper::successPage(
             title: "Piste supprimée",
-            message: "Le morceau <strong>{$track->get('title')}</strong> a bien été supprimé de vos pistes.",
+            message: "La piste <strong>{$track->title}</strong> a bien été supprimée de vos pistes.",
             backUrl: "?action=tracks",
             backLabel: "Retour à mes pistes"
         );
     }
 
     /**
-     * Valide l'existence de l'identifiant de piste et la propriété du morceau.
+     * Valide l'existence de l'identifiant de piste et la propriété de la piste.
      *
      * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
      */
@@ -117,7 +117,7 @@ class DeleteTrackAction extends Action {
         if ($idTrack <= 0) {
             return HtmlHelper::errorPage(
                 title: "Piste non spécifiée",
-                message: "Aucun identifiant de morceau n'a été fourni pour la suppression.",
+                message: "Aucun identifiant de piste n'a été fourni pour la suppression.",
                 backUrl: "?action=playlists",
                 backLabel: "Retour à mes playlists"
             );
@@ -127,7 +127,7 @@ class DeleteTrackAction extends Action {
         $track = $r->findTrackById($idTrack);
 
         if (!$track) {
-            return HtmlHelper::notFound(item: "Piste", message: "Le morceau demandé n'existe pas.");
+            return HtmlHelper::notFound(item: "Piste", message: "La piste demandée n'existe pas.");
         }
 
         if ($idPlaylist !== null) {
@@ -136,7 +136,7 @@ class DeleteTrackAction extends Action {
             }
         } else {
             if (!Authz::checkTrackOwner($idTrack)) {
-                return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à supprimer ce morceau.");
+                return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à supprimer cette piste.");
             }
         }
 

@@ -31,7 +31,7 @@ class AlbumTrack extends AudioTrack {
     protected int $trackNumber = 1;
 
     #[\Override]
-    public function set(string $name, mixed $value) : void {
+    public function __set(string $name, mixed $value) : void {
         if (property_exists($this, $name) && $name !== "title" && $name !== "filename" && $name !== "album" && $name !== "trackNumber") {
             if ($name === "duration" && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");

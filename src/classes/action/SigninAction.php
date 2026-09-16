@@ -71,8 +71,10 @@ class SigninAction extends Action {
             return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=signin", title: "Échec de la connexion");
         }
 
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
         try {
-            AuthnProvider::signin($_POST['email'], $_POST['password']);
+            AuthnProvider::signin($email, $_POST['password']);
         } catch (AuthnException $error) {
             return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=signin", title: "Échec de la connexion");
         }
@@ -81,7 +83,7 @@ class SigninAction extends Action {
 
         return HtmlHelper::successPage(
             title: "Connexion réussie",
-            message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
+            message: "Bienvenue, <strong>{$email}</strong> ! Vous êtes maintenant connecté à Deefy.",
             backUrl: "?action=playlists",
             backLabel: "Accéder à mes playlists"
         );

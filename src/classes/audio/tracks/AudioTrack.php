@@ -47,7 +47,7 @@ class AudioTrack {
      * @return mixed Valeur de la propriété demandée.
      * @throws InvalidPropertyNameException Si la propriété n'existe pas.
      */
-    public function get(string $name) : mixed {
+    public function __get(string $name) : mixed {
         if (property_exists($this, $name)) return $this->$name ?? null;
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
@@ -55,7 +55,7 @@ class AudioTrack {
     /**
      * Modifie la valeur d'une propriété modifiable de la piste.
      *
-     * Le titre et le nom de fichier ne sont pas modifiables via set().
+     * Le titre et le nom de fichier ne sont pas modifiables via __set().
      * La durée doit être un entier positif ou nul.
      *
      * @param string $name Nom de la propriété à modifier.
@@ -64,7 +64,7 @@ class AudioTrack {
      * @throws InvalidPropertyNameException Si la propriété n'existe pas ou n'est pas modifiable.
      * @throws InvalidPropertyValueException Si la valeur fournie est invalide (ex: durée négative).
      */
-    public function set(string $name, mixed $value) : void {
+    public function __set(string $name, mixed $value) : void {
         if (property_exists($this, $name) && ($name !== "title" && $name !== "filename"))
             if ($name === "duration" && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");

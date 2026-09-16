@@ -47,8 +47,10 @@ class PlaylistsAction extends Action {
             // Récupérer la première pochette disponible parmi les pistes
             $coverImage = null;
             foreach ($pl->tracks as $t) {
-                if ($coverImage === null && !empty($t->get('image'))) {
-                    $coverImage = $t->get('image');
+                $trackImage = $t->image;
+                if ($coverImage === null && !empty($trackImage)) {
+                    $coverImage = $trackImage;
+                    break;
                 }
             }
 
@@ -90,7 +92,7 @@ class PlaylistsAction extends Action {
                                 </a>
                                 <span class="text-muted small">
                                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
-                                    <i class="bi bi-music-note-beamed me-1"></i>{$trackCount} morceau(x)
+                                    <i class="bi bi-music-note-beamed me-1"></i>{$trackCount} piste(s)
                                 </span>
                             </div>
                         </div>

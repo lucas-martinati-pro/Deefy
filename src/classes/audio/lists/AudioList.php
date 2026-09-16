@@ -67,7 +67,7 @@ class AudioList implements Iterator {
         $this->totalDuration = 0;
         $this->trackCount = 0;
         foreach ($tracks as $track) {
-            $this->totalDuration += $track->get("duration");
+            $this->totalDuration += $track->duration;
             $this->trackCount++;
         }
     }
@@ -80,7 +80,7 @@ class AudioList implements Iterator {
      * @return void
      * @throws InvalidPropertyNameException Si la propriété n'est pas modifiable.
      */
-    public function set(string $name, mixed $value) : void {
+    public function __set(string $name, mixed $value) : void {
         if ($name === "artist" || $name === "date" || $name === "id") $this->$name = $value;
         else throw new InvalidPropertyNameException("cannot modify property : $name");
     }

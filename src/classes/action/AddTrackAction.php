@@ -37,7 +37,7 @@ class AddTrackAction extends Action {
         $backLabel = $idPlaylist !== null ? "Retour à la playlist" : "Retour à mes pistes";
 
         if (!isset($_GET['type'])) {
-            $destLabel = $idPlaylist !== null ? "à ma playlist" : "à mes morceaux";
+            $destLabel = $idPlaylist !== null ? "à ma playlist" : "à mes pistes";
             return <<<HTML
                 <h2 class="h3 fw-bold mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
@@ -83,9 +83,9 @@ class AddTrackAction extends Action {
                 $content = <<<HTML
                     $retour
                     <div class="mb-3">
-                        <label for="title" class="form-label">Titre du morceau$require</label>
+                        <label for="title" class="form-label">Titre de la piste$require</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Ex : Bohemian Rhapsody" aria-describedby="titleHelp" required>
-                        <div id="titleHelp" class="form-text">Saisissez le titre du morceau.</div>
+                        <div id="titleHelp" class="form-text">Saisissez le titre de la piste.</div>
                     </div>
                     <div class="mb-3">
                         <label for="artist" class="form-label">Artiste$require</label>
@@ -142,7 +142,7 @@ class AddTrackAction extends Action {
                     <div class="mb-3">
                         <label for="date" class="form-label">Date de sortie</label>
                         <input type="date" name="date" class="form-control" id="date" aria-describedby="dateHelp">
-                        <div id="dateHelp" class="form-text">Date de sortie du morceau.</div>
+                        <div id="dateHelp" class="form-text">Date de sortie de la piste.</div>
                     </div>
                     <div class="mb-3">
                         <label for="userfile" class="form-label">Fichier audio$require</label>
@@ -214,11 +214,23 @@ class AddTrackAction extends Action {
             }
         }
 
+        if (!isset($_FILES['userfile']) || $_FILES['userfile']['error'] === UPLOAD_ERR_NO_FILE) {
+            $error[] = "Le fichier audio est obligatoire.";
+        }
+
+        // Si des erreurs de formulaire sont présentes, on arrête avant d'écrire le fichier sur le disque
+        if (!empty($error)) {
+            $typeParam = !empty($type) ? "&type={$type}" : "";
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
+        }
+
         // 1. Enregistrement du fichier audio MP3
         $uploadError = null;
         $audioFileName = self::saveAudioFile($_FILES['userfile'], $uploadError);
         if (!$audioFileName) {
             $error[] = $uploadError ?? "Erreur lors de l'envoi du fichier audio.";
+            $typeParam = !empty($type) ? "&type={$type}" : "";
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
         }
 
         // Analyse des métadonnées ID3
@@ -270,8 +282,8 @@ class AddTrackAction extends Action {
                 );
 
                 $track = new AlbumTrack($title, $audioFileName, $album, (int) $trackNumber);
-                if (!empty($artist)) $track->set('artist', $artist);
-                if ($year !== null) $track->set('year', (int) $year);
+                if (!empty($artist)) $track->artist = $artist;
+                if ($year !== null) $track->year = (int) $year;
                 break;
             }
             case 'PodcastTrack' : {
@@ -282,8 +294,8 @@ class AddTrackAction extends Action {
                 $date = !empty($_POST['date']) ? trim($_POST['date']) : null;
 
                 $track = new PodcastTrack($title, $audioFileName);
-                if (!empty($author)) $track->set('author', $author);
-                if (!empty($date)) $track->set('date', $date);
+                if (!empty($author)) $track->author = $author;
+                if (!empty($date)) $track->date = $date;
                 break;
             }
             default : $error[] = ("Type de piste inconnu : $type");
@@ -295,24 +307,24 @@ class AddTrackAction extends Action {
         }
 
         // Propriétés communes
-        if ($duration > 0) $track->set('duration', $duration);
-        if (!empty($genre)) $track->set('genre', $genre);
-        if (!empty($imageName)) $track->set('image', $imageName);
+        if ($duration > 0) $track->duration = $duration;
+        if (!empty($genre)) $track->genre = $genre;
+        if (!empty($imageName)) $track->image = $imageName;
 
         // Sauvegarde dans la playlist locale
         if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->id === $idPlaylist) {
-            $_SESSION['playlist']->addPiste($track);
+            $_SESSION['playlist']->addTrack($track);
         }
 
         // Sauvegarde dans le cloud
         $w = DeefyRepository::getInstance();
         $w->saveAudioTrack($track);
-        $w->saveTrack2User((int) $this->user['id'], (int) $track->get('id'));
+        $w->saveTrack2User((int) $this->user['id'], (int) $track->id);
         if ($idPlaylist !== null) {
-            $w->addTrackToPlaylist($idPlaylist, (int) $track->get('id'));
+            $w->addTrackToPlaylist($idPlaylist, (int) $track->id);
         }
 
-        $playlistMsg = "à vos morceaux";
+        $playlistMsg = "à vos pistes";
         $totalTracksMsg = "";
         $backLink = <<<HTML
             <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">

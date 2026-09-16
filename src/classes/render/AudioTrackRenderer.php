@@ -73,12 +73,12 @@ abstract class AudioTrackRenderer implements Renderer {
     protected function getDetails() : array {
         $details = [];
 
-        $duration = (int) $this->track->get('duration');
+        $duration = (int) $this->track->duration;
         if ($duration > 0) {
             $details[] = "Durée : {$duration}s";
         }
 
-        $genre = trim($this->track->get('genre') ?? '');
+        $genre = trim($this->track->genre ?? '');
         if (!empty($genre)) {
             $details[] = "Genre : {$genre}";
         }
@@ -96,12 +96,13 @@ abstract class AudioTrackRenderer implements Renderer {
         $infos = implode(' | ', $details);
         $infosHtml = !empty($infos) ? "<div class=\"small text-body-secondary mb-2\">{$infos}</div>" : '';
 
-        $hasImage = !empty($this->track->get('image'));
+        $image = $this->track->image;
+        $hasImage = (!empty($image));
         $imageHtml = '';
         $imagePath = self::IMAGE_PATH;
         if ($hasImage) {
             $imageHtml = <<<HTML
-                <img src="{$imagePath}{$this->track->get('image')}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->get('title')}">
+                <img src="{$imagePath}{$image}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->title}">
             HTML;
         } else {
             $imageHtml = <<<HTML
@@ -127,7 +128,7 @@ abstract class AudioTrackRenderer implements Renderer {
                     <div class="card-body d-flex flex-column justify-content-between p-3">
                         <div>
                             <div class="d-flex justify-content-between align-items-start gap-1 mb-1">
-                                <h5 class="card-title fw-bold fs-6 mb-0 text-truncate">{$this->track->get("title")}</h5>
+                                <h5 class="card-title fw-bold fs-6 mb-0 text-truncate">{$this->track->title}</h5>
                                 {$badge}
                             </div>
                             <h6 class="card-subtitle text-muted small mb-2 text-truncate">
@@ -155,7 +156,8 @@ abstract class AudioTrackRenderer implements Renderer {
         $infos = implode(' | ', $details);
         $infosHtml = !empty($infos) ? "<p class=\"card-text text-body-secondary small mb-3\">{$infos}</p>" : '';
 
-        $hasImage = !empty($this->track->get('image'));
+        $image = $this->track->image;
+        $hasImage = (!empty($image));
         $imageHtml = '';
         $colContent = 'col-12';
 
@@ -163,7 +165,7 @@ abstract class AudioTrackRenderer implements Renderer {
             $imagePath = self::IMAGE_PATH;
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <img src="{$imagePath}{$this->track->get('image')}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->get('title')}">
+                    <img src="{$imagePath}{$image}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->title}">
                 </div>
             HTML;
             $colContent = 'col-md-9 col-lg-10';
@@ -193,7 +195,7 @@ abstract class AudioTrackRenderer implements Renderer {
                             <div class="card-body d-flex flex-column justify-content-between h-100 p-3">
                                 <div>
                                     <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
-                                        <h5 class="card-title fw-bold mb-0">{$this->track->get("title")}</h5>
+                                        <h5 class="card-title fw-bold mb-0">{$this->track->title}</h5>
                                         <div class="d-flex align-items-center gap-2">
                                             {$badge}
                                             {$playBtn}
@@ -222,7 +224,7 @@ abstract class AudioTrackRenderer implements Renderer {
      * @return string Balises HTML du bouton de lecture.
      */
     protected function renderPlayButton() : string {
-        $idTrack = $this->track->get('id');
+        $idTrack = $this->track->id;
         if (empty($idTrack)) return '';
 
         return <<<HTML
@@ -242,7 +244,7 @@ abstract class AudioTrackRenderer implements Renderer {
      * @return string Balises HTML du bouton de suppression.
      */
     protected function renderDeleteButton() : string {
-        $idTrack = $this->track->get('id');
+        $idTrack = $this->track->id;
         if (empty($idTrack)) {
             return '';
         }
@@ -278,7 +280,7 @@ abstract class AudioTrackRenderer implements Renderer {
                 <media-theme-tailwind-audio class="audio-compact">
                     <audio
                         slot="media"
-                        src="{$audioPath}{$this->track->get("filename")}"
+                        src="{$audioPath}{$this->track->filename}"
                         crossorigin="anonymous"
                     ></audio>
                 </media-theme-tailwind-audio>
@@ -287,7 +289,7 @@ abstract class AudioTrackRenderer implements Renderer {
             <media-theme-tailwind-audio class="audio-long">
                 <audio
                     slot="media"
-                    src="{$audioPath}{$this->track->get("filename")}"
+                    src="{$audioPath}{$this->track->filename}"
                     crossorigin="anonymous"
                 ></audio>
             </media-theme-tailwind-audio>
