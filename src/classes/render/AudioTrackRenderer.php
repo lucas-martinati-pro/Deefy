@@ -24,12 +24,17 @@ abstract class AudioTrackRenderer implements Renderer {
      */
     public const string IMAGE_PATH = '../image/covers/';
 
+    /**
+     * Identifiant de la playlist parente si la piste est rendue dans le contexte d'une playlist.
+     */
     protected ?int $playlistId;
 
     /**
      * Initialise le renderer avec la piste audio à afficher.
+     * Initialise le renderer avec la piste audio à afficher et son contexte de playlist optionnel.
      *
      * @param AudioTrack $track Piste audio à restituer en HTML.
+     * @param int|null $playlistId Identifiant optionnel de la playlist parente.
      */
     public function __construct(AudioTrack $track, ?int $playlistId = null) {
         $this->track = $track;

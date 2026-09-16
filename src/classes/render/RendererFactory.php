@@ -14,6 +14,7 @@ class RendererFactory {
      * Instancie et retourne le renderer adéquat pour l'objet donné en argument.
      *
      * @param object $element L'objet à restituer en HTML (AlbumTrack, PodcastTrack ou AudioList).
+     * @param int|null $playlistId Identifiant optionnel de la playlist parente.
      * @return Renderer|null Instance de Renderer adaptée, ou null si l'objet n'est pas pris en charge.
      */
     public static function getRenderer(object $element, ?int $playlistId = null) : ?Renderer {

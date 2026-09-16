@@ -21,6 +21,8 @@ class TracksAction extends Action {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
             return HtmlHelper::authRequired(message: $e->getMessage());
+        } catch (AuthnException) {
+            return HtmlHelper::authRequired();
         }
 
         $r = DeefyRepository::getInstance();

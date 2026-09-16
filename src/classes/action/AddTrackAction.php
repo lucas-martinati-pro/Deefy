@@ -15,6 +15,7 @@ use iutnc\deefy\exception\AuthnException;
 
 /**
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist.
+ * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
  */
 class AddTrackAction extends Action {
     /**
@@ -33,6 +34,8 @@ class AddTrackAction extends Action {
             AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
             return HtmlHelper::authRequired(message: $e->getMessage());
+        } catch (AuthnException) {
+            return HtmlHelper::authRequired();
         }
 
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
@@ -193,6 +196,8 @@ class AddTrackAction extends Action {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException $e) {
             return HtmlHelper::authRequired(message: $e->getMessage());
+        } catch (AuthnException) {
+            return HtmlHelper::authRequired();
         }
 
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;

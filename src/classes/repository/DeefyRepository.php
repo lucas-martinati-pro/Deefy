@@ -209,8 +209,11 @@ class DeefyRepository {
 
     /**
      * Récupère l'ensemble des pistes enregistrées en base de données.
+     * Récupère la liste des identifiants des pistes d'un utilisateur dans la table `user2track`.
      *
      * @return int[] Liste de toutes les pistes.
+     * @param int $idUser Identifiant de l'utilisateur.
+     * @return int[] Liste des identifiants de pistes.
      */
     public function findTracksIdsByUserId(int $idUser) : array {
         $stmt = $this->pdo->prepare(<<<SQL
@@ -475,8 +478,11 @@ class DeefyRepository {
 
     /**
      * Supprime une piste audio de la table `track` ainsi que toutes ses associations dans `playlist2track`.
+     * Retire une piste audio d'une playlist spécifique dans la table de liaison `playlist2track`.
      *
      * @param int $idTrack Identifiant de la piste audio à supprimer.
+     * @param int $idPlaylist Identifiant de la playlist.
+     * @param int $idTrack Identifiant de la piste audio à retirer.
      * @return void
      */
     public function removeTrackFromPlaylist(int $idPlaylist, int $idTrack) : void {
@@ -491,6 +497,7 @@ class DeefyRepository {
 
     /**
      * Supprime une piste audio de la table `track` ainsi que toutes ses associations dans `playlist2track`.
+     * Supprime définitivement une piste audio de la table `track` ainsi que de `playlist2track` et `user2track`.
      *
      * @param int $idTrack Identifiant de la piste audio à supprimer.
      * @return void
