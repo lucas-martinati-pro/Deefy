@@ -4,17 +4,41 @@ namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
 
+/**
+ * Classe abstraite de base pour le rendu HTML des pistes audio.
+ */
 abstract class AudioTrackRenderer implements Renderer {
 
+    /**
+     * Piste audio à afficher.
+     */
     protected AudioTrack $track;
 
+    /**
+     * Chemin relatif vers le répertoire de stockage des fichiers audio.
+     */
     public const string AUDIO_PATH = '../audio/';
+
+    /**
+     * Chemin relatif vers le répertoire de stockage des pochettes/images.
+     */
     public const string IMAGE_PATH = '../image/covers/';
 
+    /**
+     * Initialise le renderer avec la piste audio à afficher.
+     *
+     * @param AudioTrack $track Piste audio à restituer en HTML.
+     */
     public function __construct(AudioTrack $track) {
         $this->track = $track;
     }
 
+    /**
+     * Restitue la piste selon le mode demandé (Renderer::COMPACT ou Renderer::LONG).
+     *
+     * @param int $selector Mode d'affichage (COMPACT ou LONG).
+     * @return string Balises HTML générées.
+     */
     #[\Override]
     public function render(int $selector) : string {
         return ($selector === Renderer::LONG) ? $this->renderLong() : $this->renderCompact();
@@ -22,17 +46,20 @@ abstract class AudioTrackRenderer implements Renderer {
 
     /**
      * Retourne le sous-titre de la piste (ex: auteur pour un podcast, artiste/album pour un album).
+     *
+     * @return string Balises HTML du sous-titre.
      */
     abstract protected function getSubtitle() : string;
 
     /**
      * Retourne le badge HTML identifiant le type de piste (Podcast, Album/numéro de piste, etc.).
+     *
+     * @return string Balises HTML du badge.
      */
     abstract protected function getBadge() : string;
 
     /**
      * Retourne la liste des métadonnées sous forme de tableau de chaînes.
-     * Les sous-classes peuvent l'enrichir via array_merge(..., parent::getDetails()).
      *
      * @return string[]
      */
@@ -53,7 +80,9 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     /**
-     * Rendu compact : card verticale
+     * Rendu compact : carte verticale pour affichage en grille.
+     *
+     * @return string Balises HTML de la carte compacte.
      */
     protected function renderCompact() : string {
         $details = $this->getDetails();
@@ -110,7 +139,9 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     /**
-     * Rendu long : carte horizontale
+     * Rendu long : carte horizontale détaillée avec informations complètes et lecteur audio.
+     *
+     * @return string Balises HTML de la carte longue.
      */
     protected function renderLong() : string {
         $details = $this->getDetails();
@@ -179,7 +210,9 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     /**
-     * Bouton pour lire la piste dans le lecteur principal du footer
+     * Génère le formulaire avec le bouton pour écouter la piste dans le lecteur principal persistant.
+     *
+     * @return string Balises HTML du bouton de lecture.
      */
     protected function renderPlayButton() : string {
         $idTrack = $this->track->get('id');
@@ -197,7 +230,9 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     /**
-     * Bouton de suppression de la piste
+     * Génère le lien/bouton de suppression de la piste.
+     *
+     * @return string Balises HTML du bouton de suppression.
      */
     protected function renderDeleteButton() : string {
         $idTrack = $this->track->get('id');
@@ -214,6 +249,12 @@ abstract class AudioTrackRenderer implements Renderer {
         HTML;
     }
 
+    /**
+     * Génère le composant lecteur audio.
+     *
+     * @param int $selector Mode d'affichage souhaité (Renderer::COMPACT ou Renderer::LONG).
+     * @return string Balises HTML du lecteur audio.
+     */
     protected function renderAudioPlayer(int $selector) : string {
         $audioPath = self::AUDIO_PATH;
         if ($selector === Renderer::COMPACT) {

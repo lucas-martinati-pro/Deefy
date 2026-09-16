@@ -19,14 +19,30 @@ use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\AudioTrackRenderer;
 use iutnc\deefy\repository\DeefyRepository;
 
+/**
+ * Contrôleur de l'affichage.
+ */
 class Dispatcher {
+    /**
+     * Identifiant textuel de l'action à exécuter (ex: 'playlists', 'signin', etc.).
+     */
     private string $action;
 
+    /**
+     * Initialise le Dispatcher avec le nom de l'action demandée.
+     *
+     * @param string $action Nom de l'action (par défaut 'default').
+     */
     public function __construct(string $action) {
         $this->action = $action;
     }
 
-    public function run(): void {
+    /**
+     * Point d'entrée de l'exécution du Dispatcher.
+     *
+     * @return void
+     */
+    public function run() : void {
         $this->handleUserActions();
 
         $html = match ($this->action) {
@@ -45,7 +61,12 @@ class Dispatcher {
         $this->renderPage($html);
     }
 
-    private function handleUserActions() {
+    /**
+     * Gère les soumissions de formulaires liées au lecteur persistant (ajout ou suppression de piste en session).
+     *
+     * @return void
+     */
+    private function handleUserActions() : void {
         // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
         if (isset($_POST['add-player-track'])) {
             $r = DeefyRepository::getInstance();
@@ -67,7 +88,13 @@ class Dispatcher {
         }
     }
 
-    private function renderPage(string $html): void {
+    /**
+     * Génère et affiche la structure HTML complète de la page web.
+     *
+     * @param string $html Contenu HTML généré par l'action courante.
+     * @return void
+     */
+    private function renderPage(string $html) : void {
         $navbar = $this->renderNavbar();
         $player = $this->renderFooterPlayer();
         $theme = (($_COOKIE['theme'] ?? 'dark') === 'light') ? 'light' : 'dark';
@@ -120,7 +147,12 @@ class Dispatcher {
         HTML;
     }
 
-    private function renderNavbar(): string {
+    /**
+     * Génère le code HTML de la barre de navigation Bootstrap.
+     *
+     * @return string Balises HTML de la barre de navigation.
+     */
+    private function renderNavbar() : string {
         $toggleThemeButton = <<<HTML
             <button id="toggle-theme" class="btn btn-outline-secondary btn-sm d-flex align-items-center" title="Changer de thème">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/circle-half/ -->
@@ -202,6 +234,11 @@ class Dispatcher {
         }
     }
 
+    /**
+     * Génère la barre de lecture audio fixe en pied de page si une piste est active en session.
+     *
+     * @return string Balises HTML du lecteur fixe en bas d'écran ou chaîne vide.
+     */
     private function renderFooterPlayer() : string {
         if (isset($_SESSION['playerTrack'])) {
             $track = $_SESSION['playerTrack'];

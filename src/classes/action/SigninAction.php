@@ -6,7 +6,11 @@ use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action gérant l'authentification (connexion) des utilisateurs.
+ */
 class SigninAction extends Action {
+    #[\Override]
     public function get() : string {
         try {
             $user = AuthnProvider::getSignedInUser();
@@ -59,6 +63,7 @@ class SigninAction extends Action {
         }
     }
 
+    #[\Override]
     public function post() : string {
         if (!isset($_POST['email'], $_POST['password'])) {
             return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=signin", title: "Échec de la connexion");

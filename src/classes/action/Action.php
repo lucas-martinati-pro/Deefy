@@ -2,32 +2,57 @@
 
 namespace iutnc\deefy\action;
 
-abstract class Action
-{
+/**
+ * Classe abstraite de base pour l'ensemble des actions de l'application.
+ */
+abstract class Action {
     protected ?string $http_method = null;
     protected ?string $hostname = null;
     protected ?string $script_name = null;
 
+    /**
+     * Constructeur d'action.
+     * Initialise les attributs d'environnement à partir des variables serveur.
+     */
     public function __construct() {
         $this->http_method = $_SERVER['REQUEST_METHOD'];
         $this->hostname = $_SERVER['HTTP_HOST'];
         $this->script_name = $_SERVER['SCRIPT_NAME'];
     }
 
-    public function execute(): string {
+    /**
+     * Exécute l'action appropriée en appelant get() ou post() selon la méthode HTTP.
+     *
+     * @return string Balises HTML générées en réponse à la requête.
+     */
+    public function execute() : string {
         switch ($this->http_method) {
             case 'GET' : return $this->get();
             case 'POST' : return $this->post();
             default : return '';
         }
-
     }
 
+    /**
+     * Permet d'invoquer directement l'instance de l'action comme une fonction.
+     *
+     * @return string Résultat de l'exécution de l'action.
+     */
     public function __invoke() : string {
         return $this->execute();
     }
 
+    /**
+     * Traite les requêtes HTTP de type GET.
+     *
+     * @return string Code HTML généré pour l'affichage (formulaire, vue, etc.).
+     */
     abstract public function get() : string;
 
+    /**
+     * Traite les requêtes HTTP de type POST.
+     *
+     * @return string Code HTML résultant du traitement (succès, redirection, erreur).
+     */
     abstract public function post() : string;
 }

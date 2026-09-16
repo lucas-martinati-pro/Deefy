@@ -4,10 +4,21 @@ namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\lists\AudioList;
 
+/**
+ * Moteur de rendu HTML pour les listes audio (AudioList, Playlist, Album).
+ */
 class AudioListRenderer implements Renderer {
 
+    /**
+     * Liste audio à afficher.
+     */
     protected AudioList $audioList;
 
+    /**
+     * Initialise le renderer avec la liste audio à afficher.
+     *
+     * @param AudioList $audioList La liste audio à restituer.
+     */
     public function __construct(AudioList $audioList) {
         $this->audioList = $audioList;
     }

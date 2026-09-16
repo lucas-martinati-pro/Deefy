@@ -11,8 +11,18 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist.
+ */
 class AddTrackAction extends Action {
+    /**
+     * Répertoire de destination pour les fichiers audio MP3.
+     */
     private const string AUDIODIR = __DIR__ . '/../../../audio';
+
+    /**
+     * Répertoire de destination pour les images de couverture.
+     */
     private const string IMAGEDIR = __DIR__ . '/../../../image/covers';
 
     #[\Override]
@@ -322,7 +332,11 @@ class AddTrackAction extends Action {
     }
 
     /**
-     * Enregistre le fichier MP3 téléversé dans le dossier audio.
+     * Enregistre le fichier MP3 téléversé sous un nom aléatoire unique dans le dossier audio.
+     *
+     * @param array $file Tableau représentant le fichier issu de $_FILES['userfile'].
+     * @param string|null $uploadError Référence recevant le libellé de l'erreur en cas d'échec.
+     * @return string|null Nom du fichier enregistré sur le serveur ou null en cas d'erreur.
      */
     private static function saveAudioFile(array $file, ?string &$uploadError = null) : ?string {
         if (!isset($file['error'])) {
@@ -368,7 +382,11 @@ class AddTrackAction extends Action {
     }
 
     /**
-     * Enregistre l'image (priorité aux métadonnées ID3, sinon fichier téléversé) dans le dossier image.
+     * Enregistre l'image de couverture (priorité aux métadonnées ID3, sinon fichier téléversé) dans le dossier image.
+     *
+     * @param array $fileInfo Tableau d'analyse des métadonnées getID3.
+     * @param array|null $coverFile Fichier image optionnel envoyé via le formulaire ($_FILES['coverfile']).
+     * @return string|null Nom du fichier image généré ou null si aucune couverture n'est fournie.
      */
     private static function saveCoverImage(array $fileInfo, ?array $coverFile) : ?string {
         if (!is_dir(self::IMAGEDIR)) {

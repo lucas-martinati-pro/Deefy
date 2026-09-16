@@ -2,10 +2,18 @@
 
 namespace iutnc\deefy\render;
 
+/**
+ * Classe d'assistance pour la génération composants HTML Bootstrap.
+ */
 class HtmlHelper {
 
     /**
-     * Génère une alerte Bootstrap (simple texte ou liste <ul>)
+     * Génère une alerte Bootstrap (texte simple ou liste non ordonnée).
+     *
+     * @param string|null $type Type d'alerte ('success', 'warning', 'danger', 'info'). Par défaut 'info'.
+     * @param string|array|null $content Texte unique ou tableau de messages à afficher.
+     * @param bool|null $dismissible True pour inclure un bouton de fermeture de l'alerte.
+     * @return string Balises HTML de l'alerte Bootstrap.
      */
     public static function alert(?string $type = null, string|array|null $content = null, ?bool $dismissible = null) : string {
         $type = $type ?? 'info';
@@ -45,7 +53,14 @@ class HtmlHelper {
     }
 
     /**
-     * Écran d'erreur générique
+     * Génère un écran d'erreur générique complet avec bouton de retour.
+     *
+     * @param string|null $title Titre affiché en tête de page (défaut: 'Erreur').
+     * @param string|array|null $message Message d'erreur ou liste d'erreurs.
+     * @param string|null $backUrl URL du lien de retour (défaut: 'main.php').
+     * @param string|null $backLabel Libellé du bouton de retour (défaut: 'Retour à l'accueil').
+     * @param string|null $type Type d'alerte Bootstrap ('danger', 'warning', etc. défaut: 'danger').
+     * @return string Balises HTML de la page d'erreur.
      */
     public static function errorPage(?string $title = null, string|array|null $message = null, ?string $backUrl = null, ?string $backLabel = null, ?string $type = null) : string {
         $title = $title ?? "Erreur";
@@ -77,7 +92,14 @@ class HtmlHelper {
     }
 
     /**
-     * Écran d'accès refusé quand l'utilisateur n'est pas connecté (401 Unauthorized)
+     * Génère un écran d'accès refusé quand l'utilisateur n'est pas connecté.
+     *
+     * @param string|null $message Message explicatif (défaut: 'Vous devez être connecté pour accéder à cette page.').
+     * @param string|null $loginUrl URL vers la page de connexion (défaut: '?action=signin').
+     * @param string|null $loginLabel Libellé du bouton de connexion (défaut: 'Se connecter').
+     * @param string|null $backUrl URL du bouton retour (défaut: 'main.php').
+     * @param string|null $backLabel Libellé du bouton retour (défaut: 'Retour à l'accueil').
+     * @return string Balises HTML de l'écran d'accès refusé.
      */
     public static function authRequired(?string $message = null, ?string $loginUrl = null, ?string $loginLabel = null, ?string $backUrl = null, ?string $backLabel = null) : string {
         $message = $message ?? "Vous devez être connecté pour accéder à cette page.";
@@ -105,7 +127,12 @@ class HtmlHelper {
     }
 
     /**
-     * Écran d'accès interdit pour utilisateur connecté sans droits suffisants (403 Forbidden)
+     * Génère un écran d'accès interdit pour un utilisateur sans droits suffisants.
+     *
+     * @param string|null $message Message d'erreur explicatif.
+     * @param string|null $backUrl URL de retour (défaut: '?action=playlists').
+     * @param string|null $backLabel Libellé du bouton retour (défaut: 'Retour à mes playlists').
+     * @return string Balises HTML de l'écran d'interdiction.
      */
     public static function forbidden(?string $message = null, ?string $backUrl = null, ?string $backLabel = null) : string {
         $message = $message ?? "Vous n'êtes pas autorisé à effectuer cette action.";
@@ -128,7 +155,13 @@ class HtmlHelper {
     }
 
     /**
-     * Écran pour ressource introuvable (404 Not Found)
+     * Génère un écran pour ressource introuvable.
+     *
+     * @param string|null $item Nom de la ressource introuvable (ex: 'Playlist', 'Piste').
+     * @param string|null $message Message d'erreur explicatif.
+     * @param string|null $backUrl URL du lien de retour (défaut: '?action=playlists').
+     * @param string|null $backLabel Libellé du bouton de retour.
+     * @return string Balises HTML de la page 404.
      */
     public static function notFound(?string $item = null, ?string $message = null, ?string $backUrl = null, ?string $backLabel = null) : string {
         $item = $item ?? "Ressource";
@@ -152,7 +185,13 @@ class HtmlHelper {
     }
 
     /**
-     * Écran d'erreur de formulaire avec bouton retour au formulaire
+     * Génère un écran d'erreur de formulaire avec bouton de retour arrière vers le formulaire.
+     *
+     * @param string|array|null $errors Message d'erreur unique ou tableau de messages.
+     * @param string|null $backUrl URL de retour (par défaut: 'javascript:history.back()').
+     * @param string|null $backLabel Libellé du bouton de retour.
+     * @param string|null $title Titre de l'écran d'erreur.
+     * @return string Balises HTML de l'écran d'erreur de formulaire.
      */
     public static function formError(string|array|null $errors = null, ?string $backUrl = null, ?string $backLabel = null, ?string $title = null) : string {
         $errors = $errors ?? "Une erreur est survenue lors de la validation du formulaire.";
@@ -176,7 +215,13 @@ class HtmlHelper {
     }
 
     /**
-     * Écran de confirmation de succès
+     * Génère un écran de confirmation de succès avec bouton d'action suivante.
+     *
+     * @param string|null $title Titre du message de succès.
+     * @param string|null $message Message de confirmation textuel ou HTML.
+     * @param string|null $nextUrl URL de redirection ou d'action suivante (défaut: '?action=playlists').
+     * @param string|null $nextLabel Libellé du bouton d'action suivante.
+     * @return string Balises HTML de la page de confirmation de succès.
      */
     public static function successPage(?string $title = null, ?string $message = null, ?string $nextUrl = null, ?string $nextLabel = null) : string {
         $title = $title ?? "Opération réussie";

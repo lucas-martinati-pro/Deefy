@@ -2,10 +2,8 @@
 
 namespace iutnc\deefy\render;
 
-use iutnc\deefy\audio\tracks\AlbumTrack;
-
 /**
- * @property AlbumTrack $track
+ * Moteur de rendu spécifique pour les morceaux d'album (AlbumTrack).
  */
 class AlbumTrackRenderer extends AudioTrackRenderer {
 

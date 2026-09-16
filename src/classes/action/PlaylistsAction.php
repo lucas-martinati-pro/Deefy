@@ -9,6 +9,9 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\render\AudioTrackRenderer;
 
+/**
+ * Action listant l'ensemble des playlists de l'utilisateur connecté.
+ */
 class PlaylistsAction extends Action {
     #[\Override]
     public function get() : string {

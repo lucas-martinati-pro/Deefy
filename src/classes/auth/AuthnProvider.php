@@ -5,7 +5,20 @@ namespace iutnc\deefy\auth;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
 
+/**
+ * Fournisseur d'authentification.
+ */
 class AuthnProvider {
+    /**
+     * Authentifie un utilisateur à partir de son email et mot de passe.
+     *
+     * En cas de succès, stocke l'utilisateur sérialisé dans la session ($_SESSION['user']).
+     *
+     * @param string $email Adresse email de connexion.
+     * @param string $password Mot de passe en clair.
+     * @return void
+     * @throws AuthnException Si les identifiants sont invalides ou inexistants.
+     */
     public static function signin(string $email, string $password) : void {
         $r = DeefyRepository::getInstance();
 
@@ -18,6 +31,17 @@ class AuthnProvider {
         $_SESSION['user'] = serialize($user);
     }
 
+    /**
+     * Enregistre un nouvel utilisateur après validation de l'email et du mot de passe.
+     *
+     * Exigences pour le mot de passe : au moins 10 caractères, 1 majuscule, 1 minuscule,
+     * 1 chiffre et 1 caractère spécial.
+     *
+     * @param string $email Adresse email du nouvel utilisateur.
+     * @param string $password Mot de passe choisi.
+     * @return void
+     * @throws AuthnException Si l'email est invalide, déjà utilisé, ou si le mot de passe ne respecte pas les critères de sécurité.
+     */
     public static function register(string $email, string $password) : void {
         $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
@@ -52,6 +76,12 @@ class AuthnProvider {
         $r->adduser($email, $password);
     }
 
+    /**
+     * Récupère le tableau de données de l'utilisateur actuellement connecté.
+     *
+     * @return array Tableau associatif contenant les informations de l'utilisateur (id, email, passwd, role).
+     * @throws AuthnException Si aucun utilisateur n'est connecté en session.
+     */
     public static function getSignedInUser() : array {
         if (!isset($_SESSION['user']) || !isset(unserialize($_SESSION['user'])['id'])) {
             throw new AuthnException("Vous devez être connecté pour accéder à cette page.");

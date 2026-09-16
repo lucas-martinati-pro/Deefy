@@ -2,10 +2,8 @@
 
 namespace iutnc\deefy\render;
 
-use iutnc\deefy\audio\tracks\PodcastTrack;
-
 /**
- * @property PodcastTrack $track
+ * Moteur de rendu spécifique pour les épisodes de podcast (PodcastTrack).
  */
 class PodcastTrackRenderer extends AudioTrackRenderer {
 

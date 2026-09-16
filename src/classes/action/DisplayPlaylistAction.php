@@ -9,8 +9,11 @@ use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action permettant d'afficher le détail d'une playlist et ses morceaux.
+ */
 class DisplayPlaylistAction extends Action {
-        #[\Override]
+    #[\Override]
     public function get() : string {
         // CAS 1 : Aucun ID -> on affiche la playlist en session
         if (!isset($_GET['id'])) {

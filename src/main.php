@@ -2,6 +2,7 @@
 
 use iutnc\deefy\dispatch\Dispatcher;
 use iutnc\deefy\repository\DeefyRepository;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

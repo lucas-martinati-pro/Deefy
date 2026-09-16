@@ -11,6 +11,9 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action permettant la création d'une nouvelle playlist.
+ */
 class AddPlaylistAction extends Action {
     #[\Override]
     public function get() : string {

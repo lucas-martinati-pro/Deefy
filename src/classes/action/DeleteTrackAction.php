@@ -8,6 +8,9 @@ use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action permettant la suppression d'une piste audio individuelle.
+ */
 class DeleteTrackAction extends Action {
     #[\Override]
     public function get() : string {
@@ -62,6 +65,11 @@ class DeleteTrackAction extends Action {
         );
     }
 
+    /**
+     * Valide l'état de connexion, l'existence de l'identifiant de piste et la propriété du morceau.
+     *
+     * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
+     */
     private function verif() : string {
         try {
             AuthnProvider::getSignedInUser();

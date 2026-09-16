@@ -8,9 +8,12 @@ use iutnc\deefy\auth\Authz;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action gérant la suppression d'une playlist et de son contenu en cascade.
+ */
 class DeletePlaylistAction extends Action {
     #[\Override]
-    public function get() : String {
+    public function get() : string {
         $error = $this->verif();
         if ($error != '') return $error;
 
@@ -41,7 +44,7 @@ class DeletePlaylistAction extends Action {
     }
 
     #[\Override]
-    public function post() : String {
+    public function post() : string {
         $error = $this->verif();
         if ($error != '') return $error;
 
@@ -63,6 +66,11 @@ class DeletePlaylistAction extends Action {
         );
     }
 
+    /**
+     * Valide l'état de connexion de l'utilisateur, l'identifiant de la playlist et les permissions de suppression.
+     *
+     * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
+     */
     private function verif() : string {
         try {
             AuthnProvider::getSignedInUser();

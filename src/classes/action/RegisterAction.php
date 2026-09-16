@@ -6,6 +6,9 @@ use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
+/**
+ * Action gérant l'inscription de nouveaux utilisateurs sur Deefy.
+ */
 class RegisterAction extends Action {
 
     #[\Override]

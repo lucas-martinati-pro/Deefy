@@ -6,6 +6,9 @@ use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
+/**
+ * Action par défaut affichant la page d'accueil de l'application Deefy.
+ */
 class DefaultAction extends Action {
     #[\Override]
     public function get() : string {
