@@ -8,30 +8,39 @@
 
 ## 🚀 Fonctionnalités complémentaires & Améliorations
 
-### 1. Lecteur audio persistant en pied de page
-Barre de lecture fixe en bas de l'écran qui permet d'écouter un morceau tout en naviguant librement sur le site :
-- **Lancement à la demande** : Bouton « Lire » sur chaque piste pour l'envoyer directement dans le lecteur (`$_SESSION['playerTrack']`).
-- **Fermeture du lecteur** : Bouton croix permettant d'arrêter la lecture et de retirer la piste de la session sans recharger ni changer de page.
-- **Lecture continue** : La lecture ne s'interrompt pas lors de la navigation ou de la consultation d'autres playlists.
+### 1. Lecteur audio persistant
+- **Barre fixe** : La barre reste en bas de l'écran.
+- **Bouton Lire** : Le bouton envoie la piste dans le lecteur.
+- **Bouton croix** : Le bouton arrête la lecture et ferme le lecteur.
+- **Lecture continue** : La musique continue pendant la navigation.
 
-### 2. Gestion de session & Authentification
-- **Déconnexion propre (`SignoutAction`)** : Page de confirmation et nettoyage complet de la session (utilisateur, playlist et lecteur).
-- **Connexion automatique** : Option cochée par défaut à l'inscription pour connecter l'utilisateur immédiatement.
-- **Navigation sécurisée** : Redirection et messages d'information si un utilisateur connecté tente de revenir sur la page de connexion ou d'inscription.
+### 2. Session & Authentification
+- **Déconnexion** : La page confirme la déconnexion et vide la session.
+- **Connexion automatique** : L'utilisateur est connecté juste après l'inscription.
+- **Pages protégées** : Les pages demandent une connexion.
+- **Redirection** : L'utilisateur connecté est redirigé depuis connexion et inscription.
 
-### 3. Interface & Ergonomie (Bootstrap 5 & JavaScript)
-- **Thème Sombre / Clair persistant** : Bascule dynamique en JavaScript et mémorisation du choix par cookie.
-- **Barre de navigation responsive** : Menu adapté au statut de connexion (avec affichage de l'email du compte connecté).
-- **Affichage moderne en cartes** : Présentation visuelle claire avec pochettes, badges (Album / Podcast) et durée formatée.
-- **Gestion uniforme des alertes (`HtmlHelper`)** : Retours visuels clairs et cohérents (succès, erreurs, confirmations).
+### 3. Interface & Ergonomie
+- **Thème sombre / clair** : Le bouton change le thème.
+- **Choix mémorisé** : Le choix est gardé dans un cookie.
+- **Menu adapté** : Le menu change si l'utilisateur est connecté.
+- **Email affiché** : L'email est affiché dans la navigation.
+- **Cartes** : Les pistes sont affichées en cartes avec pochette.
+- **Badges** : Le type Album ou Podcast est affiché.
+- **Alertes** : Les messages de succès et d'erreur sont uniformes.
 
 ### 4. Sécurité & Fichiers
-- **Exigences de mot de passe** : 10 caractères minimum avec majuscule, minuscule, chiffre et caractère spécial.
-- **Contrôle d'accès (`Authz`)** : Vérification stricte que l'utilisateur est bien propriétaire des playlists qu'il consulte ou modifie (avec support du rôle Administrateur).
-- **Upload sécurisé** : Contrôle des types MIME (audio MP3, images) et génération de noms de fichiers uniques pour éviter les écrasements.
+- **Mot de passe fort** : Le mot de passe demande 10 caractères minimum.
+- **Règles** : Il faut une majuscule, une minuscule, un chiffre et un caractère spécial.
+- **Propriétaire vérifié** : Seul le propriétaire peut modifier sa playlist.
+- **Administrateur** : L'administrateur peut modifier toutes les playlists.
+- **Upload contrôlé** : Seuls les MP3 et les images sont acceptés.
+- **Noms uniques** : Les fichiers ont un nom unique.
 
-### 5. Extraction automatique des métadonnées (getID3)
-- **Analyse automatique des fichiers MP3** : Détection et remplissage automatique de la durée exacte, du genre musical et extraction de la pochette intégrée dans le fichier audio.
+### 5. Métadonnées automatiques
+- **Analyse MP3** : La durée est détectée automatiquement.
+- **Genre détecté** : Le genre est rempli automatiquement.
+- **Pochette extraite** : La pochette est extraite du fichier MP3.
 
 ### 6. Pistes personnelles & Gestion des suppressions
 - **Page « Mes pistes »** : La page affiche toutes les pistes de l'utilisateur.
