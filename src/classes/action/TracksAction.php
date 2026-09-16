@@ -19,8 +19,6 @@ class TracksAction extends Action {
     public function get() : string {
         try {
             $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
         } catch (AuthnException) {
             return HtmlHelper::authRequired();
         }

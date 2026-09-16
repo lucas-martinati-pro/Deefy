@@ -14,7 +14,6 @@ use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
 /**
- * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist.
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
  */
 class AddTrackAction extends Action {
@@ -32,8 +31,6 @@ class AddTrackAction extends Action {
     public function get() : string {
         try {
             AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
         } catch (AuthnException) {
             return HtmlHelper::authRequired();
         }
@@ -194,8 +191,6 @@ class AddTrackAction extends Action {
         $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
         } catch (AuthnException) {
             return HtmlHelper::authRequired();
         }

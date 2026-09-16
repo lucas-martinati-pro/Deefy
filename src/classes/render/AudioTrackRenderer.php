@@ -30,7 +30,6 @@ abstract class AudioTrackRenderer implements Renderer {
     protected ?int $playlistId;
 
     /**
-     * Initialise le renderer avec la piste audio à afficher.
      * Initialise le renderer avec la piste audio à afficher et son contexte de playlist optionnel.
      *
      * @param AudioTrack $track Piste audio à restituer en HTML.

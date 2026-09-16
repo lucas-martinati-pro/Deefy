@@ -9,7 +9,6 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 
 /**
- * Action permettant la suppression d'une piste audio individuelle.
  * Action permettant la suppression définitive d'une piste ou son retrait d'une playlist.
  */
 class DeleteTrackAction extends Action {
