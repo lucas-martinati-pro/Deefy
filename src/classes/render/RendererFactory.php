@@ -16,9 +16,9 @@ class RendererFactory {
      * @param object $element L'objet à restituer en HTML (AlbumTrack, PodcastTrack ou AudioList).
      * @return Renderer|null Instance de Renderer adaptée, ou null si l'objet n'est pas pris en charge.
      */
-    public static function getRenderer(object $element) : ?Renderer {
-        if ($element instanceof AlbumTrack) return new AlbumTrackRenderer($element);
-        else if ($element instanceof PodcastTrack) return new PodcastTrackRenderer($element);
+    public static function getRenderer(object $element, ?int $playlistId = null) : ?Renderer {
+        if ($element instanceof AlbumTrack) return new AlbumTrackRenderer($element, $playlistId);
+        else if ($element instanceof PodcastTrack) return new PodcastTrackRenderer($element, $playlistId);
         else if ($element instanceof AudioList) return new AudioListRenderer($element);
         else return null;
     }

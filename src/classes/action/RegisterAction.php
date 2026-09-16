@@ -83,16 +83,16 @@ class RegisterAction extends Action {
             return HtmlHelper::successPage(
                 title: "Connexion réussie",
                 message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
-                nextUrl: "?action=playlists",
-                nextLabel: "Accéder à mes playlists"
+                backUrl: "?action=playlists",
+                backLabel: "Accéder à mes playlists"
             );
         }
 
         return HtmlHelper::successPage(
             title: "Inscription réussie",
             message: "Votre compte a bien été créé.",
-            nextUrl: "?action=signin",
-            nextLabel: "Se connecter"
+            backUrl: "?action=signin",
+            backLabel: "Se connecter"
         );
     }
 }

@@ -219,15 +219,15 @@ class HtmlHelper {
      *
      * @param string|null $title Titre du message de succès.
      * @param string|null $message Message de confirmation textuel ou HTML.
-     * @param string|null $nextUrl URL de redirection ou d'action suivante (défaut: '?action=playlists').
-     * @param string|null $nextLabel Libellé du bouton d'action suivante.
+     * @param string|null $backUrl URL de redirection ou d'action suivante (défaut: '?action=playlists').
+     * @param string|null $backLabel Libellé du bouton d'action suivante.
      * @return string Balises HTML de la page de confirmation de succès.
      */
-    public static function successPage(?string $title = null, ?string $message = null, ?string $nextUrl = null, ?string $nextLabel = null) : string {
+    public static function successPage(?string $title = null, ?string $message = null, ?string $backUrl = null, ?string $backLabel = null) : string {
         $title = $title ?? "Opération réussie";
         $message = $message ?? "L'opération s'est déroulée avec succès.";
-        $nextUrl = $nextUrl ?? "?action=playlists";
-        $nextLabel = $nextLabel ?? "Retour à mes playlists";
+        $backUrl = $backUrl ?? "?action=playlists";
+        $backLabel = $backLabel ?? "Retour à mes playlists";
 
         $alert = self::alert('success', $message);
 
@@ -237,8 +237,9 @@ class HtmlHelper {
             </h1>
             {$alert}
             <p class="mt-3">
-                <a class="btn btn-primary d-inline-flex align-items-center" href="{$nextUrl}">
-                    <i class="bi bi-arrow-left me-2"></i>{$nextLabel}
+                <a class="btn btn-primary d-inline-flex align-items-center" href="{$backUrl}">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    {$backLabel}
                 </a>
             </p>
         HTML;

@@ -32,6 +32,7 @@ class AudioList implements Iterator {
 
     /**
      * Tableau des pistes audio de la liste.
+     * @var AudioTrack[]
      */
     protected array $tracks;
 

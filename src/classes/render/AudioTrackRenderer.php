@@ -24,13 +24,16 @@ abstract class AudioTrackRenderer implements Renderer {
      */
     public const string IMAGE_PATH = '../image/covers/';
 
+    protected ?int $playlistId;
+
     /**
      * Initialise le renderer avec la piste audio à afficher.
      *
      * @param AudioTrack $track Piste audio à restituer en HTML.
      */
-    public function __construct(AudioTrack $track) {
+    public function __construct(AudioTrack $track, ?int $playlistId = null) {
         $this->track = $track;
+        $this->playlistId = $playlistId;
     }
 
     /**
@@ -240,10 +243,19 @@ abstract class AudioTrackRenderer implements Renderer {
             return '';
         }
 
+        // Si on a un id de playlist -> on affiche "Retirer" avec id_pl
+        if ($this->playlistId !== null) {
+            return <<<HTML
+                <a href="?action=delete-track&id={$idTrack}&id_pl={$this->playlistId}" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-x-circle-fill me-1"></i>
+                    Retirer de la playlist
+                </a>
+            HTML;
+        }
+        // Sinon (Mes pistes) -> on affiche "Supprimer"
         return <<<HTML
             <a href="?action=delete-track&id={$idTrack}" class="btn btn-sm btn-outline-danger">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
-                <i class="bi bi-trash-fill"></i>
+                <i class="bi bi-trash-fill me-1"></i>
                 Supprimer
             </a>
         HTML;

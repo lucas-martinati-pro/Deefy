@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS `track`;
 DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS `playlist2track`;
 DROP TABLE IF EXISTS `user2playlist`;
+DROP TABLE IF EXISTS `user2track`;
 
 CREATE TABLE `playlist` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -102,3 +103,23 @@ INSERT INTO `user2playlist` (`id_user`, `id_pl`) VALUES
     (1,	2),
     (2,	3),
     (3,	4);
+
+CREATE TABLE `user2track` (
+    `id_user` int(11) NOT NULL,
+    `id_track` int(11) NOT NULL,
+    PRIMARY KEY (`id_user`,`id_track`),
+    KEY `id_track` (`id_track`),
+    CONSTRAINT `user2track_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `user2track_ibfk_2` FOREIGN KEY (`id_track`) REFERENCES `track` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `user2track` (`id_user`, `id_track`) VALUES
+    (1,	1),
+    (1,	2),
+    (1,	3),
+    (1,	4),
+    (1,	9),
+    (2,	5),
+    (2,	6),
+    (3,	7),
+    (3,	8);

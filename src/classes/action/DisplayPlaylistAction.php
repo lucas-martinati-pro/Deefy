@@ -45,11 +45,12 @@ class DisplayPlaylistAction extends Action {
 
         $renderer = RendererFactory::getRenderer($playlist);
         $playlistHtml = $renderer ? $renderer->render(Renderer::COMPACT) : '';
+        $idPlaylist = $playlist->id;
 
         return <<<HTML
             {$playlistHtml}
             <p>
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track&id={$idPlaylist}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une piste
                 </a>

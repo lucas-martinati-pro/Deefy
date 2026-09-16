@@ -78,13 +78,13 @@ class DeefyRepository {
         $stmt->execute();
         // fetchAll pour récupéré toutes les lignes et le \PDO::FETCH_ASSOC sert à indexés par le nom des colonnes
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $playlist = [];
+        $playlists = [];
         foreach ($rows as $row) {
             $list = new Playlist($row['nom']);
             $list->set('id', $row['id']);
-            $playlist[] = $list;
+            $playlists[] = $list;
         }
-        return $playlist;
+        return $playlists;
     }
 
     /**
@@ -208,6 +208,24 @@ class DeefyRepository {
     }
 
     /**
+     * Récupère l'ensemble des pistes enregistrées en base de données.
+     *
+     * @return int[] Liste de toutes les pistes.
+     */
+    public function findTracksIdsByUserId(int $idUser) : array {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT id_track
+            FROM user2track
+            WHERE id_user = :id
+        SQL);
+
+        $stmt->execute(['id' => $idUser]);
+
+        // FETCH_COLUMN pour récupérer directement la liste des identifiants de playlists
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    /**
      * Récupère toutes les playlists complètes d'un utilisateur donné.
      *
      * @param int $idUser Identifiant de l'utilisateur.
@@ -228,38 +246,17 @@ class DeefyRepository {
     }
 
     /**
-     * Récupère la liste des identifiants de toutes les pistes appartenant aux playlists d'un utilisateur.
-     *
-     * @param int $idUser Identifiant de l'utilisateur.
-     * @return int[] Tableau des identifiants de morceaux.
-     */
-    public function findTracksIdsByUserId(int $idUser) : array {
-        $stmt = $this->pdo->prepare(<<<SQL
-            SELECT track.id
-            FROM track
-            INNER JOIN playlist2track ON playlist2track.id_track = track.id
-            INNER JOIN user2playlist ON user2playlist.id_pl = playlist2track.id_pl
-            WHERE id_user = :id
-        SQL);
-
-        $stmt->execute(['id' => $idUser]);
-
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    /**
-     * Récupère toutes les pistes audio appartenant aux playlists d'un utilisateur.
+     * Récupère toutes les pistes audio appartenant à un utilisateur.
      *
      * @param int $idUser Identifiant de l'utilisateur.
      * @return AudioTrack[] Tableau des pistes audio.
      */
-    public function findTracksbyUserId(int $idUser) : array {
+    public function findTracksByUserId(int $idUser) : array {
         $stmt = $this->pdo->prepare(<<<SQL
-            SELECT track.*
+            SELECT DISTINCT track.*
             FROM track
-            INNER JOIN playlist2track ON playlist2track.id_track = track.id
-            INNER JOIN user2playlist ON user2playlist.id_pl = playlist2track.id_pl
-            WHERE user2playlist.id_user = :id
+            INNER JOIN user2track ON user2track.id_track = track.id
+            WHERE user2track.id_user = :id
         SQL);
 
         $stmt->execute(['id' => $idUser]);
@@ -418,6 +415,21 @@ class DeefyRepository {
     }
 
     /**
+     * Associe une piste audio à un utilisateur.
+     *
+     * @param int $idUser Identifiant de l'utilisateur.
+     * @param int $idTrack Identifiant de la piste audio.
+     * @return void
+     */
+    public function saveTrack2User(int $idUser, int $idTrack) : void {
+        $stmt = $this->pdo->prepare(<<<SQL
+            INSERT INTO user2track (id_user, id_track)
+            VALUES (:idUser, :idTrack)
+        SQL);
+        $stmt->execute(['idUser' => $idUser, 'idTrack' => $idTrack]);
+    }
+
+    /**
      * Associe une piste audio à une playlist en calculant son numéro d'ordre dans la liste.
      *
      * @param int $idPlaylist Identifiant de la playlist.
@@ -467,10 +479,33 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio à supprimer.
      * @return void
      */
+    public function removeTrackFromPlaylist(int $idPlaylist, int $idTrack) : void {
+        // Supprimer les références de ce morceau dans toutes les playlists
+        $stmt1 = $this->pdo->prepare(<<<SQL
+            DELETE FROM playlist2track
+            WHERE id_track = :idTrack
+            AND id_pl = :idPlaylist
+        SQL);
+        $stmt1->execute(['idTrack' => $idTrack, 'idPlaylist' => $idPlaylist]);
+    }
+
+    /**
+     * Supprime une piste audio de la table `track` ainsi que toutes ses associations dans `playlist2track`.
+     *
+     * @param int $idTrack Identifiant de la piste audio à supprimer.
+     * @return void
+     */
     public function deleteTrackById(int $idTrack) : void {
         // Supprimer les références de ce morceau dans toutes les playlists
         $stmt1 = $this->pdo->prepare(<<<SQL
             DELETE FROM playlist2track
+            WHERE id_track = :idTrack
+        SQL);
+        $stmt1->execute(['idTrack' => $idTrack]);
+
+        // Supprimer le track de l'utilisateur
+        $stmt1 = $this->pdo->prepare(<<<SQL
+            DELETE FROM user2track
             WHERE id_track = :idTrack
         SQL);
         $stmt1->execute(['idTrack' => $idTrack]);

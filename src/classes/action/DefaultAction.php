@@ -41,6 +41,11 @@ class DefaultAction extends Action {
                     <i class="bi bi-collection-play-fill text-primary me-2 fs-5"></i>
                     Afficher mes playlists
                 </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=tracks">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note/ -->
+                    <i class="bi bi-music-note text-primary me-2 fs-5"></i></i>
+                    Afficher mes pistes
+                </a>
                 {$currentPlaylist}
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=add-playlist">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->

@@ -41,7 +41,7 @@ class AudioListRenderer implements Renderer {
 
             $res .= "<div class=\"{$divClass}\">";
             foreach ($this->audioList as $track) {
-                $renderPiste = RendererFactory::getRenderer($track);
+                $renderPiste = RendererFactory::getRenderer($track, $this->audioList->id ?? null);
                 if ($renderPiste !== null) $res .= $renderPiste->render($selector);
             }
             $res .= '</div>';

@@ -80,8 +80,8 @@ class SigninAction extends Action {
         return HtmlHelper::successPage(
             title: "Connexion réussie",
             message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
-            nextUrl: "?action=playlists",
-            nextLabel: "Accéder à mes playlists"
+            backUrl: "?action=playlists",
+            backLabel: "Accéder à mes playlists"
         );
     }
 }

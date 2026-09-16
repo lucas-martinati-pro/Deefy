@@ -10,6 +10,8 @@ use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\render\HtmlHelper;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\exception\AuthnException;
 
 /**
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist.
@@ -27,40 +29,45 @@ class AddTrackAction extends Action {
 
     #[\Override]
     public function get() : string {
-        if (!isset($_SESSION['playlist'])) {
-            return HtmlHelper::errorPage(
-                message: "Aucune playlist n'a été trouvée en session. Veuillez d'abord sélectionner ou créer une playlist.",
-                backUrl: "?action=playlists",
-                backLabel: "Retour à mes playlists"
-            );
+        try {
+            AuthnProvider::getSignedInUser();
+        } catch (AuthnException $e) {
+            return HtmlHelper::authRequired(message: $e->getMessage());
         }
 
-        if (!Authz::checkPlaylistOwner($_SESSION['playlist']->id)) {
+        $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
+        if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
         }
 
+        $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : "";
+        $backUrl = $idPlaylist !== null ? "?action=display-playlist&id={$idPlaylist}" : "?action=tracks";
+        $backLabel = $idPlaylist !== null ? "Retour à la playlist" : "Retour à mes pistes";
+
         if (!isset($_GET['type'])) {
+            $destLabel = $idPlaylist !== null ? "à ma playlist" : "à mes morceaux";
             return <<<HTML
                 <h2 class="h3 fw-bold mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill text-primary me-2"></i>Choisir le type de piste à ajouter
                 </h2>
                 <div class="list-group mb-3" style="max-width: 450px;">
-                    <a href="?action=add-track&type=AlbumTrack" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <a href="?action=add-track&type=AlbumTrack{$idParam}" class="list-group-item list-group-item-action d-flex align-items-center">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                         <i class="bi bi-vinyl-fill text-primary me-2 fs-5"></i>
-                        Ajouter un Album à ma playlist
+                        Ajouter un Album {$destLabel}
                     </a>
-                    <a href="?action=add-track&type=PodcastTrack" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <a href="?action=add-track&type=PodcastTrack{$idParam}" class="list-group-item list-group-item-action d-flex align-items-center">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/mic-fill/ -->
                         <i class="bi bi-mic-fill text-danger me-2 fs-5"></i>
-                        Ajouter un Podcast à ma playlist
+                        Ajouter un Podcast {$destLabel}
                     </a>
                 </div>
                 <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=playlists">
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="{$backUrl}">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                        <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
+                        <i class="bi bi-arrow-left me-2"></i>
+                        {$backLabel}
                     </a>
                 </p>
             HTML;
@@ -71,7 +78,7 @@ class AddTrackAction extends Action {
 
         $retour = <<<HTML
             <p>
-                <a class="btn btn-light border d-inline-flex align-items-center" href="?action=add-track">
+                <a class="btn btn-light border d-inline-flex align-items-center" href="?action=add-track{$idParam}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>Retour
                 </a>
@@ -120,7 +127,8 @@ class AddTrackAction extends Action {
                     </div>
                     <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-lg/ -->
-                        <i class="bi bi-plus-lg me-1"></i>Ajouter l'album
+                        <i class="bi bi-plus-lg me-1"></i>
+                        Ajouter l'album
                     </button>
                 HTML;
                 break;
@@ -163,29 +171,37 @@ class AddTrackAction extends Action {
             }
         }
 
+        $contentId = $idPlaylist !== null ? "<input type=\"hidden\" name=\"id\" value=\"{$idPlaylist}\">" : "";
+
         return <<<HTML
-            <form method="post" action="{$action}" enctype="multipart/form-data">
+            <form method="post" action="{$action}{$idParam}" enctype="multipart/form-data">
+                {$contentId}
                 {$content}
             </form>
             <p class="mt-3">
-                <a class="btn btn-secondary" href="?action=playlists">Retour à mes playlists</a>
+                <a class="btn btn-secondary d-inline-flex align-items-center" href="{$backUrl}">
+                    <i class="bi bi-arrow-left me-2"></i>{$backLabel}
+                </a>
             </p>
         HTML;
     }
 
     #[\Override]
     public function post() : string {
-        if (!isset($_SESSION['playlist'])) {
-            return HtmlHelper::errorPage(
-                message: "Aucune playlist n'a été trouvée en session. Veuillez d'abord initialiser la playlist.",
-                backUrl: "?action=add-playlist",
-                backLabel: "Créer une playlist"
-            );
+        $user = [];
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthnException $e) {
+            return HtmlHelper::authRequired(message: $e->getMessage());
         }
 
-        if (!Authz::checkPlaylistOwner($_SESSION['playlist']->id)) {
+        $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;
+
+        if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
         }
+
+        $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : "";
 
         $error = [];
 
@@ -289,7 +305,8 @@ class AddTrackAction extends Action {
         }
 
         if (!empty($error)) {
-            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track");
+            $typeParam = !empty($type) ? "&type={$type}" : "";
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
         }
 
         // Propriétés communes
@@ -298,35 +315,61 @@ class AddTrackAction extends Action {
         if (!empty($imageName)) $track->set('image', $imageName);
 
         // Sauvegarde dans la playlist locale
-        $_SESSION['playlist']->addPiste($track);
+        if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->id === $idPlaylist) {
+            $_SESSION['playlist']->addPiste($track);
+        }
 
         // Sauvegarde dans le cloud
         $w = DeefyRepository::getInstance();
         $w->saveAudioTrack($track);
-        $w->addTrackToPlaylist($_SESSION['playlist']->id, $track->get('id'));
+        $w->saveTrack2User((int) $user['id'], (int) $track->get('id'));
+        if ($idPlaylist !== null) {
+            $w->addTrackToPlaylist($idPlaylist, (int) $track->get('id'));
+        }
 
-        $totalTracks = count($_SESSION['playlist']->tracks);
-        $renderer = RendererFactory::getRenderer($track);
+        $playlistMsg = "à vos morceaux";
+        $totalTracksMsg = "";
+        $backLink = <<<HTML
+            <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">
+                <i class="bi bi-arrow-left me-2"></i>
+                Retour à mes pistes
+            </a>
+        HTML;
+
+        if ($idPlaylist !== null) {
+            $r = DeefyRepository::getInstance();
+            $pl = $r->findPlaylistById($idPlaylist);
+            if ($pl !== null) {
+                $playlistMsg = "à la playlist <strong>$pl->name</strong>";
+                $totalTracksMsg = "<p>Nombre total de pistes dans la playlist : <strong>$pl->trackCount</strong></p>";
+                $_SESSION['playlist'] = $pl;
+            }
+            $backLink = <<<HTML
+                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=display-playlist&id={$idPlaylist}">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Retour à la playlist
+                </a>
+            HTML;
+        }
+
+        $renderer = RendererFactory::getRenderer($track, $idPlaylist);
         $renderTrack = $renderer ? $renderer->render(Renderer::LONG) : '';
         return <<<HTML
             <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
                 <i class="bi bi-check-circle-fill text-success me-2"></i>Piste ajoutée avec succès
             </h1>
-            <p>La piste a été ajoutée avec succès à la playlist <strong>{$_SESSION['playlist']->name}</strong> !</p>
+            <p>La piste a été ajoutée avec succès {$playlistMsg} !</p>
             <div class="my-3">
                 {$renderTrack}
             </div>
-            <p>Nombre total de pistes : <strong>{$totalTracks}</strong></p>
+            {$totalTracksMsg}
             <p>
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-track{$idParam}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une autre piste
                 </a>
-                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlists">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                    <i class="bi bi-arrow-left me-2"></i>Retour à mes playlists
-                </a>
+                {$backLink}
             </p>
         HTML;
     }

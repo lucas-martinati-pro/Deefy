@@ -8,6 +8,7 @@ use iutnc\deefy\action\AddTrackAction;
 use iutnc\deefy\action\DeleteTrackAction;
 use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\PlaylistsAction;
+use iutnc\deefy\action\TracksAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\RegisterAction;
 use iutnc\deefy\action\SigninAction;
@@ -47,6 +48,7 @@ class Dispatcher {
 
         $html = match ($this->action) {
             "playlists" => (new PlaylistsAction())(),
+            "tracks" => (new TracksAction())(),
             "display-playlist" => (new DisplayPlaylistAction())(),
             "add-playlist" => (new AddPlaylistAction())(),
             "delete-playlist" => (new DeletePlaylistAction())(),
@@ -188,6 +190,12 @@ class Dispatcher {
                         <a class="nav-link" href="?action=playlists">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
                             <i class="bi bi-collection-play-fill me-1"></i>Mes playlists
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=tracks">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note/ -->
+                            <i class="bi bi-music-note"></i></i>Mes pistes
                         </a>
                     </li>
                     <li class="nav-item">
