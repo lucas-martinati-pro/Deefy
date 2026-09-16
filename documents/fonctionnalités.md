@@ -32,3 +32,10 @@ Barre de lecture fixe en bas de l'écran qui permet d'écouter un morceau tout e
 
 ### 5. Extraction automatique des métadonnées (getID3)
 - **Analyse automatique des fichiers MP3** : Détection et remplissage automatique de la durée exacte, du genre musical et extraction de la pochette intégrée dans le fichier audio.
+
+### 6. Pistes personnelles & Gestion des suppressions
+- **Page « Mes pistes »** : La page affiche toutes les pistes de l'utilisateur.
+- **Ajout sans playlist** : L'utilisateur peut ajouter une piste à ses morceaux sans choisir de playlist.
+- **Ajout vers une playlist** : L'utilisateur peut ajouter une piste directement dans une playlist précise.
+- **Retrait d'une playlist** : Le bouton retire la piste de la playlist sans la supprimer.
+- **Suppression définitive** : Le bouton supprime la piste de la bibliothèque et de toutes les playlists.
