@@ -11,6 +11,7 @@ use iutnc\deefy\render\HtmlHelper;
  */
 class SigninAction extends Action {
     protected bool $requireAuth = false;
+
     #[\Override]
     public function get() : string {
         try {

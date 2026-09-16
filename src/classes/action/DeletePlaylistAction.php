@@ -65,7 +65,7 @@ class DeletePlaylistAction extends Action {
     }
 
     /**
-     * Valide l'état de connexion de l'utilisateur, l'identifiant de la playlist et les permissions de suppression.
+     * Valide l'identifiant de la playlist et les permissions de suppression.
      *
      * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
      */

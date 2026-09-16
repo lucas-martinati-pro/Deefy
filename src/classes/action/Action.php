@@ -13,12 +13,21 @@ abstract class Action {
     protected ?string $http_method = null;
     protected ?string $hostname = null;
     protected ?string $script_name = null;
+
+    /**
+     * Indique si l'action nécessite une authentification préalable.
+     * Vaut true par défaut, à surcharger à false pour les actions publiques.
+     */
     protected bool $requireAuth = true;
+
+    /**
+     * Données de l'utilisateur connecté sous forme de tableau , ou null s'il n'est pas connecté.
+     */
     protected ?array $user = null;
 
     /**
      * Constructeur d'action.
-     * Initialise les attributs d'environnement à partir des variables serveur.
+     * Initialise les attributs d'environnement du serveur et récupère l'utilisateur connecté s'il existe.
      */
     public function __construct() {
         $this->http_method = $_SERVER['REQUEST_METHOD'];
@@ -33,7 +42,8 @@ abstract class Action {
     }
 
     /**
-     * Exécute l'action appropriée en appelant get() ou post() selon la méthode HTTP.
+     * Exécute l'action appropriée après vérification de l'authentification requise.
+     * Appelle get() ou post() selon la méthode HTTP courante.
      *
      * @return string Balises HTML générées en réponse à la requête.
      */

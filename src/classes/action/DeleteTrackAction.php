@@ -103,7 +103,7 @@ class DeleteTrackAction extends Action {
     }
 
     /**
-     * Valide l'état de connexion, l'existence de l'identifiant de piste et la propriété du morceau.
+     * Valide l'existence de l'identifiant de piste et la propriété du morceau.
      *
      * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
      */

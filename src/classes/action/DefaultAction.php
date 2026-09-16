@@ -11,6 +11,7 @@ use iutnc\deefy\exception\AuthnException;
  */
 class DefaultAction extends Action {
     protected bool $requireAuth = false;
+
     #[\Override]
     public function get() : string {
         $page = <<< HTML
