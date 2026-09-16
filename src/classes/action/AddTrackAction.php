@@ -10,8 +10,6 @@ use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\render\HtmlHelper;
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthnException;
 
 /**
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
@@ -29,12 +27,6 @@ class AddTrackAction extends Action {
 
     #[\Override]
     public function get() : string {
-        try {
-            AuthnProvider::getSignedInUser();
-        } catch (AuthnException) {
-            return HtmlHelper::authRequired();
-        }
-
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
         if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
@@ -188,13 +180,6 @@ class AddTrackAction extends Action {
 
     #[\Override]
     public function post() : string {
-        $user = [];
-        try {
-            $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException) {
-            return HtmlHelper::authRequired();
-        }
-
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;
 
         if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
@@ -322,7 +307,7 @@ class AddTrackAction extends Action {
         // Sauvegarde dans le cloud
         $w = DeefyRepository::getInstance();
         $w->saveAudioTrack($track);
-        $w->saveTrack2User((int) $user['id'], (int) $track->get('id'));
+        $w->saveTrack2User((int) $this->user['id'], (int) $track->get('id'));
         if ($idPlaylist !== null) {
             $w->addTrackToPlaylist($idPlaylist, (int) $track->get('id'));
         }

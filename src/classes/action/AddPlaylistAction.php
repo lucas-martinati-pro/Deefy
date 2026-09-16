@@ -4,24 +4,18 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
-use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
 /**
  * Action permettant la création d'une nouvelle playlist.
  */
 class AddPlaylistAction extends Action {
+
     #[\Override]
     public function get() : string {
-        try {
-            AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
-        }
         return <<<HTML
             <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/ -->
@@ -47,19 +41,12 @@ class AddPlaylistAction extends Action {
             return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist");
         }
 
-        $user = [];
-        try {
-            $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
-        }
-
         $w = DeefyRepository::getInstance();
 
         $title = filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
         $playlist = $w->saveEmptyPlaylist(new Playlist($title, []));
 
-        $w->savePlaylist2User((int) $user['id'], (int) $playlist->id);
+        $w->savePlaylist2User((int) $this->user['id'], (int) $playlist->id);
 
         // La playlist créée devient la playlist courante en session
         $_SESSION['playlist'] = $playlist;

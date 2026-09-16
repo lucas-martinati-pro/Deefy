@@ -10,6 +10,7 @@ use iutnc\deefy\render\HtmlHelper;
  * Action gérant l'inscription de nouveaux utilisateurs sur Deefy.
  */
 class RegisterAction extends Action {
+    protected bool $requireAuth = false;
 
     #[\Override]
     public function get() : string {

@@ -10,6 +10,7 @@ use iutnc\deefy\render\HtmlHelper;
  * Action gérant l'authentification (connexion) des utilisateurs.
  */
 class SigninAction extends Action {
+    protected bool $requireAuth = false;
     #[\Override]
     public function get() : string {
         try {

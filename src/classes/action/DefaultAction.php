@@ -10,6 +10,7 @@ use iutnc\deefy\exception\AuthnException;
  * Action par défaut affichant la page d'accueil de l'application Deefy.
  */
 class DefaultAction extends Action {
+    protected bool $requireAuth = false;
     #[\Override]
     public function get() : string {
         $page = <<< HTML

@@ -4,12 +4,9 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
-use iutnc\deefy\render\HtmlHelper;
 
 /**
  * Action permettant d'afficher l'ensemble des pistes de l'utilisateur.
@@ -17,14 +14,8 @@ use iutnc\deefy\render\HtmlHelper;
 class TracksAction extends Action {
     #[\Override]
     public function get() : string {
-        try {
-            $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException) {
-            return HtmlHelper::authRequired();
-        }
-
         $r = DeefyRepository::getInstance();
-        $tracks = $r->findTracksByUserId((int) $user['id']);
+        $tracks = $r->findTracksByUserId((int) $this->user['id']);
 
         $playlist = new Playlist("Mes pistes", $tracks);
         $renderer = RendererFactory::getRenderer($playlist);

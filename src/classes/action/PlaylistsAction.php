@@ -3,8 +3,6 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\render\AudioTrackRenderer;
@@ -15,14 +13,8 @@ use iutnc\deefy\render\AudioTrackRenderer;
 class PlaylistsAction extends Action {
     #[\Override]
     public function get() : string {
-        try {
-            $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
-            return HtmlHelper::authRequired(message: $e->getMessage());
-        }
-
         $r = DeefyRepository::getInstance();
-        $playlists = $r->findPlaylistsByUserId((int) $user['id']);
+        $playlists = $r->findPlaylistsByUserId((int) $this->user['id']);
 
         if (empty($playlists)) {
             $alert = HtmlHelper::alert(type: 'info', content: 'Vous ne possédez aucune playlist pour le moment.');

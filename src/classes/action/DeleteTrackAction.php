@@ -2,9 +2,7 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 
@@ -110,12 +108,6 @@ class DeleteTrackAction extends Action {
      * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
      */
     private function verif() : string {
-        try {
-            AuthnProvider::getSignedInUser();
-        } catch (AuthnException) {
-            return HtmlHelper::authRequired(message: "Vous devez être connecté pour supprimer une piste.");
-        }
-
         $idTrack = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         $idPlaylist = isset($_POST['id_pl']) ? (int) $_POST['id_pl'] : null;
         if ($idPlaylist === null) {

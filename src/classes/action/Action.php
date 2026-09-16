@@ -2,6 +2,10 @@
 
 namespace iutnc\deefy\action;
 
+use iutnc\deefy\render\HtmlHelper;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\exception\AuthnException;
+
 /**
  * Classe abstraite de base pour l'ensemble des actions de l'application.
  */
@@ -9,6 +13,8 @@ abstract class Action {
     protected ?string $http_method = null;
     protected ?string $hostname = null;
     protected ?string $script_name = null;
+    protected bool $requireAuth = true;
+    protected ?array $user = null;
 
     /**
      * Constructeur d'action.
@@ -18,6 +24,12 @@ abstract class Action {
         $this->http_method = $_SERVER['REQUEST_METHOD'];
         $this->hostname = $_SERVER['HTTP_HOST'];
         $this->script_name = $_SERVER['SCRIPT_NAME'];
+
+        try {
+            $this->user = AuthnProvider::getSignedInUser();
+        } catch (AuthnException) {
+            $this->user = null;
+        }
     }
 
     /**
@@ -26,6 +38,10 @@ abstract class Action {
      * @return string Balises HTML générées en réponse à la requête.
      */
     public function execute() : string {
+        if ($this->requireAuth && $this->user === null) {
+            return HtmlHelper::authRequired();
+        }
+
         switch ($this->http_method) {
             case 'GET' : return $this->get();
             case 'POST' : return $this->post();

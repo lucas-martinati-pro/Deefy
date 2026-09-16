@@ -3,9 +3,7 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\repository\DeefyRepository;
-use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
 
 /**
@@ -72,12 +70,6 @@ class DeletePlaylistAction extends Action {
      * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
      */
     private function verif() : string {
-        try {
-            AuthnProvider::getSignedInUser();
-        } catch (AuthnException) {
-            return HtmlHelper::authRequired(message: "Vous devez être connecté pour supprimer une playlist.");
-        }
-
         $idPlaylist = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         if ($idPlaylist <= 0) {
             return HtmlHelper::errorPage(
