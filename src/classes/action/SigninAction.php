@@ -36,7 +36,7 @@ class SigninAction extends Action {
                     </a>
                 </p>
             HTML;
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             $require = '<span class="text-danger">*</span>';
         return <<<HTML
         <h1 class="h2 fw-bold mb-3 d-flex align-items-center">

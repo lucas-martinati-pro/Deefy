@@ -112,7 +112,7 @@ class DeleteTrackAction extends Action {
     private function verif() : string {
         try {
             AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             return HtmlHelper::authRequired(message: "Vous devez être connecté pour supprimer une piste.");
         }
 

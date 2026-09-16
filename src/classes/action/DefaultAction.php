@@ -58,7 +58,7 @@ class DefaultAction extends Action {
                     Se déconnecter
                 </a>
             HTML;
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             $page .= <<<HTML
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=signin">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->

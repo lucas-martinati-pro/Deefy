@@ -19,7 +19,7 @@ class Authz {
         $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             return false;
         }
         return $user['role'] === $role;
@@ -35,7 +35,7 @@ class Authz {
         $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             return false;
         }
 
@@ -59,7 +59,7 @@ class Authz {
         $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             return false;
         }
 

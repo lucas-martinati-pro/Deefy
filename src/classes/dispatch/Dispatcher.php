@@ -217,7 +217,7 @@ class Dispatcher {
                     {$toggleThemeButton}
                 </div>
             HTML;
-        } catch (AuthnException $e) {
+        } catch (AuthnException) {
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
