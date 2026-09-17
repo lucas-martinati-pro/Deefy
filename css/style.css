@@ -1,3 +1,93 @@
+body {
+    font-family: "Bricolage Grotesque", sans-serif;
+}
+
+/* Les ::before et ::after dans le body me permettent juste d'ajouter deux éléments servent juste à décorer le fond (la bulle violette et rose) sans forcément de balise div.*/
+body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.20;
+    z-index: -1;
+}
+
+body::before {
+    width: 450px;
+    height: 450px;
+    background: #8b5cf6; /* Violet électrique */
+    top: -80px;
+    left: -80px;
+}
+
+body::after {
+    width: 500px;
+    height: 500px;
+    background: #ec4899; /* Rose néon */
+    bottom: -100px;
+    right: -100px;
+}
+
+/**========================================================================
+ *                       Cards
+ *========================================================================**/
+
+.card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border-radius: 14px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.card img.card-img-top,
+.card img.object-fit-cover {
+    transition: transform 0.4s ease;
+}
+
+.card:hover img.card-img-top,
+.card:hover img.object-fit-cover {
+    transform: scale(1.06);
+}
+
+/**========================================================================
+ *                       Boutons
+ *========================================================================**/
+/* Boutons principaux avec dégradé et ombre lumineuse */
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    border: none;
+    font-weight: bold;
+    transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/**========================================================================
+ *                       Scrollbar
+ *========================================================================**/
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.6);
+}
+
 /**========================================================================
  *                       En-tête (Navbar)
  *========================================================================**/
@@ -10,13 +100,29 @@
  *                              Barre Audio
  *========================================================================**/
 .audio-footer-bar {
-    background-color: var(--bs-secondary-bg);
-    border-top: 1px solid var(--bs-border-color);
-    color: var(--bs-body-color);
+    background-color: rgba(18, 18, 22, 0.50);
+    backdrop-filter: blur(16px);
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92%, 880px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="light"] .audio-footer-bar {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+.audio-footer-bar:hover {
+    transform: translate(-50%, -2px);
 }
 
 /**========================================================================
- *                 Composants Lecteur Audio (player.style)
+ *                 Composants Lecteur Audio
  *========================================================================**/
 .audio-footer, .audio-compact, .audio-long {
     display: block;
