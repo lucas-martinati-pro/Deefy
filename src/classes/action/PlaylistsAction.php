@@ -62,7 +62,7 @@ class PlaylistsAction extends Action {
                 HTML;
             } else {
                 $coverHtml = <<<HTML
-                    <div class="card-img-top bg-light d-flex flex-column align-items-center justify-content-center text-muted border-bottom w-100 h-100">
+                    <div class="card-img-top d-flex flex-column align-items-center justify-content-center text-muted border-bottom w-100 h-100">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                         <i class="bi bi-music-note-list fs-1"></i>
                         <span class="small text-secondary">Playlist</span>

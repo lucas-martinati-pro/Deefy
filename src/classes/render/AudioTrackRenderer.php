@@ -106,7 +106,7 @@ abstract class AudioTrackRenderer implements Renderer {
             HTML;
         } else {
             $imageHtml = <<<HTML
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-secondary border-bottom" style="height: 180px;">
+                <div class="card-img-top d-flex align-items-center justify-content-center text-secondary border-bottom" style="height: 180px;">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
                     <i class="bi bi-music-note-beamed  fs-1"></i>
                 </div>
@@ -189,34 +189,32 @@ abstract class AudioTrackRenderer implements Renderer {
         $deleteBtn = $this->renderDeleteButton();
 
         return <<<HTML
-            <li class="list-group-item p-0 border-0 mb-3 bg-transparent">
-                <div class="card shadow-sm border overflow-hidden">
-                    <div class="row g-0">
-                        {$imageHtml}
-                        <div class="{$colContent}">
-                            <div class="card-body d-flex flex-column justify-content-between h-100 p-3">
-                                <div>
-                                    <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
-                                        <h5 class="card-title fw-bold mb-0">{$this->track->title}</h5>
-                                        <div class="d-flex align-items-center gap-2">
-                                            {$badge}
-                                            {$playBtn}
-                                            {$deleteBtn}
-                                        </div>
+            <div class="card shadow-sm border overflow-hidden">
+                <div class="row g-0">
+                    {$imageHtml}
+                    <div class="{$colContent}">
+                        <div class="card-body d-flex flex-column justify-content-between h-100 p-3">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                                    <h5 class="card-title fw-bold mb-0">{$this->track->title}</h5>
+                                    <div class="d-flex align-items-center gap-2">
+                                        {$badge}
+                                        {$playBtn}
+                                        {$deleteBtn}
                                     </div>
-                                    <h6 class="card-subtitle text-muted mb-2">
-                                        {$subtitle}
-                                    </h6>
-                                    {$infosHtml}
                                 </div>
-                                <div>
-                                    {$this->renderAudioPlayer(Renderer::LONG)}
-                                </div>
+                                <h6 class="card-subtitle text-muted mb-2">
+                                    {$subtitle}
+                                </h6>
+                                {$infosHtml}
+                            </div>
+                            <div>
+                                {$this->renderAudioPlayer(Renderer::LONG)}
                             </div>
                         </div>
                     </div>
                 </div>
-            </li>
+            </div>
         HTML;
     }
 

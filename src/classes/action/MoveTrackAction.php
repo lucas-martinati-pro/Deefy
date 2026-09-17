@@ -26,7 +26,7 @@ class MoveTrackAction extends Action {
         $trackRenderer = RendererFactory::getRenderer($track);
         $trackHtml = $trackRenderer->render(Renderer::LONG);
         $trackPreview = !empty($trackHtml)
-            ? "<div class=\"mb-4\"><ul class=\"list-unstyled mb-0\">{$trackHtml}</ul></div>"
+            ? $trackHtml
             : '';
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/
         $title = HtmlHelper::title("Ajouter à une playlist", "bi-music-note-list");

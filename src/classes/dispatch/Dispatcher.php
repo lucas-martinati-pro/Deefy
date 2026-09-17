@@ -126,7 +126,7 @@ class Dispatcher {
                 </head>
                 <body class="d-flex flex-column min-vh-100">
                     <div class="flex-grow-1">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+                        <nav class="navbar navbar-expand-lg">
                             <div class="container">
                                 <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
                                     <img src="../image/favicon.ico" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
@@ -281,7 +281,7 @@ class Dispatcher {
                         HTML;
                     } else {
                         $coverHtml = <<<HTML
-                            <div class="rounded-2 bg-body-tertiary border border-secondary-subtle d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
+                            <div class="rounded-2 border border-secondary-subtle d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
                                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                                 <i class="bi bi-vinyl-fill fs-4 text-primary"></i>
                             </div>

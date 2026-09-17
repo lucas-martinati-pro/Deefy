@@ -29,6 +29,23 @@ body::after {
     right: -100px;
 }
 
+/* Surlignage de texte personnalisé */
+::selection {
+    background: #8b5cf6;
+    color: #ffffff;
+}
+
+/**========================================================================
+ *                       Thème
+ *========================================================================**/
+
+[data-bs-theme="dark"] {
+    --bs-body-bg: #09090b;
+    --bs-secondary-bg: #1c1c24;
+    --bs-tertiary-bg: #141418;
+    --bs-border-color: rgba(255, 255, 255, 0.08);
+}
+
 #toggle-theme {
     border-radius: 50%;
     width: 36px;
@@ -41,6 +58,21 @@ body::after {
 
 #toggle-theme:hover {
     transform: rotate(180deg);
+}
+
+/**========================================================================
+ *                       Listes
+ *========================================================================**/
+
+.list-group-item {
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.list-group-item:hover {
+    border-left-color: #8b5cf6;
+    padding-left: 1.25rem;
+    background-color: rgba(139, 92, 246, 0.06);
 }
 
 /**========================================================================
@@ -105,10 +137,10 @@ body::after {
 }
 
 /**========================================================================
- *                       En-tête (Navbar)
+ *                       Navbar
  *========================================================================**/
 .navbar {
-    background-color: var(--bs-tertiary-bg);
+    background-color: var(--bs-body-bg);
     border-bottom: 1px solid var(--bs-border-color);
     transition: all 0.3s ease;
 }
