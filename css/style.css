@@ -16,7 +16,7 @@ body::before, body::after {
 body::before {
     width: 450px;
     height: 450px;
-    background: #8b5cf6; /* Violet électrique */
+    background: purple;
     top: -80px;
     left: -80px;
 }
@@ -24,15 +24,15 @@ body::before {
 body::after {
     width: 500px;
     height: 500px;
-    background: #ec4899; /* Rose néon */
+    background: deeppink;
     bottom: -100px;
     right: -100px;
 }
 
 /* Surlignage de texte personnalisé */
 ::selection {
-    background: #8b5cf6;
-    color: #ffffff;
+    background: purple;
+    color: white;
 }
 
 /**========================================================================
@@ -70,9 +70,9 @@ body::after {
 }
 
 .list-group-item:hover {
-    border-left-color: #8b5cf6;
+    border-left-color: blueviolet;
     padding-left: 1.25rem;
-    background-color: rgba(139, 92, 246, 0.06);
+    background-color: rgba(128, 0, 128, 0.08);
 }
 
 /**========================================================================
@@ -82,10 +82,9 @@ body::after {
 .card {
     position: relative;
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     border-radius: 14px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .card:hover {
@@ -105,9 +104,8 @@ body::after {
 /**========================================================================
  *                       Boutons
  *========================================================================**/
-/* Boutons principaux avec dégradé et ombre lumineuse */
 .btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    background: linear-gradient(135deg, indigo, purple, deeppink);
     border: none;
     font-weight: bold;
     transition: all 0.25s ease;
@@ -115,7 +113,7 @@ body::after {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 6px 20px rgba(128, 0, 128, 0.4);
 }
 
 /**========================================================================
@@ -129,11 +127,11 @@ body::after {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
+    background: rgba(128, 0, 128, 0.3);
     border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.6);
+    background: purple;
 }
 
 /**========================================================================
@@ -145,11 +143,42 @@ body::after {
     transition: all 0.3s ease;
 }
 
+.navbar-nav .nav-link {
+    border-radius: 10px;
+    padding: 0.45rem 0.9rem;
+    margin: 0 0.2rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+}
+
+.navbar-nav .nav-link i {
+    transition: transform 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: darkviolet;
+    background-color: rgba(128, 0, 128, 0.12);
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link:hover i {
+    transform: scale(1.15);
+}
+
+.navbar-nav .nav-link.active {
+    color: darkviolet;
+    background: rgba(128, 0, 128, 0.2);
+    border-color: rgba(128, 0, 128, 0.35);
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(128, 0, 128, 0.25);
+}
+
 /**========================================================================
  *                              Barre Audio
  *========================================================================**/
 .audio-footer-bar {
-    background-color: rgba(18, 18, 22, 0.50);
+    background-color: rgba(20, 20, 20, 0.5);
     backdrop-filter: blur(16px);
     position: fixed;
     bottom: 10px;
@@ -157,13 +186,13 @@ body::after {
     transform: translateX(-50%);
     width: min(92%, 880px);
     border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
     transition: all 0.3s ease;
 }
 
 [data-bs-theme="light"] .audio-footer-bar {
-    background-color: rgba(255, 255, 255, 0.50);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .audio-footer-bar:hover {
@@ -201,12 +230,12 @@ body::after {
  *========================================================================**/
 .form-control:focus,
 .form-select:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25);
+    border-color: purple;
+    box-shadow: 0 0 0 4px rgba(128, 0, 128, 0.25);
 }
 
 /* Cases à cocher personnalisées */
 .form-check-input:checked {
-    background-color: #8b5cf6;
-    border-color: #8b5cf6;
+    background-color: purple;
+    border-color: purple;
 }

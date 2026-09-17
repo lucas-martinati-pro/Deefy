@@ -168,6 +168,32 @@ class Dispatcher {
             </button>
         HTML;
 
+        $activePlaylists = '';
+        $activeTracks = '';
+        $activeAddPlaylist = '';
+        $activeCurrentPl = '';
+        $activeAccueil = '';
+
+        switch ($this->action) {
+            case 'playlists' : {
+                $activePlaylists = 'active';
+                break;
+            }
+            case 'tracks' : {
+                $activeTracks = 'active';
+                break;
+            }
+            case 'add-playlist' : {
+                $activeAddPlaylist = 'active';
+                break;
+            }
+            case 'display-playlist' : {
+                $activeCurrentPl = 'active';
+                break;
+            }
+            case 'default' : $activeAccueil = 'active';
+        }
+
         try {
             $user = AuthnProvider::getSignedInUser();
 
@@ -176,7 +202,7 @@ class Dispatcher {
             if (isset($_SESSION['playlist'])) {
                 $currentPlaylist = <<<HTML
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=display-playlist">
+                        <a class="nav-link {$activeCurrentPl}" href="?action=display-playlist">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                             <i class="bi bi-music-note-list me-1"></i>Playlist courante
                         </a>
@@ -187,25 +213,25 @@ class Dispatcher {
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="main.php">
+                        <a class="nav-link {$activeAccueil}" href="main.php">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                             <i class="bi bi-house-door-fill me-1"></i>Accueil
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=playlists">
+                        <a class="nav-link {$activePlaylists}" href="?action=playlists">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
                             <i class="bi bi-collection-play-fill me-1"></i>Mes playlists
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=tracks">
+                        <a class="nav-link {$activeTracks}" href="?action=tracks">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note/ -->
                             <i class="bi bi-music-note me-1"></i>Mes pistes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=add-playlist">
+                        <a class="nav-link {$activeAddPlaylist}" href="?action=add-playlist">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                             <i class="bi bi-plus-circle-fill me-1"></i>Créer une playlist
                         </a>
@@ -227,7 +253,7 @@ class Dispatcher {
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="main.php">
+                        <a class="nav-link {$activeAccueil}" href="main.php">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                             <i class="bi bi-house-door-fill me-1"></i>Accueil
                         </a>
