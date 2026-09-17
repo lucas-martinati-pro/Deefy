@@ -117,6 +117,7 @@ abstract class AudioTrackRenderer implements Renderer {
         $subtitle = $this->getSubtitle();
         $playBtn = $this->renderPlayButton();
         $deleteBtn = $this->renderDeleteButton();
+        $addToPlaylist = $this->renderAddToPlaylist();
         $actionsHtml = (!empty($playBtn) || !empty($deleteBtn))
             ? "<div class=\"mt-2 d-flex justify-content-between align-items-center gap-2\"><div>{$playBtn}</div><div>{$deleteBtn}</div></div>"
             : '';
@@ -139,6 +140,7 @@ abstract class AudioTrackRenderer implements Renderer {
                         <div class="mt-auto pt-2">
                             {$this->renderAudioPlayer(Renderer::COMPACT)}
                             {$actionsHtml}
+                            {$addToPlaylist}
                         </div>
                     </div>
                 </div>
@@ -264,6 +266,28 @@ abstract class AudioTrackRenderer implements Renderer {
                 <i class="bi bi-trash-fill me-1"></i>
                 Supprimer
             </a>
+        HTML;
+    }
+
+    /**
+     * Génère le composant bouton pour ajouter la piste à une playlist.
+     *
+     * @return string Balises HTML du bouton d'ajout à une playlist.
+     */
+    protected function renderAddToPlaylist() : string {
+        $idTrack = $this->track->id;
+        if (empty($idTrack)) {
+            return '';
+        }
+        if ($this->playlistId !== null) return '';
+
+        return <<<HTML
+            <div class="mt-2">
+                <a href="?action=move-track&id={$idTrack}" class="btn btn-sm btn-outline-primary w-100 d-inline-flex align-items-center justify-content-center" title="Ajouter cette piste à une playlist">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Ajouter à une playlist
+                </a>
+            </div>
         HTML;
     }
 

@@ -10,6 +10,7 @@ use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\TracksAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
+use iutnc\deefy\action\MoveTrackAction;
 use iutnc\deefy\action\RegisterAction;
 use iutnc\deefy\action\SigninAction;
 use iutnc\deefy\action\SignoutAction;
@@ -53,6 +54,7 @@ class Dispatcher {
             "add-playlist" => (new AddPlaylistAction())(),
             "delete-playlist" => (new DeletePlaylistAction())(),
             "add-track" => (new AddTrackAction())(),
+            "move-track" => (new MoveTrackAction())(),
             "delete-track" => (new DeleteTrackAction())(),
             "register" => (new RegisterAction())(),
             "signin" => (new SigninAction())(),

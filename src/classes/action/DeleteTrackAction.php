@@ -24,7 +24,7 @@ class DeleteTrackAction extends Action {
         // Cas 1 : Retirer d'une playlist
         if ($idPlaylist !== null) {
             $playlist = $r->findPlaylistById($idPlaylist);
-            $playlistName = $playlist ? htmlspecialchars($playlist->name) : 'la playlist';
+            $playlistName = $playlist ? $playlist->name : 'la playlist';
             return <<<HTML
                 <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
                     <i class="bi bi-x-circle text-danger me-2"></i>Retirer une piste

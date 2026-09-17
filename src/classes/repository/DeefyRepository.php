@@ -431,6 +431,23 @@ class DeefyRepository {
     }
 
     /**
+     * Vérifie si une piste audio est déjà associée à une playlist.
+     *
+     * @param int $idPlaylist Identifiant de la playlist.
+     * @param int $idTrack Identifiant de la piste audio.
+     * @return bool True si la piste est déjà dans la playlist, false sinon.
+     */
+    public function isTrackInPlaylist(int $idPlaylist, int $idTrack) : bool {
+        $stmt = $this->pdo->prepare(<<<SQL
+            SELECT COUNT(*)
+            FROM playlist2track
+            WHERE id_pl = :idPlaylist AND id_track = :idTrack
+        SQL);
+        $stmt->execute(['idPlaylist' => $idPlaylist, 'idTrack' => $idTrack]);
+        return ((int) $stmt->fetchColumn()) > 0;
+    }
+
+    /**
      * Associe une piste audio à une playlist en calculant son numéro d'ordre dans la liste.
      *
      * @param int $idPlaylist Identifiant de la playlist.
@@ -438,6 +455,10 @@ class DeefyRepository {
      * @return void
      */
     public function addTrackToPlaylist(int $idPlaylist, int $idTrack) : void {
+        if ($this->isTrackInPlaylist($idPlaylist, $idTrack)) {
+            return;
+        }
+
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT COALESCE(MAX(no_piste_dans_liste), 0) + 1
             FROM playlist2track

@@ -335,11 +335,11 @@ class AddTrackAction extends Action {
 
         if ($idPlaylist !== null) {
             $r = DeefyRepository::getInstance();
-            $pl = $r->findPlaylistById($idPlaylist);
-            if ($pl !== null) {
-                $playlistMsg = "à la playlist <strong>$pl->name</strong>";
-                $totalTracksMsg = "<p>Nombre total de pistes dans la playlist : <strong>$pl->trackCount</strong></p>";
-                $_SESSION['playlist'] = $pl;
+            $playlist = $r->findPlaylistById($idPlaylist);
+            if ($playlist !== null) {
+                $playlistMsg = "à la playlist <strong>$playlist->name</strong>";
+                $totalTracksMsg = "<p>Nombre total de pistes dans la playlist : <strong>$playlist->trackCount</strong></p>";
+                $_SESSION['playlist'] = $playlist;
             }
             $backLink = <<<HTML
                 <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=display-playlist&id={$idPlaylist}">
@@ -350,7 +350,7 @@ class AddTrackAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($track, $idPlaylist);
-        $renderTrack = $renderer ? $renderer->render(Renderer::LONG) : '';
+        $renderTrack = $renderer->render(Renderer::LONG);
         return <<<HTML
             <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
