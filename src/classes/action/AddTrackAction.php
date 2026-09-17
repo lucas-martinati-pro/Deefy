@@ -65,7 +65,6 @@ class AddTrackAction extends Action {
             HTML;
         }
 
-        $action = "";
         $content = "";
 
         $retour = <<<HTML
@@ -79,7 +78,6 @@ class AddTrackAction extends Action {
         $require = '<span class="text-danger">*</span>';
         switch ($_GET['type']) {
             case 'AlbumTrack' : {
-                $action = "?action=add-track&type=AlbumTrack";
                 $content = <<<HTML
                     $retour
                     <div class="mb-3">
@@ -126,7 +124,6 @@ class AddTrackAction extends Action {
                 break;
             }
             case 'PodcastTrack' : {
-                $action = "?action=add-track&type=PodcastTrack";
                 $content = <<<HTML
                     $retour
                     <div class="mb-3">
@@ -166,7 +163,8 @@ class AddTrackAction extends Action {
         $contentId = $idPlaylist !== null ? "<input type=\"hidden\" name=\"id\" value=\"{$idPlaylist}\">" : "";
 
         return <<<HTML
-            <form method="post" action="{$action}{$idParam}" enctype="multipart/form-data">
+            <form method="post" action="?action=add-track{$idParam}" enctype="multipart/form-data">
+                <input type="hidden" name="type" value="{$_GET['type']}">
                 {$contentId}
                 {$content}
             </form>

@@ -27,7 +27,7 @@ class DeletePlaylistAction extends Action {
             <div class="alert alert-warning" role="alert">
                 Êtes-vous sûr de vouloir supprimer la playlist <strong>{$playlist->name}</strong> ? Cela entraînera la suppression de <strong>toutes les pistes</strong> qu'elle contient.
             </div>
-            <form method="post" action="?action=delete-playlist&id={$idPlaylist}">
+            <form method="post" action="?action=delete-playlist">
                 <input type="hidden" name="id" value="{$idPlaylist}">
                 <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->

@@ -32,7 +32,7 @@ class DeleteTrackAction extends Action {
                 <div class="alert alert-warning" role="alert">
                     Êtes-vous sûr de vouloir retirer la piste <strong>{$track->title}</strong> de la playlist <strong>{$playlistName}</strong> ?
                 </div>
-                <form method="post" action="?action=delete-track&id={$idTrack}&id_pl={$idPlaylist}">
+                <form method="post" action="?action=delete-track">
                     <input type="hidden" name="id" value="{$idTrack}">
                     <input type="hidden" name="id_pl" value="{$idPlaylist}">
                     <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
@@ -52,7 +52,7 @@ class DeleteTrackAction extends Action {
             <div class="alert alert-warning" role="alert">
                 Êtes-vous sûr de vouloir supprimer définitivement la piste <strong>{$track->title}</strong> de vos pistes ?
             </div>
-            <form method="post" action="?action=delete-track&id={$idTrack}">
+            <form method="post" action="?action=delete-track">
                 <input type="hidden" name="id" value="{$idTrack}">
                 <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
                     <i class="bi bi-trash-fill me-1"></i>Confirmer la suppression
