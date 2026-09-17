@@ -52,6 +52,9 @@ abstract class Action {
             return HtmlHelper::authRequired();
         }
 
+        $error = $this->check();
+        if ($error !== null) return $error;
+
         switch ($this->http_method) {
             case 'GET' : return $this->get();
             case 'POST' : return $this->post();
@@ -81,4 +84,13 @@ abstract class Action {
      * @return string Code HTML résultant du traitement (succès, redirection, erreur).
      */
     abstract public function post() : string;
+
+    /**
+     * Vérifie les conditions de l'action (existence des paramètres, droits, ressources).
+     *
+     * @return string|null Message d'erreur HTML si la vérification échoue, null sinon.
+     */
+    protected function check() : ?string {
+        return null;
+    }
 }

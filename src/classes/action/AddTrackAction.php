@@ -28,9 +28,6 @@ class AddTrackAction extends Action {
     #[\Override]
     public function get() : string {
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
-        if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
-            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
-        }
 
         $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : "";
         $backUrl = $idPlaylist !== null ? "?action=display-playlist&id={$idPlaylist}" : "?action=tracks";
@@ -182,12 +179,6 @@ class AddTrackAction extends Action {
     public function post() : string {
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;
 
-        if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
-            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
-        }
-
-        $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : "";
-
         $error = [];
 
         $type = $_POST['type'] ?? '';
@@ -217,6 +208,8 @@ class AddTrackAction extends Action {
         if (!isset($_FILES['userfile']) || $_FILES['userfile']['error'] === UPLOAD_ERR_NO_FILE) {
             $error[] = "Le fichier audio est obligatoire.";
         }
+
+        $idParam = ($idPlaylist !== null) ? "&id={$idPlaylist}" : "";
 
         // Si des erreurs de formulaire sont présentes, on arrête avant d'écrire le fichier sur le disque
         if (!empty($error)) {
@@ -371,6 +364,17 @@ class AddTrackAction extends Action {
                 {$backLink}
             </p>
         HTML;
+    }
+
+    #[\Override]
+    protected function check() : ?string {
+        $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : (isset($_GET['id']) ? (int) $_GET['id'] : null);
+
+        if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
+            return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à modifier cette playlist.");
+        }
+
+        return null;
     }
 
     /**

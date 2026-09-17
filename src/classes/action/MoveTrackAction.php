@@ -18,34 +18,8 @@ class MoveTrackAction extends Action {
     public function get() : string {
         $idTrack = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
-        if ($idTrack === null || $idTrack <= 0) {
-            return HtmlHelper::errorPage(
-                title: "Piste non spécifiée",
-                message: "Aucun identifiant de piste valide n'a été fourni.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
-
         $r = DeefyRepository::getInstance();
         $track = $r->findTrackById($idTrack);
-
-        if ($track === null) {
-            return HtmlHelper::notFound(
-                item: "Piste",
-                message: "La piste demandée n'existe pas.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
-
-        if (!Authz::checkTrackOwner($idTrack)) {
-            return HtmlHelper::forbidden(
-                message: "Vous n'êtes pas autorisé à manipuler cette piste.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
 
         $playlists = $r->findPlaylistsByUserId((int) $this->user['id']);
 
@@ -183,34 +157,9 @@ class MoveTrackAction extends Action {
     #[\Override]
     public function post() : string {
         $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : 0;
-        if ($idTrack === 0) {
-            return HtmlHelper::errorPage(
-                title: "Piste non spécifiée",
-                message: "Aucun identifiant de piste valide n'a été reçu.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
 
         $r = DeefyRepository::getInstance();
         $track = $r->findTrackById($idTrack);
-
-        if ($track === null) {
-            return HtmlHelper::notFound(
-                item: "Piste",
-                message: "La piste demandée n'existe pas.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
-
-        if (!Authz::checkTrackOwner($idTrack)) {
-            return HtmlHelper::forbidden(
-                message: "Vous n'êtes pas autorisé à manipuler cette piste.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
-            );
-        }
 
         if (empty($_POST['id_playlists'])) {
             return HtmlHelper::formError(
@@ -322,5 +271,41 @@ class MoveTrackAction extends Action {
                 {$actionButtons}
             </p>
         HTML;
+    }
+
+    #[\Override]
+    protected function check() : ?string {
+        $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : (isset($_GET['id']) ? (int) $_GET['id'] : 0);
+
+        if ($idTrack < 1) {
+            return HtmlHelper::errorPage(
+                title: "Piste non spécifiée",
+                message: "Aucun identifiant de piste valide n'a été fourni.",
+                backUrl: "?action=tracks",
+                backLabel: "Retour à mes pistes"
+            );
+        }
+
+        $r = DeefyRepository::getInstance();
+        $track = $r->findTrackById($idTrack);
+
+        if ($track === null) {
+            return HtmlHelper::notFound(
+                item: "Piste",
+                message: "La piste demandée n'existe pas.",
+                backUrl: "?action=tracks",
+                backLabel: "Retour à mes pistes"
+            );
+        }
+
+        if (!Authz::checkTrackOwner($idTrack)) {
+            return HtmlHelper::forbidden(
+                message: "Vous n'êtes pas autorisé à manipuler cette piste.",
+                backUrl: "?action=tracks",
+                backLabel: "Retour à mes pistes"
+            );
+        }
+
+        return null;
     }
 }

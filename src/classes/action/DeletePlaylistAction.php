@@ -12,9 +12,6 @@ use iutnc\deefy\render\HtmlHelper;
 class DeletePlaylistAction extends Action {
     #[\Override]
     public function get() : string {
-        $error = $this->verif();
-        if ($error != '') return $error;
-
         $idPlaylist = (int) $_GET['id'];
         $r = DeefyRepository::getInstance();
         $playlist = $r->findPlaylistById($idPlaylist);
@@ -42,9 +39,6 @@ class DeletePlaylistAction extends Action {
 
     #[\Override]
     public function post() : string {
-        $error = $this->verif();
-        if ($error != '') return $error;
-
         $idplaylist = (int) ($_POST['id']);
         $r = DeefyRepository::getInstance();
         $playlist = $r->findPlaylistById($idplaylist);
@@ -63,12 +57,8 @@ class DeletePlaylistAction extends Action {
         );
     }
 
-    /**
-     * Valide l'identifiant de la playlist et les permissions de suppression.
-     *
-     * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
-     */
-    private function verif() : string {
+    #[\Override]
+    protected function check() : ?string {
         $idPlaylist = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         if ($idPlaylist <= 0) {
             return HtmlHelper::errorPage(
@@ -90,6 +80,6 @@ class DeletePlaylistAction extends Action {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à supprimer cette playlist.");
         }
 
-        return '';
+        return null;
     }
 }

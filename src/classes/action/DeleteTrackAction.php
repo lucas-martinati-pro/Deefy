@@ -12,9 +12,6 @@ use iutnc\deefy\render\HtmlHelper;
 class DeleteTrackAction extends Action {
     #[\Override]
     public function get() : string {
-        $error = $this->verif();
-        if ($error != '') return $error;
-
         $idTrack = (int) $_GET['id'];
         $idPlaylist = isset($_GET['id_pl']) ? (int) $_GET['id_pl'] : null;
 
@@ -70,9 +67,6 @@ class DeleteTrackAction extends Action {
 
     #[\Override]
     public function post() : string {
-        $error = $this->verif();
-        if ($error != '') return $error;
-
         $idTrack = (int) ($_POST['id']);
         $idPlaylist = isset($_POST['id_pl']) ? (int) $_POST['id_pl'] : null;
 
@@ -106,12 +100,8 @@ class DeleteTrackAction extends Action {
         );
     }
 
-    /**
-     * Valide l'existence de l'identifiant de piste et la propriété de la piste.
-     *
-     * @return string Message d'erreur HTML ou chaîne vide si toutes les vérifications sont validées.
-     */
-    private function verif() : string {
+    #[\Override]
+    protected function check() : ?string {
         $idTrack = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         $idPlaylist = isset($_POST['id_pl']) ? (int) $_POST['id_pl'] : null;
         if ($idPlaylist === null) {
@@ -144,6 +134,6 @@ class DeleteTrackAction extends Action {
             }
         }
 
-        return '';
+        return null;
     }
 }
