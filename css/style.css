@@ -217,27 +217,27 @@ button[name="delete-player-track"]:hover {
 /**========================================================================
  *                 Composants Lecteur Audio
  *========================================================================**/
-.audio-footer, .audio-compact, .audio-long {
-    display: block;
+media-theme-tailwind-audio {
     width: 100%;
-    border-radius: var(--bs-border-radius);
-    overflow: hidden;
-    border: 1px solid var(--bs-border-color);
     --media-primary-color: var(--bs-body-color);
-    --media-secondary-color: var(--bs-tertiary-bg);
-    --media-accent-color: var(--bs-primary);
+    --media-accent-color: darkviolet;
     transition: all 0.3s ease;
 }
 
-.audio-footer {
-    border-radius: var(--bs-border-radius);
+.audio-compact, .audio-long {
+    border-radius: 12px;
     border: 1px solid var(--bs-border-color);
-    --media-secondary-color: var(--bs-body-bg);
-    margin: 0;
+    --media-secondary-color: rgba(128, 0, 128, 0.04);
 }
 
 .audio-compact {
     max-width: 1500px;
+}
+
+/* Lecteur en bas  */
+.audio-footer {
+    --media-secondary-color: transparent;
+    margin: 0;
 }
 
 /**========================================================================
