@@ -255,6 +255,7 @@ abstract class AudioTrackRenderer implements Renderer {
         if ($this->playlistId !== null) {
             return <<<HTML
                 <a href="?action=delete-track&id={$idTrack}&id_pl={$this->playlistId}" class="btn btn-sm btn-outline-danger">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle-fill/ -->
                     <i class="bi bi-x-circle-fill me-1"></i>
                     Retirer de la playlist
                 </a>
@@ -263,6 +264,7 @@ abstract class AudioTrackRenderer implements Renderer {
         // Sinon (Mes pistes) -> on affiche "Supprimer"
         return <<<HTML
             <a href="?action=delete-track&id={$idTrack}" class="btn btn-sm btn-outline-danger">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
                 <i class="bi bi-trash-fill me-1"></i>
                 Supprimer
             </a>
@@ -284,6 +286,7 @@ abstract class AudioTrackRenderer implements Renderer {
         return <<<HTML
             <div class="mt-2">
                 <a href="?action=move-track&id={$idTrack}" class="btn btn-sm btn-outline-primary w-100 d-inline-flex align-items-center justify-content-center" title="Ajouter cette piste à une playlist">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle/ -->
                     <i class="bi bi-plus-circle me-1"></i>
                     Ajouter à une playlist
                 </a>

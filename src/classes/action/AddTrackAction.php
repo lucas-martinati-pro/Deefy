@@ -162,14 +162,16 @@ class AddTrackAction extends Action {
 
         $contentId = $idPlaylist !== null ? "<input type=\"hidden\" name=\"id\" value=\"{$idPlaylist}\">" : "";
 
+        // Le enctype="multipart/form-data" est obligatoire pour l'envoie des fichiers
         return <<<HTML
-            <form method="post" action="?action=add-track{$idParam}" enctype="multipart/form-data">
+            <form method="post" action="?action=add-track" enctype="multipart/form-data">
                 <input type="hidden" name="type" value="{$_GET['type']}">
                 {$contentId}
                 {$content}
             </form>
             <p class="mt-3">
                 <a class="btn btn-secondary d-inline-flex align-items-center" href="{$backUrl}">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>{$backLabel}
                 </a>
             </p>
@@ -326,6 +328,7 @@ class AddTrackAction extends Action {
         $totalTracksMsg = "";
         $backLink = <<<HTML
             <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">
+                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                 <i class="bi bi-arrow-left me-2"></i>
                 Retour à mes pistes
             </a>
@@ -341,6 +344,7 @@ class AddTrackAction extends Action {
             }
             $backLink = <<<HTML
                 <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=display-playlist&id={$idPlaylist}">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>
                     Retour à la playlist
                 </a>

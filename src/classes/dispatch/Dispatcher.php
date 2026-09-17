@@ -197,7 +197,7 @@ class Dispatcher {
                     <li class="nav-item">
                         <a class="nav-link" href="?action=tracks">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note/ -->
-                            <i class="bi bi-music-note"></i></i>Mes pistes
+                            <i class="bi bi-music-note me-1"></i>Mes pistes
                         </a>
                     </li>
                     <li class="nav-item">

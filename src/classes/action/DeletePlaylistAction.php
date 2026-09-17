@@ -19,11 +19,10 @@ class DeletePlaylistAction extends Action {
         $r = DeefyRepository::getInstance();
         $playlist = $r->findPlaylistById($idPlaylist);
 
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/trash/
+        $title = HtmlHelper::title("Supprimer une playlist", "bi-trash", "danger");
         return <<<HTML
-            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash/ -->
-                <i class="bi bi-trash text-danger me-2"></i>Supprimer une playlist
-            </h1>
+            {$title}
             <div class="alert alert-warning" role="alert">
                 Êtes-vous sûr de vouloir supprimer la playlist <strong>{$playlist->name}</strong> ? Cela entraînera la suppression de <strong>toutes les pistes</strong> qu'elle contient.
             </div>

@@ -16,11 +16,10 @@ class AddPlaylistAction extends Action {
 
     #[\Override]
     public function get() : string {
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/
+        $title = HtmlHelper::title("Créer une playlist", "bi-folder-plus");
         return <<<HTML
-            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/ -->
-                <i class="bi bi-folder-plus text-primary me-2"></i>Créer une playlist
-            </h1>
+            {$title}
             <form method="post" action="?action=add-playlist">
                 <div class="mb-3">
                     <label for="title" class="form-label">Nom de la playlist<span class="text-danger">*</span></label>

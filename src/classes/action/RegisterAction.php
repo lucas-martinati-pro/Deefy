@@ -15,12 +15,11 @@ class RegisterAction extends Action {
     #[\Override]
     public function get() : string {
         $require = '<span class="text-danger">*</span>';
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/
+        $title = HtmlHelper::title("Inscription", "bi-person-plus-fill");
         return <<<HTML
-        <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/ -->
-            <i class="bi bi-person-plus-fill text-primary me-2"></i>Inscription
-        </h1>
-        <form method="post" action="?action=register" enctype="multipart/form-data">
+        {$title}
+        <form method="post" action="?action=register">
             <div class="mb-3">
                 <label for="email" class="form-label">Adresse mail$require</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" aria-describedby="emailHelp" required>

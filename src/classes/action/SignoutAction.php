@@ -2,6 +2,8 @@
 
 namespace iutnc\deefy\action;
 
+use iutnc\deefy\render\HtmlHelper;
+
 /**
  * Action de déconnexion de l'utilisateur.
  */
@@ -10,11 +12,10 @@ class SignoutAction extends Action {
     public function get() : string {
         // Si l'utilisateur n'est même pas connecté
         if (!isset($_SESSION['user'])) {
+            // Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/
+            $title = HtmlHelper::title("Déconnexion", "bi-box-arrow-right", "secondary");
             return <<<HTML
-                <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
-                    <i class="bi bi-box-arrow-right text-secondary me-2"></i>Déconnexion
-                </h1>
+                {$title}
                 <p>Vous n'êtes pas connecté.</p>
                 <p>
                     <a class="btn btn-secondary d-inline-flex align-items-center" href="main.php">
@@ -25,11 +26,10 @@ class SignoutAction extends Action {
             HTML;
         }
 
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/
+        $title = HtmlHelper::title("Déconnexion", "bi-box-arrow-right", "danger");
         return <<<HTML
-            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
-                <i class="bi bi-box-arrow-right text-danger me-2"></i>Déconnexion
-            </h1>
+            {$title}
             <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
             <form method="post" action="?action=signout">
                 <button class="btn btn-danger d-inline-flex align-items-center" type="submit">

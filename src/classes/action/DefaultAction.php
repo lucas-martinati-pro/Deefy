@@ -45,7 +45,7 @@ class DefaultAction extends Action {
                 </a>
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=tracks">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note/ -->
-                    <i class="bi bi-music-note text-primary me-2 fs-5"></i></i>
+                    <i class="bi bi-music-note text-primary me-2 fs-5"></i>
                     Afficher mes pistes
                 </a>
                 {$currentPlaylist}

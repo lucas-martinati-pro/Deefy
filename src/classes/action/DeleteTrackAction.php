@@ -24,40 +24,44 @@ class DeleteTrackAction extends Action {
         // Cas 1 : Retirer d'une playlist
         if ($idPlaylist !== null) {
             $playlist = $r->findPlaylistById($idPlaylist);
-            $playlistName = $playlist ? $playlist->name : 'la playlist';
+
+            // Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle/
+            $title = HtmlHelper::title("Retirer une piste", "bi-x-circle", "danger");
             return <<<HTML
-                <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                    <i class="bi bi-x-circle text-danger me-2"></i>Retirer une piste
-                </h1>
+                {$title}
                 <div class="alert alert-warning" role="alert">
-                    Êtes-vous sûr de vouloir retirer la piste <strong>{$track->title}</strong> de la playlist <strong>{$playlistName}</strong> ?
+                    Êtes-vous sûr de vouloir retirer la piste <strong>{$track->title}</strong> de la playlist <strong>{$playlist->name}</strong> ?
                 </div>
                 <form method="post" action="?action=delete-track">
                     <input type="hidden" name="id" value="{$idTrack}">
                     <input type="hidden" name="id_pl" value="{$idPlaylist}">
                     <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle-fill/ -->
                         <i class="bi bi-x-circle-fill me-1"></i>Confirmer le retrait
                     </button>
                     <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=display-playlist&id={$idPlaylist}">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
                         <i class="bi bi-x-lg me-1"></i>Annuler
                     </a>
                 </form>
             HTML;
         }
         // Cas 2 : Supprimer définitivement de mes pistes
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/trash/
+        $title = HtmlHelper::title("Supprimer une piste", "bi-trash", "danger");
         return <<<HTML
-            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                <i class="bi bi-trash text-danger me-2"></i>Supprimer une piste
-            </h1>
+            {$title}
             <div class="alert alert-warning" role="alert">
                 Êtes-vous sûr de vouloir supprimer définitivement la piste <strong>{$track->title}</strong> de vos pistes ?
             </div>
             <form method="post" action="?action=delete-track">
                 <input type="hidden" name="id" value="{$idTrack}">
                 <button class="btn btn-danger d-inline-flex align-items-center" type="submit">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
                     <i class="bi bi-trash-fill me-1"></i>Confirmer la suppression
                 </button>
                 <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=tracks">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
                     <i class="bi bi-x-lg me-1"></i>Annuler
                 </a>
             </form>

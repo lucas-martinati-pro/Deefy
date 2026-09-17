@@ -54,6 +54,8 @@ class MoveTrackAction extends Action {
         $trackPreview = !empty($trackHtml)
             ? "<div class=\"mb-4\"><ul class=\"list-unstyled mb-0\">{$trackHtml}</ul></div>"
             : '';
+        // Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/
+        $title = HtmlHelper::title("Ajouter à une playlist", "bi-music-note-list");
 
         if (empty($playlists)) {
             $alertHtml = HtmlHelper::alert(
@@ -62,16 +64,16 @@ class MoveTrackAction extends Action {
             );
 
             return <<<HTML
-                <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                    <i class="bi bi-music-note-list text-primary me-2"></i>Ajouter à une playlist
-                </h1>
+                {$title}
                 {$trackPreview}
                 {$alertHtml}
                 <p class="mt-3">
                     <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                         <i class="bi bi-plus-circle-fill me-2"></i>Créer une playlist
                     </a>
                     <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=tracks">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                         <i class="bi bi-arrow-left me-2"></i>Retour à mes pistes
                     </a>
                 </p>
@@ -95,12 +97,14 @@ class MoveTrackAction extends Action {
                             <label class="form-check-label" for="playlist-{$playlist->id}">
                                 <span class="fw-semibold">{$playlistName}</span>
                                 <span class="d-block small text-muted">
+                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
                                     <i class="bi bi-music-note-beamed me-1"></i>
                                     {$trackCountLabel}
                                 </span>
                             </label>
                         </div>
                         <span class="badge bg-secondary-subtle text-secondary border d-flex align-items-center gap-1">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
                             <i class="bi bi-check-circle-fill text-success"></i>
                             Déjà présente
                         </span>
@@ -116,6 +120,7 @@ class MoveTrackAction extends Action {
                             <span class="form-check-label">
                                 <span class="fw-bold">{$playlistName}</span>
                                 <span class="d-block small text-muted">
+                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
                                     <i class="bi bi-music-note-beamed me-1"></i>
                                     {$trackCountLabel}
                                 </span>
@@ -137,9 +142,11 @@ class MoveTrackAction extends Action {
                 {$statusAlert}
                 <p class="mt-3">
                     <a class="btn btn-primary d-inline-flex align-items-center" href="?action=add-playlist">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                         <i class="bi bi-plus-circle-fill me-2"></i>Créer une nouvelle playlist
                     </a>
                     <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="?action=tracks">
+                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                         <i class="bi bi-arrow-left me-2"></i>Retour à mes pistes
                     </a>
                 </p>
@@ -152,10 +159,12 @@ class MoveTrackAction extends Action {
                     {$playlistListHtml}
                     <div class="d-flex align-items-center gap-2">
                         <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                             <i class="bi bi-plus-circle-fill me-2"></i>
                             Ajouter aux playlists sélectionnées
                         </button>
                         <a class="btn btn-secondary d-inline-flex align-items-center" href="?action=tracks">
+                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                             <i class="bi bi-arrow-left me-2"></i>
                             Retour à mes pistes
                         </a>
@@ -165,9 +174,7 @@ class MoveTrackAction extends Action {
         }
 
         return <<<HTML
-            <h1 class="h2 fw-bold mb-3 d-flex align-items-center">
-                <i class="bi bi-music-note-list text-primary me-2"></i>Ajouter à une playlist
-            </h1>
+            {$title}
             {$trackPreview}
             {$actionForm}
         HTML;
@@ -262,10 +269,12 @@ class MoveTrackAction extends Action {
 
             $actionButtons = <<<HTML
                 <a class="btn btn-primary d-inline-flex align-items-center" href="?action=display-playlist&id={$playlist->id}">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                     <i class="bi bi-music-note-list me-2"></i>
                     Consulter la playlist
                 </a>
                 <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>
                     Retour à mes pistes
                 </a>
@@ -286,9 +295,11 @@ class MoveTrackAction extends Action {
 
             $actionButtons = <<<HTML
                 <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlists">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/collection-play-fill/ -->
                     <i class="bi bi-collection-play-fill me-2"></i>Mes playlists
                 </a>
                 <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>Retour à mes pistes
                 </a>
             HTML;
@@ -299,6 +310,7 @@ class MoveTrackAction extends Action {
 
         return <<<HTML
                 <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
+                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
                     <i class="bi bi-check-circle-fill text-success me-2"></i>Piste ajoutée avec succès
                 </h1>
                 {$msgHtml}
