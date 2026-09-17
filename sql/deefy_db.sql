@@ -50,7 +50,12 @@ INSERT INTO `track` (`id`, `titre`, `genre`, `duree`, `filename`, `type`, `image
 (6,	'MONGOL',	'Hardcore',	155,	'MONGOL.mp3',	'A',	'cover_mongol.jpg',	'vernex',	'MONGOL',	2024,	6,	NULL,	NULL),
 (7,	'Mexico en Janvier (Lushe Remix)',	'Remix',	123,	'Mexico_en_Janvier_Lushe_Remix.mp3',	'A',	'cover_mexico_en_janvier_lushe_remix.jpg',	'Lushe, Bigflo & Oli',	'Mexico en Janvier',	2025,	7,	NULL,	NULL),
 (8,	'Pennywise (Deadly Guns Remix)',	'Hardcore',	152,	'Pennywise_Deadly_Guns_Remix.mp3',	'A',	'cover_pennywise_deadly_guns_remix.jpg',	'Angerfist, Deadly Guns',	'Pennywise',	2024,	8,	NULL,	NULL),
-(9,	'Aria (Hard Techno Edit)',	'Hard Techno',	274,	'Aria_Hard_Techno_Edit.mp3',	'A',	'cover_aria_hard_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES',	'Aria (Hard Techno Edit)',	2025,	9,	NULL,	NULL);
+(9,	'Aria (Hard Techno Edit)',	'Hard Techno',	274,	'Aria_Hard_Techno_Edit.mp3',	'A',	'cover_aria_hard_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES',	'Aria (Hard Techno Edit)',	2025,	9,	NULL,	NULL),
+(10,	'Tree of Life',	'Frenchcore',	313,	'Tree_Of_Life.mp3',	'A',	'cover_tree_of_life.jpg',	'Billx',	'Tree of Life',	2021,	10,	NULL,	NULL),
+(11,	'Lord Of Chaos',	'Hard Techno',	156,	'Lord_Of_Chaos.mp3',	'A',	'cover_lord_of_chaos.jpg',	'Fantasm',	'Lord Of Chaos',	2026,	11,	NULL,	NULL),
+(12,	'Ameno (Techno Edit)',	'Hard Techno',	151,	'Ameno_Techno_Edit.mp3',	'A',	'cover_ameno_techno_edit.jpg',	'Sandro Cardio, GEWOONRAVES, Zentryc, Zensory',	'Ameno (Techno Edit)',	2025,	12,	NULL,	NULL),
+(13,	'PROZACZOPIXAN RELOADED',	'Remix',	134,	'PROZACZOPIXAN_RELOADED.mp3',	'A',	'cover_prozaczopixan_reloaded.jpg',	'Vald, Vladimir Cauchemar, Todiefor',	'PANDEMONIUM RELOADED',	2025,	13,	NULL,	NULL),
+(14,	'AMOUR LÂCHE',	'Frenchcore',	222,	'AMOUR_LACHE.mp3',	'A',	'cover_amour_lache.jpg',	'helen ka, vernex',	'AMOUR LÂCHE',	2025,	14,	NULL,	NULL);
 
 CREATE TABLE `User` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -73,13 +78,18 @@ CREATE TABLE `playlist2track` (
 INSERT INTO `playlist2track` (`id_pl`, `id_track`, `no_piste_dans_liste`) VALUES
     (1,	1,	1),
     (1,	2,	2),
+    (1,	10,	3),
     (2,	3,	1),
     (2,	4,	2),
     (2,	9,	3),
+    (2,	11,	4),
+    (2,	12,	5),
     (3,	5,	1),
     (3,	6,	2),
+    (3,	14,	3),
     (4,	7,	1),
-    (4,	8,	2);
+    (4,	8,	2),
+    (4,	13,	3);
 
 
 INSERT INTO `User` (`id`, `email`, `passwd`, `role`) VALUES
@@ -119,7 +129,12 @@ INSERT INTO `user2track` (`id_user`, `id_track`) VALUES
     (1,	3),
     (1,	4),
     (1,	9),
+    (1,	10),
+    (1,	11),
+    (1,	12),
     (2,	5),
     (2,	6),
+    (2,	14),
     (3,	7),
-    (3,	8);
+    (3,	8),
+    (3,	13);
