@@ -46,5 +46,6 @@
 - **Page « Mes pistes »** : La page affiche toutes les pistes de l'utilisateur.
 - **Ajout sans playlist** : L'utilisateur peut ajouter une piste à ses morceaux sans choisir de playlist.
 - **Ajout vers une playlist** : L'utilisateur peut ajouter une piste directement dans une playlist précise.
+- **Ajout à des playlists** : L'utilisateur peut ajouter une piste existante à une ou plusieurs playlists depuis « Mes pistes » avec des cases à cocher.
 - **Retrait d'une playlist** : Le bouton retire la piste de la playlist sans la supprimer.
 - **Suppression définitive** : Le bouton supprime la piste de la bibliothèque et de toutes les playlists.
