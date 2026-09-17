@@ -1,5 +1,6 @@
 body {
     font-family: "Bricolage Grotesque", sans-serif;
+    transition: background-color 0.3s ease;
 }
 
 /* Les ::before et ::after dans le body me permettent juste d'ajouter deux éléments servent juste à décorer le fond (la bulle violette et rose) sans forcément de balise div.*/
@@ -28,6 +29,20 @@ body::after {
     right: -100px;
 }
 
+#toggle-theme {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+#toggle-theme:hover {
+    transform: rotate(180deg);
+}
+
 /**========================================================================
  *                       Cards
  *========================================================================**/
@@ -37,6 +52,7 @@ body::after {
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     border-radius: 14px;
+    transition: all 0.3s ease;
 }
 
 .card:hover {
@@ -94,6 +110,7 @@ body::after {
 .navbar {
     background-color: var(--bs-tertiary-bg);
     border-bottom: 1px solid var(--bs-border-color);
+    transition: all 0.3s ease;
 }
 
 /**========================================================================
@@ -133,6 +150,7 @@ body::after {
     --media-primary-color: var(--bs-body-color);
     --media-secondary-color: var(--bs-tertiary-bg);
     --media-accent-color: var(--bs-primary);
+    transition: all 0.3s ease;
 }
 
 .audio-footer {
@@ -144,4 +162,19 @@ body::after {
 
 .audio-compact {
     max-width: 1500px;
+}
+
+/**========================================================================
+ *                 Formulaire
+ *========================================================================**/
+.form-control:focus,
+.form-select:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25);
+}
+
+/* Cases à cocher personnalisées */
+.form-check-input:checked {
+    background-color: #8b5cf6;
+    border-color: #8b5cf6;
 }
