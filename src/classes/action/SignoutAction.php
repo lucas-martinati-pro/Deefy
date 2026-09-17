@@ -56,7 +56,7 @@ class SignoutAction extends Action {
             </h1>
             <p>Vous avez été déconnecté avec succès.</p>
             <p>
-                <a class="btn btn-primary d-inline-flex align-items-center" href="main.php?action=signin">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=signin">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
                     <i class="bi bi-box-arrow-in-right me-1"></i>Se reconnecter
                 </a>

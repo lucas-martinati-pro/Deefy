@@ -188,7 +188,7 @@ class AddTrackAction extends Action {
 
         $error = [];
 
-        $type = $_GET['type'] ?? '';
+        $type = $_POST['type'] ?? '';
         if ($type === 'AlbumTrack') {
             if (empty($_POST['title']) || empty($_POST['artist']) || empty($_POST['album'])) {
                 $error[] = "Le titre, l'artiste ou le nom de l'album est manquant.";
