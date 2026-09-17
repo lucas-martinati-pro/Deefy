@@ -242,9 +242,10 @@ class Dispatcher {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-circle/ -->
                     <i class="bi bi-person-circle"></i>
                     <span class="navbar-text small text-muted me-2">{$user['email']}</span>
-                    <a class="btn btn-outline-danger btn-sm" href="?action=signout">
+                    <a class="btn btn-outline-danger btn-sm signout" href="?action=signout">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
-                        <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+                        <i class="bi bi-box-arrow-right me-1"></i>
+                        Déconnexion
                     </a>
                     {$toggleThemeButton}
                 </div>
@@ -341,12 +342,12 @@ class Dispatcher {
                                     </media-theme-tailwind-audio>
                                 </div>
 
-                                <!-- Section Droit : Supprimer le track en cours de lecture -->
+                                <!-- Section Droite : Fermer le lecteur -->
                                 <div>
                                     <form method="post" action="">
-                                        <button class="btn btn-outline-danger btn-sm" name="delete-player-track" title="Fermer le lecteur">
-                                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle/ -->
-                                            <i class="bi bi-x-circle"></i>
+                                        <button class="btn btn-outline-secondary btn-sm" name="delete-player-track" title="Fermer le lecteur">
+                                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
+                                            <i class="bi bi-x-lg"></i>
                                         </button>
                                     </form>
                                 </div>
