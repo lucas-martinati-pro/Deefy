@@ -65,7 +65,7 @@ class MoveTrackAction extends Action {
 
             if ($isAlreadyIn) {
                 $playlistListHtml .= <<<HTML
-                    <div class="list-group-item d-flex justify-content-between align-items-center p-3 bg-body-secondary text-muted">
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-3 opacity-75">
                         <div class="form-check d-flex align-items-center gap-2 mb-0">
                             <input class="form-check-input flex-shrink-0" type="checkbox" checked disabled id="playlist-{$playlist->id}">
                             <label class="form-check-label" for="playlist-{$playlist->id}">

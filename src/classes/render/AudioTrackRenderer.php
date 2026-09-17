@@ -123,8 +123,8 @@ abstract class AudioTrackRenderer implements Renderer {
             : '';
 
         return <<<HTML
-            <div>
-                <div class="card shadow" style="height:100%">
+            <div class="col">
+                <div class="card h-100">
                     {$imageHtml}
                     <div class="card-body d-flex flex-column justify-content-between p-3">
                         <div>
@@ -174,7 +174,7 @@ abstract class AudioTrackRenderer implements Renderer {
         } else {
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <div class="bg-light d-flex align-items-center justify-content-center text-secondary rounded-start w-100 h-100 border-end" style="min-height: 140px;">
+                    <div class="d-flex align-items-center justify-content-center text-secondary rounded-start w-100 h-100 border-end" style="min-height: 140px;">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
                         <i class="bi bi-music-note-beamed fs-1"></i>
                     </div>
@@ -189,7 +189,7 @@ abstract class AudioTrackRenderer implements Renderer {
         $deleteBtn = $this->renderDeleteButton();
 
         return <<<HTML
-            <div class="card shadow-sm border overflow-hidden">
+            <div class="card mb-3">
                 <div class="row g-0">
                     {$imageHtml}
                     <div class="{$colContent}">

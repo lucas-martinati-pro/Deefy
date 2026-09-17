@@ -54,7 +54,7 @@ class DefaultAction extends Action {
                     <i class="bi bi-plus-circle-fill text-success me-2 fs-5"></i>
                     Créer une playlist
                 </a>
-                <a class="list-group-item list-group-item-action list-group-item-danger d-flex align-items-center" href="?action=signout">
+                <a class="list-group-item list-group-item-action text-danger d-flex align-items-center" href="?action=signout">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
                     <i class="bi bi-box-arrow-right text-danger me-2 fs-5"></i>
                     Se déconnecter

@@ -281,7 +281,7 @@ class Dispatcher {
                         HTML;
                     } else {
                         $coverHtml = <<<HTML
-                            <div class="rounded-2 border border-secondary-subtle d-flex align-items-center justify-content-center text-secondary shadow-sm flex-shrink-0" style="width: 52px; height: 52px;">
+                            <div class="rounded-2 d-flex align-items-center justify-content-center text-secondary flex-shrink-0" style="width: 52px; height: 52px;">
                                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/vinyl-fill/ -->
                                 <i class="bi bi-vinyl-fill fs-4 text-primary"></i>
                             </div>
@@ -292,7 +292,7 @@ class Dispatcher {
 
                     return <<<HTML
                         <div style="height: 85px;"></div>
-                        <footer class="fixed-bottom audio-footer-bar border-top shadow-lg py-2 px-3 z-3">
+                        <footer class="audio-footer-bar py-2 px-3">
                             <div class="container-fluid d-flex align-items-center justify-content-between gap-3">
                                 <!-- Section Gauche : Image + Titre/Artiste -->
                                 <div class="d-flex align-items-center gap-3 flex-shrink-0" style="max-width: 300px;">

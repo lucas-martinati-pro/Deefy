@@ -71,11 +71,11 @@ class PlaylistsAction extends Action {
             }
 
             $cardsHtml .= <<<HTML
-                <div class="col d-flex align-items-stretch">
-                    <div class="card shadow-sm h-100 w-100 border overflow-hidden">
+                <div class="col">
+                    <div class="card h-100">
                         <div class="position-relative" style="height: 180px;">
                             {$coverHtml}
-                            <span class="position-absolute top-0 end-0 m-2 badge bg-dark bg-opacity-75">
+                            <span class="position-absolute top-0 end-0 m-2 badge text-bg-dark">
                                 {$trackCount} piste(s)
                             </span>
                         </div>

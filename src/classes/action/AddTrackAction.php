@@ -66,9 +66,10 @@ class AddTrackAction extends Action {
 
         $retour = <<<HTML
             <p>
-                <a class="btn btn-light border d-inline-flex align-items-center" href="?action=add-track{$idParam}">
+                <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="?action=add-track{$idParam}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
-                    <i class="bi bi-arrow-left me-2"></i>Retour
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Retour
                 </a>
             </p>
         HTML;
