@@ -6,6 +6,7 @@ use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\exception\ConfigIOException;
 
 /**
  * Repository centralisant les opérations d'accès à la base de données.
@@ -36,11 +37,11 @@ class DeefyRepository {
      *
      * @param string $file Chemin absolu vers le fichier de configuration INI.
      * @return void
-     * @throws \Exception Si le fichier INI ne peut pas être lu ou analysé.
+     * @throws ConfigIOException Si le fichier INI ne peut pas être lu ou analysé.
      */
     public static function setConfig(string $file) : void {
         $conf = parse_ini_file($file);
-        if ($conf === false) throw new \Exception("Error reading configuration file");
+        if ($conf === false) throw new ConfigIOException("Error reading configuration file");
         self::$config = [
             'dsn' => "{$conf['driver']}:host={$conf['host']};dbname={$conf['database']}",
             'user' => $conf['username'],
