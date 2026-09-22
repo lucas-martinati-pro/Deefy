@@ -3,6 +3,8 @@
 namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
+use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\config\Config;
 
 /**
  * Classe abstraite de base pour le rendu HTML des pistes audio.
@@ -13,16 +15,6 @@ abstract class AudioTrackRenderer implements Renderer {
      * Piste audio à afficher.
      */
     protected AudioTrack $track;
-
-    /**
-     * Chemin relatif vers le répertoire de stockage des fichiers audio.
-     */
-    public const string AUDIO_PATH = '../audio/';
-
-    /**
-     * Chemin relatif vers le répertoire de stockage des pochettes/images.
-     */
-    public const string IMAGE_PATH = '../image/covers/';
 
     /**
      * Identifiant de la playlist parente si la piste est rendue dans le contexte d'une playlist.
@@ -40,15 +32,9 @@ abstract class AudioTrackRenderer implements Renderer {
         $this->playlistId = $playlistId;
     }
 
-    /**
-     * Restitue la piste selon le mode demandé (Renderer::COMPACT ou Renderer::LONG).
-     *
-     * @param int $selector Mode d'affichage (COMPACT ou LONG).
-     * @return string Balises HTML générées.
-     */
     #[\Override]
-    public function render(int $selector) : string {
-        return ($selector === Renderer::LONG) ? $this->renderLong() : $this->renderCompact();
+    public function render(TypeRender $selector = TypeRender::COMPACT) : string {
+        return ($selector === TypeRender::LONG) ? $this->renderLong() : $this->renderCompact();
     }
 
     /**
@@ -99,10 +85,10 @@ abstract class AudioTrackRenderer implements Renderer {
         $image = $this->track->image;
         $hasImage = (!empty($image));
         $imageHtml = '';
-        $imagePath = self::IMAGE_PATH;
         if ($hasImage) {
+            $coverDir = Config::getCoverWebPath();
             $imageHtml = <<<HTML
-                <img src="{$imagePath}{$image}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->title}">
+                <img src="{$coverDir}{$image}" class="card-img-top object-fit-cover" style="height: 180px;" alt="{$this->track->title}">
             HTML;
         } else {
             $imageHtml = <<<HTML
@@ -138,7 +124,7 @@ abstract class AudioTrackRenderer implements Renderer {
                             {$infosHtml}
                         </div>
                         <div class="mt-auto pt-2">
-                            {$this->renderAudioPlayer(Renderer::COMPACT)}
+                            {$this->renderAudioPlayer(TypeRender::COMPACT)}
                             {$actionsHtml}
                             {$addToPlaylist}
                         </div>
@@ -164,10 +150,10 @@ abstract class AudioTrackRenderer implements Renderer {
         $colContent = 'col-12';
 
         if ($hasImage) {
-            $imagePath = self::IMAGE_PATH;
+            $coverDir = Config::getCoverWebPath();
             $imageHtml = <<<HTML
                 <div class="col-md-3 col-lg-2">
-                    <img src="{$imagePath}{$image}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->title}">
+                    <img src="{$coverDir}{$image}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" style="min-height: 140px; max-height: 200px;" alt="{$this->track->title}">
                 </div>
             HTML;
             $colContent = 'col-md-9 col-lg-10';
@@ -209,7 +195,7 @@ abstract class AudioTrackRenderer implements Renderer {
                                 {$infosHtml}
                             </div>
                             <div>
-                                {$this->renderAudioPlayer(Renderer::LONG)}
+                                {$this->renderAudioPlayer(TypeRender::LONG)}
                             </div>
                         </div>
                     </div>
@@ -295,17 +281,18 @@ abstract class AudioTrackRenderer implements Renderer {
     /**
      * Génère le composant lecteur audio.
      *
-     * @param int $selector Mode d'affichage souhaité (Renderer::COMPACT ou Renderer::LONG).
+     * @param TypeRender $selector Mode d'affichage souhaité (TypeRender::COMPACT ou TypeRender::LONG).
      * @return string Balises HTML du lecteur audio.
      */
-    protected function renderAudioPlayer(int $selector) : string {
-        $audioPath = self::AUDIO_PATH;
-        if ($selector === Renderer::COMPACT) {
+    protected function renderAudioPlayer(TypeRender $selector) : string {
+        $audioDir = Config::getAudioWebPath();
+
+        if ($selector === TypeRender::COMPACT) {
             return <<<HTML
                 <media-theme-tailwind-audio class="audio-compact">
                     <audio
                         slot="media"
-                        src="{$audioPath}{$this->track->filename}"
+                        src="{$audioDir}{$this->track->filename}"
                         crossorigin="anonymous"
                     ></audio>
                 </media-theme-tailwind-audio>
@@ -314,7 +301,7 @@ abstract class AudioTrackRenderer implements Renderer {
             <media-theme-tailwind-audio class="audio-long">
                 <audio
                     slot="media"
-                    src="{$audioPath}{$this->track->filename}"
+                    src="{$audioDir}{$this->track->filename}"
                     crossorigin="anonymous"
                 ></audio>
             </media-theme-tailwind-audio>

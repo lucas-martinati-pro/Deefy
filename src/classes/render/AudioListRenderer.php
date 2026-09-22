@@ -3,6 +3,7 @@
 namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\lists\AudioList;
+use iutnc\deefy\enums\TypeRender;
 
 /**
  * Moteur de rendu HTML pour les listes audio (AudioList, Playlist, Album).
@@ -24,7 +25,7 @@ class AudioListRenderer implements Renderer {
     }
 
     #[\Override]
-    public function render(int $selector = 0) : string {
+    public function render(TypeRender $selector = TypeRender::COMPACT) : string {
         $res = <<<HTML
         <h2 class="mb-3 d-flex align-items-center">
             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
@@ -35,7 +36,7 @@ class AudioListRenderer implements Renderer {
         if (count($this->audioList->tracks) === 0) {
             $res .= HtmlHelper::alert(type: 'secondary', content: 'Cette liste est vide.');
         } else {
-            $divClass = ($selector === Renderer::LONG)
+            $divClass = ($selector === TypeRender::LONG)
                 ? 'd-flex flex-column gap-3 mb-4'
                 : 'row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3 mb-4';
 

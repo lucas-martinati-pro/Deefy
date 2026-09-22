@@ -5,7 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\action\Action;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
-use iutnc\deefy\render\AudioTrackRenderer;
+use iutnc\deefy\config\Config;
 
 /**
  * Action listant l'ensemble des playlists de l'utilisateur connecté.
@@ -54,11 +54,10 @@ class PlaylistsAction extends Action {
                 }
             }
 
-            $imagePath = AudioTrackRenderer::IMAGE_PATH;
-
             if ($coverImage !== null) {
+                $coverDir = Config::getCoverDir();
                 $coverHtml = <<<HTML
-                    <img src="{$imagePath}{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
+                    <img src="{$coverDir}{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
                 HTML;
             } else {
                 $coverHtml = <<<HTML

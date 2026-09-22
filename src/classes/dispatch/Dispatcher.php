@@ -18,7 +18,7 @@ use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
-use iutnc\deefy\render\AudioTrackRenderer;
+use iutnc\deefy\config\Config;
 use iutnc\deefy\repository\DeefyRepository;
 
 /**
@@ -299,12 +299,11 @@ class Dispatcher {
                         $subtitle = "Podcast • {$author}";
                     }
 
-                    $imagePath = AudioTrackRenderer::IMAGE_PATH;
-
                     // Image de couverture à gauche
                     if (!empty($image)) {
+                        $coverDir = Config::getCoverDir();
                         $coverHtml = <<<HTML
-                            <img src="{$imagePath}{$image}" class="rounded-2 object-fit-cover shadow-sm flex-shrink-0" style="width: 52px; height: 52px;" alt="{$trackTitle}">
+                            <img src="{$coverDir}{$image}" class="rounded-2 object-fit-cover shadow-sm flex-shrink-0" style="width: 52px; height: 52px;" alt="{$trackTitle}">
                         HTML;
                     } else {
                         $coverHtml = <<<HTML
@@ -315,7 +314,7 @@ class Dispatcher {
                         HTML;
                     }
 
-                    $audioPath = AudioTrackRenderer::AUDIO_PATH;
+                    $audioDir = Config::getAudioWebPath();
 
                     return <<<HTML
                         <div style="height: 85px;"></div>
@@ -335,7 +334,7 @@ class Dispatcher {
                                     <media-theme-tailwind-audio class="audio-footer">
                                         <audio
                                             slot="media"
-                                            src="{$audioPath}{$track->filename}"
+                                            src="{$audioDir}{$track->filename}"
                                             crossorigin="anonymous"
                                             autoplay
                                         ></audio>

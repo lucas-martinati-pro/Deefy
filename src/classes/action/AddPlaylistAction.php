@@ -4,10 +4,10 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\render\Renderer;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
+use iutnc\deefy\enums\TypeRender;
 
 /**
  * Action permettant la création d'une nouvelle playlist.
@@ -51,7 +51,7 @@ class AddPlaylistAction extends Action {
         $_SESSION['playlist'] = $playlist;
 
         $renderer = RendererFactory::getRenderer($playlist);
-        $listRender = $renderer ? $renderer->render(Renderer::LONG) : '';
+        $listRender = $renderer ? $renderer->render(TypeRender::LONG) : '';
 
         return <<<HTML
             {$listRender}

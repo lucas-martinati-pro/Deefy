@@ -5,26 +5,17 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\render\Renderer;
+use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\render\HtmlHelper;
+use iutnc\deefy\config\Config;
 
 /**
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
  */
 class AddTrackAction extends Action {
-    /**
-     * Répertoire de destination pour les fichiers audio MP3.
-     */
-    private const string AUDIODIR = __DIR__ . '/../../../audio';
-
-    /**
-     * Répertoire de destination pour les images de couverture.
-     */
-    private const string IMAGEDIR = __DIR__ . '/../../../image/covers';
-
     #[\Override]
     public function get() : string {
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
@@ -229,7 +220,7 @@ class AddTrackAction extends Action {
 
         // Analyse des métadonnées ID3
         $getID3 = new \getID3();
-        $fileInfo = $getID3->analyze(self::AUDIODIR . '/' . $audioFileName);
+        $fileInfo = $getID3->analyze(Config::getAudioDir() . $audioFileName);
 
         // Gestion et enregistrement de l'image (ID3 ou upload manuel)
         $coverFile = $_FILES['coverfile'] ?? null;
@@ -346,7 +337,7 @@ class AddTrackAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($track, $idPlaylist);
-        $renderTrack = $renderer->render(Renderer::LONG);
+        $renderTrack = $renderer->render(TypeRender::LONG);
         return <<<HTML
             <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/check-circle-fill/ -->
@@ -410,15 +401,17 @@ class AddTrackAction extends Action {
                 return null;
         }
 
-        if (!is_dir(self::AUDIODIR)) {
-            if (!mkdir(self::AUDIODIR, 0777, true)) {
+        $audioDir = Config::getAudioDir();
+
+        if (!is_dir($audioDir)) {
+            if (!mkdir($audioDir, 0777, true)) {
                 $uploadError = "Impossible de créer le dossier de stockage audio.";
                 return null;
             }
         }
 
         $newName = uniqid('track_', true) . bin2hex(random_bytes(4)) . '.mp3';
-        $destination = self::AUDIODIR . '/' . $newName;
+        $destination = $audioDir . $newName;
 
         if (!move_uploaded_file($file['tmp_name'], $destination)) {
             $uploadError = "Impossible de déplacer le fichier téléversé vers le dossier audio.";
@@ -436,8 +429,10 @@ class AddTrackAction extends Action {
      * @return string|null Nom du fichier image généré ou null si aucune couverture n'est fournie.
      */
     private static function saveCoverImage(array $fileInfo, ?array $coverFile) : ?string {
-        if (!is_dir(self::IMAGEDIR)) {
-            mkdir(self::IMAGEDIR, 0777, true);
+        $coverDir = Config::getCoverDir();
+
+        if (!is_dir($coverDir)) {
+            mkdir($coverDir, 0777, true);
         }
 
         // 1. Priorité à la pochette incluse dans les métadonnées ID3 du MP3
@@ -447,7 +442,7 @@ class AddTrackAction extends Action {
             $extension = ($typeImg === 'image/png') ? 'png' : 'jpg';
 
             $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
-            if (file_put_contents(self::IMAGEDIR . '/' . $imageName, $picture['data']) !== false) {
+            if (file_put_contents($coverDir . $imageName, $picture['data']) !== false) {
                 return $imageName;
             }
         }
@@ -457,7 +452,7 @@ class AddTrackAction extends Action {
             $extension = strtolower(pathinfo($coverFile['name'], PATHINFO_EXTENSION));
             if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
                 $imageName = uniqid('cover_', true) . bin2hex(random_bytes(4)) . '.' . $extension;
-                if (move_uploaded_file($coverFile['tmp_name'], self::IMAGEDIR . '/' . $imageName)) {
+                if (move_uploaded_file($coverFile['tmp_name'], $coverDir . $imageName)) {
                     return $imageName;
                 }
             }

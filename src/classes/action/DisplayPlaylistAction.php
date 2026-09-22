@@ -4,7 +4,7 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\render\Renderer;
+use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
@@ -44,7 +44,7 @@ class DisplayPlaylistAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render(Renderer::COMPACT) : '';
+        $playlistHtml = $renderer ? $renderer->render(TypeRender::COMPACT) : '';
         $idPlaylist = $playlist->id;
 
         return <<<HTML

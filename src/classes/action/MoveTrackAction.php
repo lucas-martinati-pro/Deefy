@@ -4,7 +4,7 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\render\Renderer;
+use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
@@ -24,7 +24,7 @@ class MoveTrackAction extends Action {
         $playlists = $r->findPlaylistsByUserId((int) $this->user['id']);
 
         $trackRenderer = RendererFactory::getRenderer($track);
-        $trackHtml = $trackRenderer->render(Renderer::LONG);
+        $trackHtml = $trackRenderer->render(TypeRender::LONG);
         $trackPreview = !empty($trackHtml)
             ? $trackHtml
             : '';
@@ -255,7 +255,7 @@ class MoveTrackAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($track);
-        $renderTrack = $renderer->render(Renderer::LONG);
+        $renderTrack = $renderer->render(TypeRender::LONG);
 
         return <<<HTML
                 <h1 class="h2 fw-bold text-success mb-3 d-flex align-items-center">

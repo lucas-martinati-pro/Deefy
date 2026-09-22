@@ -4,7 +4,7 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\render\Renderer;
+use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 
@@ -19,7 +19,7 @@ class TracksAction extends Action {
 
         $playlist = new Playlist("Mes pistes", $tracks);
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render(Renderer::COMPACT) : '';
+        $playlistHtml = $renderer ? $renderer->render(TypeRender::COMPACT) : '';
 
         return <<<HTML
             {$playlistHtml}
