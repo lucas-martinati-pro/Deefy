@@ -2,7 +2,6 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\config\Config;
@@ -11,13 +10,13 @@ use iutnc\deefy\config\Config;
  * Action listant l'ensemble des playlists de l'utilisateur connecté.
  */
 class PlaylistsAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         $r = DeefyRepository::getInstance();
         $playlists = $r->findPlaylistsByUserId((int) $this->user['id']);
 
         if (empty($playlists)) {
-            $alert = HtmlHelper::alert(type: 'info', content: 'Vous ne possédez aucune playlist pour le moment.');
+            $alert = HtmlHelper::alert(content: 'Vous ne possédez aucune playlist pour le moment.');
             return <<<HTML
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="h2 fw-bold mb-0 d-flex align-items-center">
@@ -41,8 +40,8 @@ class PlaylistsAction extends Action {
 
         $cardsHtml = '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">';
         foreach ($playlists as $pl) {
-            $trackCount = (int) $pl->trackCount;
-            $totalDuration = (int) $pl->totalDuration;
+            $trackCount = $pl->trackCount;
+            $totalDuration = $pl->totalDuration;
 
             // Récupérer la première pochette disponible parmi les pistes
             $coverImage = null;
@@ -119,7 +118,7 @@ class PlaylistsAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         return '';
     }

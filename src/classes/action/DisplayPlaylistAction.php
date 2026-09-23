@@ -2,7 +2,6 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
@@ -13,7 +12,7 @@ use iutnc\deefy\render\HtmlHelper;
  * Action permettant d'afficher le détail d'une playlist et ses morceaux.
  */
 class DisplayPlaylistAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         // CAS 1 : Aucun ID -> on affiche la playlist en session
         if (!isset($_GET['id'])) {
@@ -44,7 +43,7 @@ class DisplayPlaylistAction extends Action {
         }
 
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render(TypeRender::COMPACT) : '';
+        $playlistHtml = $renderer ? $renderer->render() : '';
         $idPlaylist = $playlist->id;
 
         return <<<HTML
@@ -66,7 +65,7 @@ class DisplayPlaylistAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         return '';
     }

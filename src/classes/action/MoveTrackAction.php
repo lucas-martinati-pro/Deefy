@@ -2,7 +2,6 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
@@ -14,7 +13,7 @@ use iutnc\deefy\render\HtmlHelper;
  */
 class MoveTrackAction extends Action {
 
-    #[\Override]
+    #[Override]
     public function get() : string {
         $idTrack = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
@@ -109,7 +108,6 @@ class MoveTrackAction extends Action {
 
         if ($availableCount === 0) {
             $statusAlert = HtmlHelper::alert(
-                type: 'info',
                 content: "Cette piste est déjà présente dans l'ensemble de vos playlists."
             );
             $actionForm = <<<HTML
@@ -154,7 +152,7 @@ class MoveTrackAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : 0;
 
@@ -273,7 +271,7 @@ class MoveTrackAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     protected function check() : ?string {
         $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : (isset($_GET['id']) ? (int) $_GET['id'] : 0);
 

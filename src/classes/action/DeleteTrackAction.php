@@ -10,7 +10,7 @@ use iutnc\deefy\render\HtmlHelper;
  * Action permettant la suppression définitive d'une piste ou son retrait d'une playlist.
  */
 class DeleteTrackAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         $idTrack = (int) $_GET['id'];
         $idPlaylist = isset($_GET['id_pl']) ? (int) $_GET['id_pl'] : null;
@@ -65,7 +65,7 @@ class DeleteTrackAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         $idTrack = (int) ($_POST['id']);
         $idPlaylist = isset($_POST['id_pl']) ? (int) $_POST['id_pl'] : null;
@@ -100,7 +100,7 @@ class DeleteTrackAction extends Action {
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function check() : ?string {
         $idTrack = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         $idPlaylist = isset($_POST['id_pl']) ? (int) $_POST['id_pl'] : null;

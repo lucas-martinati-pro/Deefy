@@ -4,3 +4,6 @@ vendor/
 Fichier avec les fichiers audio
 /audio/
 /image/
+
+# IDE
+.idea

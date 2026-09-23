@@ -12,7 +12,7 @@ use iutnc\deefy\render\HtmlHelper;
 class RegisterAction extends Action {
     protected bool $requireAuth = false;
 
-    #[\Override]
+    #[Override]
     public function get() : string {
         $require = '<span class="text-danger">*</span>';
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/
@@ -55,7 +55,7 @@ class RegisterAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         if (!isset($_POST['email'], $_POST['password'], $_POST['password-double'])) {
             return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=register", title: "Échec de l'inscription");
@@ -83,7 +83,6 @@ class RegisterAction extends Action {
             return HtmlHelper::successPage(
                 title: "Connexion réussie",
                 message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
-                backUrl: "?action=playlists",
                 backLabel: "Accéder à mes playlists"
             );
         }

@@ -16,7 +16,6 @@ class Authz {
      * @return bool True si l'utilisateur est connecté et possède le rôle requis, false sinon.
      */
     public static function checkRole(int $role) : bool {
-        $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {
@@ -32,7 +31,6 @@ class Authz {
      * @return bool True si l'utilisateur est autorisé à manipuler cette playlist, false sinon.
      */
     public static function checkPlaylistOwner(int $idPlaylist) : bool {
-        $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {
@@ -56,7 +54,6 @@ class Authz {
      * @return bool True si la piste appartient à l'utilisateur, false sinon.
      */
     public static function checkTrackOwner(int $idTrack) : bool {
-        $user = [];
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {

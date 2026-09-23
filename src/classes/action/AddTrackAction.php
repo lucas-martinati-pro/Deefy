@@ -2,7 +2,8 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
+use DateTime;
+use getID3;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\enums\TypeRender;
@@ -16,7 +17,7 @@ use iutnc\deefy\config\Config;
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
  */
 class AddTrackAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
@@ -167,7 +168,7 @@ class AddTrackAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;
 
@@ -187,11 +188,11 @@ class AddTrackAction extends Action {
         }
 
         if (!empty($_POST['date'])) {
-            $d = \DateTime::createFromFormat('Y-m-d', trim($_POST['date']));
+            $d = DateTime::createFromFormat('Y-m-d', trim($_POST['date']));
 
             if (!$d) {
                 $error[] = "La date de sortie est invalide (format attendu : AAAA-MM-JJ).";
-            } elseif ($d > new \DateTime()) {
+            } elseif ($d > new DateTime()) {
                 // refuser une date dans le futur
                 $error[] = "La date de sortie ne peut pas être dans le futur.";
             }
@@ -219,7 +220,7 @@ class AddTrackAction extends Action {
         }
 
         // Analyse des métadonnées ID3
-        $getID3 = new \getID3();
+        $getID3 = new getID3();
         $fileInfo = $getID3->analyze(Config::getAudioDir() . $audioFileName);
 
         // Gestion et enregistrement de l'image (ID3 ou upload manuel)
@@ -358,7 +359,7 @@ class AddTrackAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     protected function check() : ?string {
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : (isset($_GET['id']) ? (int) $_GET['id'] : null);
 

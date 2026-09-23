@@ -32,7 +32,7 @@ abstract class AudioTrackRenderer implements Renderer {
         $this->playlistId = $playlistId;
     }
 
-    #[\Override]
+    #[Override]
     public function render(TypeRender $selector = TypeRender::COMPACT) : string {
         return ($selector === TypeRender::LONG) ? $this->renderLong() : $this->renderCompact();
     }
@@ -59,7 +59,7 @@ abstract class AudioTrackRenderer implements Renderer {
     protected function getDetails() : array {
         $details = [];
 
-        $duration = (int) $this->track->duration;
+        $duration = $this->track->duration;
         if ($duration > 0) {
             $details[] = "Durée : {$duration}s";
         }
@@ -84,7 +84,6 @@ abstract class AudioTrackRenderer implements Renderer {
 
         $image = $this->track->image;
         $hasImage = (!empty($image));
-        $imageHtml = '';
         if ($hasImage) {
             $coverDir = Config::getCoverWebPath();
             $imageHtml = <<<HTML
@@ -146,8 +145,6 @@ abstract class AudioTrackRenderer implements Renderer {
 
         $image = $this->track->image;
         $hasImage = (!empty($image));
-        $imageHtml = '';
-        $colContent = 'col-12';
 
         if ($hasImage) {
             $coverDir = Config::getCoverWebPath();

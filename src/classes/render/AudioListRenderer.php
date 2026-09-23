@@ -24,7 +24,7 @@ class AudioListRenderer implements Renderer {
         $this->audioList = $audioList;
     }
 
-    #[\Override]
+    #[Override]
     public function render(TypeRender $selector = TypeRender::COMPACT) : string {
         $res = <<<HTML
         <h2 class="mb-3 d-flex align-items-center">

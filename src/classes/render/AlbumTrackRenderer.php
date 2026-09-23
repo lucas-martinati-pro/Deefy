@@ -7,7 +7,7 @@ namespace iutnc\deefy\render;
  */
 class AlbumTrackRenderer extends AudioTrackRenderer {
 
-    #[\Override]
+    #[Override]
     protected function getSubtitle() : string {
         $artist = $this->track->artist;
         $album = $this->track->album;
@@ -15,7 +15,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
         return "<span class=\"fw-semibold text-body\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
     }
 
-    #[\Override]
+    #[Override]
     protected function getBadge() : string {
         $trackNumber = (int) $this->track->trackNumber;
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
@@ -27,7 +27,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     protected function getDetails() : array {
         $details = [];
 

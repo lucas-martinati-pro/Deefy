@@ -59,11 +59,11 @@ class AuthnProvider {
 
         if (strlen($password) < $minimumLength) { // longueur minimale
             throw new AuthnException("Le mot de passe doit contenir au moins {$minimumLength} caractères.");
-        };
-        if (!preg_match("#[\d]#", $password)) {// au moins un digit
+        }
+        if (!preg_match("#\d#", $password)) {// au moins un digit
             throw new AuthnException("Le mot de passe doit contenir au moins un chiffre.");
         }
-        if (!preg_match("#[\W]#", $password)) { // au moins un car. spécial
+        if (!preg_match("#\W#", $password)) { // au moins un car. spécial
             throw new AuthnException("Le mot de passe doit contenir au moins un caractère spécial.");
         }
         if (!preg_match("#[a-z]#", $password)) { // au moins une minuscule

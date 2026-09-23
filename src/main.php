@@ -1,6 +1,7 @@
 <?php
 
 use iutnc\deefy\dispatch\Dispatcher;
+use iutnc\deefy\exception\ConfigIOException;
 use iutnc\deefy\repository\DeefyRepository;
 
 ini_set('display_errors', 1);
@@ -20,7 +21,11 @@ session_set_cookie_params([
 
 session_start();
 
-DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
+try {
+    DeefyRepository::setConfig(__DIR__ . '/config/deefy.db.ini');
+} catch (ConfigIOException $e) {
+
+}
 
 $dispatcher = new Dispatcher($_GET['action'] ?? 'default');
 $dispatcher->run();

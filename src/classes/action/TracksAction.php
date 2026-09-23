@@ -2,9 +2,7 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 
@@ -12,14 +10,14 @@ use iutnc\deefy\repository\DeefyRepository;
  * Action permettant d'afficher l'ensemble des pistes de l'utilisateur.
  */
 class TracksAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         $r = DeefyRepository::getInstance();
         $tracks = $r->findTracksByUserId((int) $this->user['id']);
 
         $playlist = new Playlist("Mes pistes", $tracks);
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render(TypeRender::COMPACT) : '';
+        $playlistHtml = $renderer ? $renderer->render() : '';
 
         return <<<HTML
             {$playlistHtml}
@@ -32,7 +30,7 @@ class TracksAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         return '';
     }

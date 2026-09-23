@@ -12,7 +12,7 @@ use iutnc\deefy\render\HtmlHelper;
 class SigninAction extends Action {
     protected bool $requireAuth = false;
 
-    #[\Override]
+    #[Override]
     public function get() : string {
         try {
             $user = AuthnProvider::getSignedInUser();
@@ -63,7 +63,7 @@ class SigninAction extends Action {
         }
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         if (!isset($_POST['email'], $_POST['password'])) {
             return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=signin", title: "Échec de la connexion");
@@ -82,7 +82,6 @@ class SigninAction extends Action {
         return HtmlHelper::successPage(
             title: "Connexion réussie",
             message: "Bienvenue, <strong>{$email}</strong> ! Vous êtes maintenant connecté à Deefy.",
-            backUrl: "?action=playlists",
             backLabel: "Accéder à mes playlists"
         );
     }

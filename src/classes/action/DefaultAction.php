@@ -2,7 +2,6 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
@@ -12,7 +11,7 @@ use iutnc\deefy\exception\AuthnException;
 class DefaultAction extends Action {
     protected bool $requireAuth = false;
 
-    #[\Override]
+    #[Override]
     public function get() : string {
         $page = <<< HTML
             <h1 class="h2 fw-bold mb-2">
@@ -82,7 +81,7 @@ class DefaultAction extends Action {
         return $page;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         return '';
     }

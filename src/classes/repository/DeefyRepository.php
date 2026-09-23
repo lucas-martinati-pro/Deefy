@@ -7,12 +7,13 @@ use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\exception\ConfigIOException;
+use PDO;
 
 /**
  * Repository centralisant les opérations d'accès à la base de données.
  */
 class DeefyRepository {
-    private \PDO $pdo;
+    private PDO $pdo;
 
     /**
      * Instance unique du repository (patron Singleton).
@@ -28,8 +29,8 @@ class DeefyRepository {
      * Constructeur privé empêchant l'instanciation directe.
      */
     private function __construct() {
-        $this->pdo = new \PDO(self::$config['dsn'], self::$config['user'], self::$config['pass'],
-        [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new PDO(self::$config['dsn'], self::$config['user'], self::$config['pass'],
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 
     /**
@@ -78,7 +79,7 @@ class DeefyRepository {
         SQL);
         $stmt->execute();
         // fetchAll pour récupéré toutes les lignes et le \PDO::FETCH_ASSOC sert à indexés par le nom des colonnes
-        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $playlists = [];
         foreach ($rows as $row) {
             $list = new Playlist($row['nom']);
@@ -101,7 +102,7 @@ class DeefyRepository {
             WHERE id = :id
         SQL);
         $stmt->execute(['id' => $id]);
-        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$res) return null;
 
@@ -121,7 +122,7 @@ class DeefyRepository {
             WHERE id = :id;
         SQL);
         $stmtPlaylist->execute(['id' => $idPlaylist]);
-        $res = $stmtPlaylist->fetch(\PDO::FETCH_ASSOC);
+        $res = $stmtPlaylist->fetch(PDO::FETCH_ASSOC);
 
         if (!$res) return null;
 
@@ -133,7 +134,7 @@ class DeefyRepository {
             ORDER BY playlist2track.no_piste_dans_liste;
         SQL);
         $stmtTracks->execute(['idPlaylist' => $idPlaylist]);
-        $rows = $stmtTracks->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $stmtTracks->fetchAll(PDO::FETCH_ASSOC);
 
         $tracks = [];
         foreach ($rows as $row) {
@@ -205,7 +206,7 @@ class DeefyRepository {
         $stmt->execute(['id' => $idUser]);
 
         // FETCH_COLUMN pour récupérer directement la liste des identifiants de playlists
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /**
@@ -224,7 +225,7 @@ class DeefyRepository {
         $stmt->execute(['id' => $idUser]);
 
         // FETCH_COLUMN pour récupérer directement la liste des identifiants de playlists
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /**
@@ -238,7 +239,7 @@ class DeefyRepository {
         $playlists = [];
 
         foreach ($idPlaylists as $idPlaylist) {
-            $playlist = $this->findPlaylistById((int) $idPlaylist);
+            $playlist = $this->findPlaylistById($idPlaylist);
             if ($playlist !== null) {
                 $playlists[] = $playlist;
             }
@@ -262,7 +263,7 @@ class DeefyRepository {
         SQL);
 
         $stmt->execute(['id' => $idUser]);
-        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $tracks = [];
         foreach ($rows as $row) {
@@ -291,7 +292,7 @@ class DeefyRepository {
 
         $stmt->execute(['email' => $email]);
 
-        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$res) return null;
 
@@ -350,7 +351,7 @@ class DeefyRepository {
         $genreVal = $track->genre;
         $genre = (!empty($genreVal) && trim($genreVal) !== '') ? trim($genreVal) : null;
 
-        $durationVal = (int) $track->duration;
+        $durationVal = $track->duration;
         $duree = ($durationVal > 0) ? $durationVal : null;
 
         $imageVal = $track->image;
@@ -559,7 +560,7 @@ class DeefyRepository {
 
         $stmt1->execute(['id' => $idPlaylist]);
 
-        $idTracks = $stmt1->fetchAll(\PDO::FETCH_COLUMN);
+        $idTracks = $stmt1->fetchAll(PDO::FETCH_COLUMN);
 
         foreach ($idTracks as $id) {
             $this->deleteTrackById($id);

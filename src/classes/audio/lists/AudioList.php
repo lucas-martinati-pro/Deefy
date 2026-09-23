@@ -2,7 +2,7 @@
 
 namespace iutnc\deefy\audio\lists;
 
-use \Iterator;
+use Iterator;
 use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\exception\InvalidPropertyNameException;
 
@@ -61,7 +61,6 @@ class AudioList implements Iterator {
      */
     public function __construct(string $name, array $tracks = []) {
         $this->name = $name;
-        $this->tracks = $tracks;
         $this->tracks = array_values($tracks); // Réindexation pour garantir des clés 0, 1, 2...
 
         $this->totalDuration = 0;
@@ -89,27 +88,27 @@ class AudioList implements Iterator {
      *                         METHODES ITERATOR
      *========================================================================**/
 
-    #[\Override]
+    #[Override]
     public function current() : mixed {
         return $this->tracks[$this->position];
     }
 
-    #[\Override]
-    public function key() : mixed {
+    #[Override]
+    public function key() : int {
         return $this->position;
     }
 
-    #[\Override]
+    #[Override]
     public function next() : void {
         $this->position++;
     }
 
-    #[\Override]
+    #[Override]
     public function rewind() : void {
         $this->position = 0;
     }
 
-    #[\Override]
+    #[Override]
     // Vérifier que la variable existe
     public function valid() : bool {
         return isset($this->tracks[$this->position]);

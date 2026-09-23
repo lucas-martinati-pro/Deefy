@@ -10,7 +10,7 @@ use iutnc\deefy\render\HtmlHelper;
  * Action gérant la suppression d'une playlist et de son contenu en cascade.
  */
 class DeletePlaylistAction extends Action {
-    #[\Override]
+    #[Override]
     public function get() : string {
         $idPlaylist = (int) $_GET['id'];
         $r = DeefyRepository::getInstance();
@@ -37,7 +37,7 @@ class DeletePlaylistAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         $idplaylist = (int) ($_POST['id']);
         $r = DeefyRepository::getInstance();
@@ -57,7 +57,7 @@ class DeletePlaylistAction extends Action {
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function check() : ?string {
         $idPlaylist = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
         if ($idPlaylist <= 0) {

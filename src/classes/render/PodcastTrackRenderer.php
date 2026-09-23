@@ -7,13 +7,13 @@ namespace iutnc\deefy\render;
  */
 class PodcastTrackRenderer extends AudioTrackRenderer {
 
-    #[\Override]
+    #[Override]
     protected function getSubtitle() : string {
         $author = $this->track->author ?? 'Auteur inconnu';
         return "par <span class=\"fw-semibold text-body\">{$author}</span>";
     }
 
-    #[\Override]
+    #[Override]
     protected function getBadge() : string {
         return <<<HTML
             <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
@@ -23,7 +23,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     protected function getDetails() : array {
         $details = [];
 

@@ -55,11 +55,11 @@ abstract class Action {
         $error = $this->check();
         if ($error !== null) return $error;
 
-        switch ($this->http_method) {
-            case 'GET' : return $this->get();
-            case 'POST' : return $this->post();
-            default : return '';
-        }
+        return match ($this->http_method) {
+            'GET' => $this->get(),
+            'POST' => $this->post(),
+            default => '',
+        };
     }
 
     /**

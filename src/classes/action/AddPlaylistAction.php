@@ -2,7 +2,6 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\action\Action;
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
@@ -14,7 +13,7 @@ use iutnc\deefy\enums\TypeRender;
  */
 class AddPlaylistAction extends Action {
 
-    #[\Override]
+    #[Override]
     public function get() : string {
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/
         $title = HtmlHelper::title("Créer une playlist", "bi-folder-plus");
@@ -34,7 +33,7 @@ class AddPlaylistAction extends Action {
         HTML;
     }
 
-    #[\Override]
+    #[Override]
     public function post() : string {
         if (!isset($_POST['title']) || trim($_POST['title']) === '') {
             return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist");
