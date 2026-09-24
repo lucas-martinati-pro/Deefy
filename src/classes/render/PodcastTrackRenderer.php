@@ -1,6 +1,7 @@
 <?php
 
 namespace iutnc\deefy\render;
+use Override;
 
 /**
  * Moteur de rendu spécifique pour les épisodes de podcast (PodcastTrack).
@@ -9,7 +10,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
 
     #[Override]
     protected function getSubtitle() : string {
-        $author = $this->track->author ?? 'Auteur inconnu';
+        $author = $this->track->getAuthor() ?? 'Auteur inconnu';
         return "par <span class=\"fw-semibold text-body\">{$author}</span>";
     }
 
@@ -27,7 +28,7 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
     protected function getDetails() : array {
         $details = [];
 
-        $date = $this->track->date;
+        $date = $this->track->getDate();
         if (!empty($date)) {
             $timestamp = strtotime($date);
             $formattedDate = ($timestamp !== false) ? date('d/m/Y', $timestamp) : $date;

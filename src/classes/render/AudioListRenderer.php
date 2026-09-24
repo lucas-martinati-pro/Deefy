@@ -4,6 +4,7 @@ namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\lists\AudioList;
 use iutnc\deefy\enums\TypeRender;
+use Override;
 
 /**
  * Moteur de rendu HTML pour les listes audio (AudioList, Playlist, Album).
@@ -29,11 +30,11 @@ class AudioListRenderer implements Renderer {
         $res = <<<HTML
         <h2 class="mb-3 d-flex align-items-center">
             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
-            <i class="bi bi-music-note-list text-primary me-2"></i>{$this->audioList->name}
+            <i class="bi bi-music-note-list text-primary me-2"></i>{$this->audioList->getName()}
         </h2>
         HTML;
 
-        if (count($this->audioList->tracks) === 0) {
+        if (count($this->audioList->getTracks()) === 0) {
             $res .= HtmlHelper::alert(type: 'secondary', content: 'Cette liste est vide.');
         } else {
             $divClass = ($selector === TypeRender::LONG)
@@ -42,7 +43,7 @@ class AudioListRenderer implements Renderer {
 
             $res .= "<div class=\"{$divClass}\">";
             foreach ($this->audioList as $track) {
-                $renderPiste = RendererFactory::getRenderer($track, $this->audioList->id ?? null);
+                $renderPiste = RendererFactory::getRenderer($track, $this->audioList->getId() ?? null);
                 if ($renderPiste !== null) $res .= $renderPiste->render($selector);
             }
             $res .= '</div>';
@@ -52,12 +53,12 @@ class AudioListRenderer implements Renderer {
             <p class="text-muted d-flex align-items-center flex-wrap gap-2">
                 <span>
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
-                    <i class="bi bi-music-note-beamed me-1"></i><strong>{$this->audioList->trackCount}</strong> piste(s)
+                    <i class="bi bi-music-note-beamed me-1"></i><strong>{$this->audioList->getTrackCount()}</strong> piste(s)
                 </span>
                 <span>|</span>
                 <span>
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/clock/ -->
-                    <i class="bi bi-clock me-1"></i>Durée totale : <strong>{$this->audioList->totalDuration}s</strong>
+                    <i class="bi bi-clock me-1"></i>Durée totale : <strong>{$this->audioList->getTotalDuration()}s</strong>
                 </span>
             </p>
         HTML;

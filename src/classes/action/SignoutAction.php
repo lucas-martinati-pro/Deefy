@@ -3,6 +3,7 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action de déconnexion de l'utilisateur.

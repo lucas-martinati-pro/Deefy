@@ -83,7 +83,7 @@ class DeefyRepository {
         $playlists = [];
         foreach ($rows as $row) {
             $list = new Playlist($row['nom']);
-            $list->id = $row['id'];
+            $list->setId($row['id']);
             $playlists[] = $list;
         }
         return $playlists;
@@ -142,7 +142,7 @@ class DeefyRepository {
         }
 
         $playlist = new Playlist($res['nom'], $tracks);
-        $playlist->id = (int) $res['id'];
+        $playlist->setId((int) $res['id']);
 
         return $playlist;
     }
@@ -162,10 +162,10 @@ class DeefyRepository {
                 (!empty($res['numero_album'])) ? (int) $res['numero_album'] : 1
             );
             if (!empty($res['artiste_album'])) {
-                $track->artist = $res['artiste_album'];
+                $track->setArtist($res['artiste_album']);
             }
             if (!empty($res['annee_album'])) {
-                $track->year = (int) $res['annee_album'];
+                $track->setYear((int) $res['annee_album']);
             }
         } else {
             $track = new PodcastTrack(
@@ -176,15 +176,15 @@ class DeefyRepository {
             );
         }
 
-        $track->id = (int) $res['id'];
+        $track->setId((int) $res['id']);
         if (!empty($res['duree']) && (int) $res['duree'] > 0) {
-            $track->duration = (int) $res['duree'];
+            $track->setDuration((int) $res['duree']);
         }
         if (!empty($res['genre'])) {
-            $track->genre = $res['genre'];
+            $track->setGenre($res['genre']);
         }
         if (!empty($res['image'])) {
-            $track->image = $res['image'];
+            $track->setImage($res['image']);
         }
 
         return $track;
@@ -336,8 +336,8 @@ class DeefyRepository {
             INSERT INTO playlist (nom)
             VALUES (:name)
         SQL);
-        $stmt->execute(['name' => $playlist->name]);
-        $playlist->id = $this->pdo->lastInsertId();
+        $stmt->execute(['name' => $playlist->getName()]);
+        $playlist->setId($this->pdo->lastInsertId());
         return $playlist;
     }
 
@@ -348,13 +348,13 @@ class DeefyRepository {
      * @return AudioTrack La piste avec son identifiant généré.
      */
     public function saveAudioTrack(AudioTrack $track) : AudioTrack {
-        $genreVal = $track->genre;
+        $genreVal = $track->getGenre();
         $genre = (!empty($genreVal) && trim($genreVal) !== '') ? trim($genreVal) : null;
 
-        $durationVal = $track->duration;
+        $durationVal = $track->getDuration();
         $duree = ($durationVal > 0) ? $durationVal : null;
 
-        $imageVal = $track->image;
+        $imageVal = $track->getImage();
         $image = (!empty($imageVal)) ? $imageVal : null;
 
         $type = null;
@@ -367,23 +367,23 @@ class DeefyRepository {
 
         if ($track instanceof AlbumTrack) {
             $type = 'A';
-            $artistVal = $track->artist;
+            $artistVal = $track->getArtist();
             $artist = (!empty($artistVal) && trim($artistVal) !== '') ? trim($artistVal) : null;
 
-            $albumVal = $track->album;
+            $albumVal = $track->getAlbum();
             $album = (!empty($albumVal) && trim($albumVal) !== '') ? trim($albumVal) : null;
 
-            $yearVal = $track->year;
+            $yearVal = $track->getYear();
             $year = (!empty($yearVal) && (int) $yearVal > 0) ? (int) $yearVal : null;
 
-            $trackNumVal = $track->trackNumber;
+            $trackNumVal = $track->getTrackNumber();
             $trackNumber = (!empty($trackNumVal) && (int) $trackNumVal > 0) ? (int) $trackNumVal : null;
         } elseif ($track instanceof PodcastTrack) {
             $type = 'P';
-            $authorVal = $track->author;
+            $authorVal = $track->getAuthor();
             $author = (!empty($authorVal) && trim($authorVal) !== '') ? trim($authorVal) : null;
 
-            $dateVal = $track->date;
+            $dateVal = $track->getDate();
             $date = (!empty($dateVal) && trim($dateVal) !== '') ? trim($dateVal) : null;
         }
 
@@ -399,10 +399,10 @@ class DeefyRepository {
             )
         SQL);
         $stmt->execute([
-            'title' => $track->title,
+            'title' => $track->getTitle(),
             'genre' => $genre,
             'duree' => $duree,
-            'filename' => $track->filename,
+            'filename' => $track->getFilename(),
             'type' => $type,
             'image' => $image,
             'artist' => $artist,
@@ -413,7 +413,7 @@ class DeefyRepository {
             'date' => $date
         ]);
 
-        $track->id = (int) $this->pdo->lastInsertId();
+        $track->setId((int) $this->pdo->lastInsertId());
         return $track;
     }
 

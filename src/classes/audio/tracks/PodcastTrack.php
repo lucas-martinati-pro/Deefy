@@ -18,6 +18,38 @@ class PodcastTrack extends AudioTrack {
     protected ?string $date = null;
 
     /**
+     * @return string|null
+     */
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string|null $author
+     */
+    public function setAuthor(?string $author): void
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @param string|null $date
+     */
+    public function setDate(?string $date): void
+    {
+        $this->date = $date;
+    }
+
+    /**
      * Constructeur d'une piste de podcast.
      *
      * @param string $title Titre de l'épisode.

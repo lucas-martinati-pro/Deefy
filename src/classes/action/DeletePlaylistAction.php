@@ -5,6 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action gérant la suppression d'une playlist et de son contenu en cascade.
@@ -21,7 +22,7 @@ class DeletePlaylistAction extends Action {
         return <<<HTML
             {$title}
             <div class="alert alert-warning" role="alert">
-                Êtes-vous sûr de vouloir supprimer la playlist <strong>{$playlist->name}</strong> ? Cela entraînera la suppression de <strong>toutes les pistes</strong> qu'elle contient.
+                Êtes-vous sûr de vouloir supprimer la playlist <strong>{$playlist->getName()}</strong> ? Cela entraînera la suppression de <strong>toutes les pistes</strong> qu'elle contient.
             </div>
             <form method="post" action="?action=delete-playlist">
                 <input type="hidden" name="id" value="{$idPlaylist}">
@@ -42,12 +43,12 @@ class DeletePlaylistAction extends Action {
         $idplaylist = (int) ($_POST['id']);
         $r = DeefyRepository::getInstance();
         $playlist = $r->findPlaylistById($idplaylist);
-        $playlistName = $playlist ? $playlist->name : '';
+        $playlistName = $playlist ? $playlist->getName() : '';
 
         $w = DeefyRepository::getInstance();
         $w->deletePlaylistById($idplaylist);
 
-        if (isset($_SESSION['playlist']) && $_SESSION['playlist']->id === $idplaylist) {
+        if (isset($_SESSION['playlist']) && $_SESSION['playlist']->getId() === $idplaylist) {
             unset($_SESSION['playlist']);
         }
 

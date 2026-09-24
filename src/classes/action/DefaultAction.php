@@ -4,6 +4,7 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
+use Override;
 
 /**
  * Action par défaut affichant la page d'accueil de l'application Deefy.

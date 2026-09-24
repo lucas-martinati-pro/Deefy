@@ -7,6 +7,7 @@ use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action permettant d'ajouter une piste audio existante à une ou plusieurs playlists de l'utilisateur.
@@ -57,17 +58,17 @@ class MoveTrackAction extends Action {
         $availableCount = 0;
 
         foreach ($playlists as $playlist) {
-            $isAlreadyIn = $r->isTrackInPlaylist((int) $playlist->id, $idTrack);
-            $playlistName = $playlist->name;
-            $trackCount = $playlist->trackCount;
+            $isAlreadyIn = $r->isTrackInPlaylist((int) $playlist->getId(), $idTrack);
+            $playlistName = $playlist->getName();
+            $trackCount = $playlist->getTrackCount();
             $trackCountLabel = "{$trackCount} piste" . ($trackCount > 1 ? "s" : "");
 
             if ($isAlreadyIn) {
                 $playlistListHtml .= <<<HTML
                     <div class="list-group-item d-flex justify-content-between align-items-center p-3 opacity-75">
                         <div class="form-check d-flex align-items-center gap-2 mb-0">
-                            <input class="form-check-input flex-shrink-0" type="checkbox" checked disabled id="playlist-{$playlist->id}">
-                            <label class="form-check-label" for="playlist-{$playlist->id}">
+                            <input class="form-check-input flex-shrink-0" type="checkbox" checked disabled id="playlist-{$playlist->getId()}">
+                            <label class="form-check-label" for="playlist-{$playlist->getId()}">
                                 <span class="fw-semibold">{$playlistName}</span>
                                 <span class="d-block small text-muted">
                                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
@@ -86,10 +87,10 @@ class MoveTrackAction extends Action {
             } else {
                 $availableCount++;
                 $playlistListHtml .= <<<HTML
-                    <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3 gap-3" role="button" for="playlist-{$playlist->id}">
+                    <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3 gap-3" role="button" for="playlist-{$playlist->getId()}">
                         <div class="form-check d-flex align-items-center gap-2 mb-0">
                             <!-- Le [] dans le name, ça sert à pouvoir bouler directement sur id_playlists comme un tableau -->
-                            <input class="form-check-input flex-shrink-0" type="checkbox" name="id_playlists[]" value="{$playlist->id}" id="playlist-{$playlist->id}">
+                            <input class="form-check-input flex-shrink-0" type="checkbox" name="id_playlists[]" value="{$playlist->getId()}" id="playlist-{$playlist->getId()}">
                             <span class="form-check-label">
                                 <span class="fw-bold">{$playlistName}</span>
                                 <span class="d-block small text-muted">
@@ -189,7 +190,7 @@ class MoveTrackAction extends Action {
 
             $w->addTrackToPlaylist($playlistId, $idTrack);
 
-            if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->id === $playlistId) {
+            if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->getId() === $playlistId) {
                 $_SESSION['playlist']->addTrack($track);
             }
 
@@ -211,11 +212,11 @@ class MoveTrackAction extends Action {
 
         if ($countAdded === 1) {
             $playlist = $addedPlaylists[0];
-            $countText = "{$playlist->trackCount} piste" . ($playlist->trackCount > 1 ? "s" : "");
-            $msgHtml = "<p>La piste <strong>{$track->title}</strong> a été ajoutée avec succès à la playlist <strong>{$playlist->name}</strong> ({$countText}).</p>";
+            $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? "s" : "");
+            $msgHtml = "<p>La piste <strong>{$track->getTitle()}</strong> a été ajoutée avec succès à la playlist <strong>{$playlist->getName()}</strong> ({$countText}).</p>";
 
             $actionButtons = <<<HTML
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=display-playlist&id={$playlist->id}">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=display-playlist&id={$playlist->getId()}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                     <i class="bi bi-music-note-list me-2"></i>
                     Consulter la playlist
@@ -229,12 +230,12 @@ class MoveTrackAction extends Action {
         } else {
             $listPlaylist = '';
             foreach ($addedPlaylists as $playlist) {
-                $countText = "{$playlist->trackCount} piste" . ($playlist->trackCount > 1 ? "s" : "");
-                $listPlaylist .= "<li><strong>{$playlist->name}</strong> ({$countText})</li>";
+                $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? "s" : "");
+                $listPlaylist .= "<li><strong>{$playlist->getName()}</strong> ({$countText})</li>";
             }
 
             $msgHtml = <<<HTML
-                <p>La piste <strong>{$track->title}</strong> a été ajoutée avec succès aux <strong>{$countAdded}</strong> playlists suivantes :</p>
+                <p>La piste <strong>{$track->getTitle()}</strong> a été ajoutée avec succès aux <strong>{$countAdded}</strong> playlists suivantes :</p>
                 <ul class="mb-3">
                     {$listPlaylist}
                 </ul>

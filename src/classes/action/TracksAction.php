@@ -5,6 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
+use Override;
 
 /**
  * Action permettant d'afficher l'ensemble des pistes de l'utilisateur.

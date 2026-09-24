@@ -4,6 +4,7 @@ namespace iutnc\deefy\audio\tracks;
 
 use iutnc\deefy\exception\InvalidPropertyNameException;
 use iutnc\deefy\exception\InvalidPropertyValueException;
+use Override;
 
 /**
  * Piste audio représentant un morceau appartenant à un album musical.
@@ -29,6 +30,70 @@ class AlbumTrack extends AudioTrack {
      * Numéro de piste dans l'album.
      */
     protected int $trackNumber = 1;
+
+    /**
+     * @return string|null
+     */
+    public function getArtist(): ?string
+    {
+        return $this->artist;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlbum(): string
+    {
+        return $this->album;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrackNumber(): int
+    {
+        return $this->trackNumber;
+    }
+
+    /**
+     * @param string|null $artist
+     */
+    public function setArtist(?string $artist): void
+    {
+        $this->artist = $artist;
+    }
+
+    /**
+     * @param string $album
+     */
+    public function setAlbum(string $album): void
+    {
+        $this->album = $album;
+    }
+
+    /**
+     * @param int|null $year
+     */
+    public function setYear(?int $year): void
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @param int $trackNumber
+     */
+    public function setTrackNumber(int $trackNumber): void
+    {
+        $this->trackNumber = $trackNumber;
+    }
 
     #[Override]
     public function __set(string $name, mixed $value) : void {

@@ -7,6 +7,7 @@ use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\enums\TypeRender;
+use Override;
 
 /**
  * Action permettant la création d'une nouvelle playlist.
@@ -44,7 +45,7 @@ class AddPlaylistAction extends Action {
         $title = filter_var($_POST['title'], FILTER_SANITIZE_SPECIAL_CHARS);
         $playlist = $w->saveEmptyPlaylist(new Playlist($title, []));
 
-        $w->savePlaylist2User((int) $this->user['id'], (int) $playlist->id);
+        $w->savePlaylist2User((int) $this->user['id'], (int) $playlist->getId());
 
         // La playlist créée devient la playlist courante en session
         $_SESSION['playlist'] = $playlist;

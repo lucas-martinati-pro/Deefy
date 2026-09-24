@@ -5,6 +5,7 @@ namespace iutnc\deefy\audio\lists;
 use Iterator;
 use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\exception\InvalidPropertyNameException;
+use Override;
 
 /**
  * Liste ordonnée de pistes audio.
@@ -42,15 +43,51 @@ class AudioList implements Iterator {
     private int $position = 0;
 
     /**
-     * Getter magique pour accéder aux propriétés protégées en lecture seule.
-     *
-     * @param string $name Nom de la propriété à lire.
-     * @return mixed Valeur de la propriété.
-     * @throws InvalidPropertyNameException Si la propriété demandée n'existe pas.
+     * @return int|null
      */
-    public function __get(string $name) : mixed {
-        if (property_exists($this, $name)) return $this->$name;
-        else throw new InvalidPropertyNameException("$name : invalid property");
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalDuration(): int
+    {
+        return $this->totalDuration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrackCount(): int
+    {
+        return $this->trackCount;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTracks(): array
+    {
+        return $this->tracks;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -66,13 +103,33 @@ class AudioList implements Iterator {
         $this->totalDuration = 0;
         $this->trackCount = 0;
         foreach ($tracks as $track) {
-            $this->totalDuration += $track->duration;
+            $this->totalDuration += $track->getDuration();
             $this->trackCount++;
         }
     }
 
     /**
+     * Getter magique pour accéder aux propriétés protégées en lecture seule.
+     *
+     * Je sais utiliser les getters/setters magiques, mais j'ai décidé de ne pas les utiliser dans mon projet
+     * car je trouve cette utilisation pas très utilisables dans de réel projets
+     * Le commit c8c2c9ca0c9cc24e00866cf67b10d748135d8126 comporte encore l'utilisation des getters/setters magiques
+     *
+     * @param string $name Nom de la propriété à lire.
+     * @return mixed Valeur de la propriété.
+     * @throws InvalidPropertyNameException Si la propriété demandée n'existe pas.
+     */
+    public function __get(string $name) : mixed {
+        if (property_exists($this, $name)) return $this->$name;
+        else throw new InvalidPropertyNameException("$name : invalid property");
+    }
+
+    /**
      * Modifie une propriété autorisée de la liste audio (id, artist ou date).
+     *
+     * Je sais utiliser les getters/setters magiques, mais j'ai décidé de ne pas les utiliser dans mon projet
+     * car je trouve cette utilisation pas très utilisables dans de réel projets
+     * Le commit c8c2c9ca0c9cc24e00866cf67b10d748135d8126 comporte encore l'utilisation des getters/setters magiques
      *
      * @param string $name Nom de la propriété à modifier.
      * @param mixed $value Nouvelle valeur.

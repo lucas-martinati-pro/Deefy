@@ -5,6 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\config\Config;
+use Override;
 
 /**
  * Action listant l'ensemble des playlists de l'utilisateur connecté.
@@ -40,13 +41,13 @@ class PlaylistsAction extends Action {
 
         $cardsHtml = '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">';
         foreach ($playlists as $pl) {
-            $trackCount = $pl->trackCount;
-            $totalDuration = $pl->totalDuration;
+            $trackCount = $pl->getTrackCount();
+            $totalDuration = $pl->getTotalDuration();
 
             // Récupérer la première pochette disponible parmi les pistes
             $coverImage = null;
-            foreach ($pl->tracks as $t) {
-                $trackImage = $t->image;
+            foreach ($pl->getTracks() as $t) {
+                $trackImage = $t->getImage();
                 if ($coverImage === null && !empty($trackImage)) {
                     $coverImage = $trackImage;
                     break;
@@ -56,7 +57,7 @@ class PlaylistsAction extends Action {
             if ($coverImage !== null) {
                 $coverDir = Config::getCoverDir();
                 $coverHtml = <<<HTML
-                    <img src="{$coverDir}{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->name}">
+                    <img src="{$coverDir}{$coverImage}" class="card-img-top object-fit-cover w-100 h-100" alt="{$pl->getName()}">
                 HTML;
             } else {
                 $coverHtml = <<<HTML
@@ -78,13 +79,13 @@ class PlaylistsAction extends Action {
                             </span>
                         </div>
                         <div class="card-body d-flex flex-column justify-content-between p-3">
-                            <h5 class="card-title fw-bold mb-1 text-truncate">{$pl->name}</h5>
+                            <h5 class="card-title fw-bold mb-1 text-truncate">{$pl->getName()}</h5>
                             <p class="card-text text-muted small mb-2">
                                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/clock/ -->
                                 <i class="bi bi-clock me-1"></i>Durée : <strong>{$totalDuration}s</strong>
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <a href="?action=display-playlist&id={$pl->id}" class="btn btn-outline-primary btn-sm stretched-link d-inline-flex align-items-center">
+                                <a href="?action=display-playlist&id={$pl->getId()}" class="btn btn-outline-primary btn-sm stretched-link d-inline-flex align-items-center">
                                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-circle-fill/ -->
                                     <i class="bi bi-play-circle-fill me-1"></i>Consulter la playlist
                                 </a>

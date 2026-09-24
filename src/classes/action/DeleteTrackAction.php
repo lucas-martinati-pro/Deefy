@@ -5,6 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action permettant la suppression définitive d'une piste ou son retrait d'une playlist.
@@ -27,7 +28,7 @@ class DeleteTrackAction extends Action {
             return <<<HTML
                 {$title}
                 <div class="alert alert-warning" role="alert">
-                    Êtes-vous sûr de vouloir retirer la piste <strong>{$track->title}</strong> de la playlist <strong>{$playlist->name}</strong> ?
+                    Êtes-vous sûr de vouloir retirer la piste <strong>{$track->getTitle()}</strong> de la playlist <strong>{$playlist->getName()}</strong> ?
                 </div>
                 <form method="post" action="?action=delete-track">
                     <input type="hidden" name="id" value="{$idTrack}">
@@ -49,7 +50,7 @@ class DeleteTrackAction extends Action {
         return <<<HTML
             {$title}
             <div class="alert alert-warning" role="alert">
-                Êtes-vous sûr de vouloir supprimer définitivement la piste <strong>{$track->title}</strong> de vos pistes ?
+                Êtes-vous sûr de vouloir supprimer définitivement la piste <strong>{$track->getTitle()}</strong> de vos pistes ?
             </div>
             <form method="post" action="?action=delete-track">
                 <input type="hidden" name="id" value="{$idTrack}">
@@ -80,7 +81,7 @@ class DeleteTrackAction extends Action {
             $w->removeTrackFromPlaylist($idPlaylist, $idTrack);
             return HtmlHelper::successPage(
                 title: "Piste retirée",
-                message: "La piste <strong>{$track->title}</strong> a bien été retirée de la playlist.",
+                message: "La piste <strong>{$track->getTitle()}</strong> a bien été retirée de la playlist.",
                 backUrl: "?action=display-playlist&id={$idPlaylist}",
                 backLabel: "Retour à la playlist"
             );
@@ -88,13 +89,13 @@ class DeleteTrackAction extends Action {
 
         // Cas 2 : Suppression définitive
         $w->deleteTrackById($idTrack);
-        if (isset($_SESSION['playerTrack']) && (int) $_SESSION['playerTrack']->id === $idTrack) {
+        if (isset($_SESSION['playerTrack']) && (int) $_SESSION['playerTrack']->getId() === $idTrack) {
             unset($_SESSION['playerTrack']);
         }
 
         return HtmlHelper::successPage(
             title: "Piste supprimée",
-            message: "La piste <strong>{$track->title}</strong> a bien été supprimée de vos pistes.",
+            message: "La piste <strong>{$track->getTitle()}</strong> a bien été supprimée de vos pistes.",
             backUrl: "?action=tracks",
             backLabel: "Retour à mes pistes"
         );

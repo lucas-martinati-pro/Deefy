@@ -12,6 +12,7 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\render\HtmlHelper;
 use iutnc\deefy\config\Config;
+use Override;
 
 /**
  * Action permettant d'ajouter un morceau d'album ou un podcast à une playlist ou à ses pistes personnelles.
@@ -268,8 +269,8 @@ class AddTrackAction extends Action {
                 );
 
                 $track = new AlbumTrack($title, $audioFileName, $album, (int) $trackNumber);
-                if (!empty($artist)) $track->artist = $artist;
-                if ($year !== null) $track->year = (int) $year;
+                if (!empty($artist)) $track->setArtist($artist);
+                if ($year !== null) $track->setYear((int) $year);
                 break;
             }
             case 'PodcastTrack' : {
@@ -280,8 +281,8 @@ class AddTrackAction extends Action {
                 $date = !empty($_POST['date']) ? trim($_POST['date']) : null;
 
                 $track = new PodcastTrack($title, $audioFileName);
-                if (!empty($author)) $track->author = $author;
-                if (!empty($date)) $track->date = $date;
+                if (!empty($author)) $track->setAuthor($author);
+                if (!empty($date)) $track->setDate($date);
                 break;
             }
             default : $error[] = ("Type de piste inconnu : $type");
@@ -293,21 +294,21 @@ class AddTrackAction extends Action {
         }
 
         // Propriétés communes
-        if ($duration > 0) $track->duration = $duration;
-        if (!empty($genre)) $track->genre = $genre;
-        if (!empty($imageName)) $track->image = $imageName;
+        if ($duration > 0) $track->setDuration($duration);
+        if (!empty($genre)) $track->setGenre($genre);
+        if (!empty($imageName)) $track->setImage($imageName);
 
         // Sauvegarde dans la playlist locale
-        if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->id === $idPlaylist) {
+        if (isset($_SESSION['playlist']) && (int) $_SESSION['playlist']->getId() === $idPlaylist) {
             $_SESSION['playlist']->addTrack($track);
         }
 
         // Sauvegarde dans le cloud
         $w = DeefyRepository::getInstance();
         $w->saveAudioTrack($track);
-        $w->saveTrack2User((int) $this->user['id'], (int) $track->id);
+        $w->saveTrack2User((int) $this->user['id'], (int) $track->getId());
         if ($idPlaylist !== null) {
-            $w->addTrackToPlaylist($idPlaylist, (int) $track->id);
+            $w->addTrackToPlaylist($idPlaylist, (int) $track->getId());
         }
 
         $playlistMsg = "à vos pistes";
@@ -324,8 +325,8 @@ class AddTrackAction extends Action {
             $r = DeefyRepository::getInstance();
             $playlist = $r->findPlaylistById($idPlaylist);
             if ($playlist !== null) {
-                $playlistMsg = "à la playlist <strong>$playlist->name</strong>";
-                $totalTracksMsg = "<p>Nombre total de pistes dans la playlist : <strong>$playlist->trackCount</strong></p>";
+                $playlistMsg = "à la playlist <strong>{$playlist->getName()}</strong>";
+                $totalTracksMsg = "<p>Nombre total de pistes dans la playlist : <strong>{$playlist->getTrackCount()}</strong></p>";
                 $_SESSION['playlist'] = $playlist;
             }
             $backLink = <<<HTML

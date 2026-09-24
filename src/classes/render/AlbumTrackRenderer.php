@@ -1,6 +1,7 @@
 <?php
 
 namespace iutnc\deefy\render;
+use Override;
 
 /**
  * Moteur de rendu spécifique pour les morceaux d'album (AlbumTrack).
@@ -9,15 +10,15 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[Override]
     protected function getSubtitle() : string {
-        $artist = $this->track->artist;
-        $album = $this->track->album;
+        $artist = $this->track->getArtist();
+        $album = $this->track->getAlbum();
         $artistStr = !empty($artist) ? $artist : 'Artiste inconnu';
         return "<span class=\"fw-semibold text-body\">{$artistStr}</span> <span class=\"text-muted\">({$album})</span>";
     }
 
     #[Override]
     protected function getBadge() : string {
-        $trackNumber = (int) $this->track->trackNumber;
+        $trackNumber = $this->track->getTrackNumber();
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
         return <<<HTML
             <div class="text-nowrap">{$trackBadge}<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
@@ -31,7 +32,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
     protected function getDetails() : array {
         $details = [];
 
-        $year = $this->track->year;
+        $year = $this->track->getYear();
         if (!empty($year)) {
             $details[] = "Année : {$year}";
         }

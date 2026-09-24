@@ -3,10 +3,10 @@
 namespace iutnc\deefy\action;
 
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\enums\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action permettant d'afficher le détail d'une playlist et ses morceaux.
@@ -38,13 +38,13 @@ class DisplayPlaylistAction extends Action {
             $_SESSION['playlist'] = $playlist;
         }
 
-        if (!Authz::checkPlaylistOwner($playlist->id)) {
+        if (!Authz::checkPlaylistOwner($playlist->getId())) {
             return HtmlHelper::forbidden(message: "Vous n'êtes pas autorisé à consulter cette playlist.");
         }
 
         $renderer = RendererFactory::getRenderer($playlist);
         $playlistHtml = $renderer ? $renderer->render() : '';
-        $idPlaylist = $playlist->id;
+        $idPlaylist = $playlist->getId();
 
         return <<<HTML
             {$playlistHtml}
@@ -53,7 +53,7 @@ class DisplayPlaylistAction extends Action {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
                     <i class="bi bi-plus-circle-fill me-2"></i>Ajouter une piste
                 </a>
-                <a class="btn btn-outline-danger d-inline-flex align-items-center ms-2" href="?action=delete-playlist&id={$playlist->id}">
+                <a class="btn btn-outline-danger d-inline-flex align-items-center ms-2" href="?action=delete-playlist&id={$playlist->getId()}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
                     <i class="bi bi-trash-fill me-1"></i>Supprimer la playlist
                 </a>

@@ -5,6 +5,7 @@ namespace iutnc\deefy\action;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 use iutnc\deefy\render\HtmlHelper;
+use Override;
 
 /**
  * Action gérant l'inscription de nouveaux utilisateurs sur Deefy.

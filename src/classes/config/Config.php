@@ -3,7 +3,7 @@
 namespace iutnc\deefy\config;
 
 class Config {
-    public const ROOT_DIR = '..' . DIRECTORY_SEPARATOR;
+    public const string ROOT_DIR = '..' . DIRECTORY_SEPARATOR;
 
     public static function getAudioDir(): string {
         return self::ROOT_DIR . 'audio' . DIRECTORY_SEPARATOR;

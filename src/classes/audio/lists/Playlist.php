@@ -8,7 +8,6 @@ use iutnc\deefy\audio\tracks\AudioTrack;
  * Liste de lecture modifiable de pistes audio.
  */
 class Playlist extends AudioList {
-
     /**
      * Ajoute une piste audio à la fin de la playlist et met à jour les totaux.
      *
@@ -17,7 +16,7 @@ class Playlist extends AudioList {
      */
     public function addTrack(AudioTrack $track) : void {
         $this->tracks[] = $track;
-        $this->totalDuration += $track->duration;
+        $this->totalDuration += $track->getDuration();
         $this->trackCount++;
     }
 
@@ -30,7 +29,7 @@ class Playlist extends AudioList {
     public function removeTrack(int $indice) : void {
         // Le isset permet de vérifier si l'indice existe
         if (isset($this->tracks[$indice])) {
-            $this->totalDuration -= $this->tracks[$indice]->duration;
+            $this->totalDuration -= $this->tracks[$indice]->getDuration();
             // unset($this->tracks[$indice]);
             // array_splice supprime l'élément ET réindexe le tableau automatiquement
             array_splice($this->tracks, $indice, 1);

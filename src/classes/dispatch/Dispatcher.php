@@ -285,17 +285,17 @@ class Dispatcher {
             $track = $_SESSION['playerTrack'];
             if (!empty($track)) {
                 if ($track != null) {
-                    $trackTitle = $track->title ?? 'Piste audio';
-                    $image = $track->image;
+                    $trackTitle = $track->getTitle() ?? 'Piste audio';
+                    $image = $track->getImage();
 
                     // Sous-titre : Artiste/Album pour un morceau d'album, Auteur pour un podcast
                     $subtitle = "";
                     if ($track instanceof AlbumTrack) {
-                        $artist = $track->artist ?? 'Artiste inconnu';
-                        $album = $track->album ?? '';
+                        $artist = $track->getArtist() ?? 'Artiste inconnu';
+                        $album = $track->getAlbum() ?? '';
                         $subtitle = !empty($album) ? "{$artist} • {$album}" : $artist;
                     } elseif ($track instanceof PodcastTrack) {
-                        $author = $track->author ?? 'Auteur inconnu';
+                        $author = $track->getAuthor() ?? 'Auteur inconnu';
                         $subtitle = "Podcast • {$author}";
                     }
 
@@ -334,7 +334,7 @@ class Dispatcher {
                                     <media-theme-tailwind-audio class="audio-footer">
                                         <audio
                                             slot="media"
-                                            src="{$audioDir}{$track->filename}"
+                                            src="{$audioDir}{$track->getFilename()}"
                                             crossorigin="anonymous"
                                             autoplay
                                         ></audio>
