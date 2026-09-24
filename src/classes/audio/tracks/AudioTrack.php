@@ -41,7 +41,9 @@ class AudioTrack {
     protected ?string $image = null;
 
     /**
-     * @return int|null
+     * Retourne l'identifiant unique de la piste en base de données.
+     *
+     * @return int|null Identifiant de la piste, null si non persistée.
      */
     public function getId(): ?int
     {
@@ -49,7 +51,9 @@ class AudioTrack {
     }
 
     /**
-     * @return int
+     * Retourne la durée de la piste en secondes.
+     *
+     * @return int Durée de la piste en secondes.
      */
     public function getDuration(): int
     {
@@ -57,7 +61,9 @@ class AudioTrack {
     }
 
     /**
-     * @return string
+     * Retourne le nom du fichier audio stocké sur le serveur.
+     *
+     * @return string Nom du fichier audio.
      */
     public function getFilename(): string
     {
@@ -65,7 +71,9 @@ class AudioTrack {
     }
 
     /**
-     * @return string|null
+     * Retourne le genre musical ou thématique de la piste.
+     *
+     * @return string|null Genre de la piste, null si non renseigné.
      */
     public function getGenre(): ?string
     {
@@ -73,7 +81,9 @@ class AudioTrack {
     }
 
     /**
-     * @return string|null
+     * Retourne le nom du fichier image de couverture (pochette).
+     *
+     * @return string|null Nom du fichier image, null si aucune couverture.
      */
     public function getImage(): ?string
     {
@@ -81,7 +91,9 @@ class AudioTrack {
     }
 
     /**
-     * @return string
+     * Retourne le titre de la piste.
+     *
+     * @return string Titre de la piste.
      */
     public function getTitle(): string
     {
@@ -89,7 +101,10 @@ class AudioTrack {
     }
 
     /**
-     * @param int|null $id
+     * Affecte l'identifiant unique de la piste en base de données.
+     *
+     * @param int|null $id Identifiant à affecter, null si non persistée.
+     * @return void
      */
     public function setId(?int $id): void
     {
@@ -97,7 +112,10 @@ class AudioTrack {
     }
 
     /**
-     * @param string|null $image
+     * Affecte le fichier image de couverture (pochette) de la piste.
+     *
+     * @param string|null $image Nom du fichier image, null pour retirer la couverture.
+     * @return void
      */
     public function setImage(?string $image): void
     {
@@ -105,8 +123,11 @@ class AudioTrack {
     }
 
     /**
-     * @param int $duration
-     * @throws InvalidPropertyValueException
+     * Affecte la durée de la piste en secondes.
+     *
+     * @param int $duration Durée en secondes, doit être positive ou nulle.
+     * @return void
+     * @throws InvalidPropertyValueException Si la durée est négative.
      */
     public function setDuration(int $duration) : void {
         if ($duration < 0) {
@@ -116,7 +137,10 @@ class AudioTrack {
     }
 
     /**
-     * @param string|null $genre
+     * Affecte le genre musical ou thématique de la piste.
+     *
+     * @param string|null $genre Genre à affecter, null si non renseigné.
+     * @return void
      */
     public function setGenre(?string $genre): void
     {

@@ -18,7 +18,9 @@ class PodcastTrack extends AudioTrack {
     protected ?string $date = null;
 
     /**
-     * @return string|null
+     * Retourne l'auteur ou le créateur du podcast.
+     *
+     * @return string|null Auteur du podcast, null si non renseigné.
      */
     public function getAuthor(): ?string
     {
@@ -26,7 +28,9 @@ class PodcastTrack extends AudioTrack {
     }
 
     /**
-     * @return string|null
+     * Retourne la date de sortie du podcast.
+     *
+     * @return string|null Date de sortie, null si non renseignée.
      */
     public function getDate(): ?string
     {
@@ -34,7 +38,10 @@ class PodcastTrack extends AudioTrack {
     }
 
     /**
-     * @param string|null $author
+     * Affecte l'auteur ou le créateur du podcast.
+     *
+     * @param string|null $author Auteur du podcast, null si non renseigné.
+     * @return void
      */
     public function setAuthor(?string $author): void
     {
@@ -42,7 +49,10 @@ class PodcastTrack extends AudioTrack {
     }
 
     /**
-     * @param string|null $date
+     * Affecte la date de sortie du podcast.
+     *
+     * @param string|null $date Date de sortie, null si non renseignée.
+     * @return void
      */
     public function setDate(?string $date): void
     {

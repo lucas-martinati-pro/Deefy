@@ -43,7 +43,9 @@ class AudioList implements Iterator {
     private int $position = 0;
 
     /**
-     * @return int|null
+     * Retourne l'identifiant de la liste en base de données.
+     *
+     * @return int|null Identifiant de la liste, null si non persistée.
      */
     public function getId(): ?int
     {
@@ -51,7 +53,9 @@ class AudioList implements Iterator {
     }
 
     /**
-     * @return string
+     * Retourne le nom de la liste audio.
+     *
+     * @return string Nom de la liste audio.
      */
     public function getName(): string
     {
@@ -59,7 +63,9 @@ class AudioList implements Iterator {
     }
 
     /**
-     * @return int
+     * Retourne la durée totale de la liste en secondes.
+     *
+     * @return int Durée totale en secondes.
      */
     public function getTotalDuration(): int
     {
@@ -67,7 +73,9 @@ class AudioList implements Iterator {
     }
 
     /**
-     * @return int
+     * Retourne le nombre total de morceaux dans la liste.
+     *
+     * @return int Nombre de morceaux.
      */
     public function getTrackCount(): int
     {
@@ -75,7 +83,9 @@ class AudioList implements Iterator {
     }
 
     /**
-     * @return array
+     * Retourne le tableau des pistes audio de la liste.
+     *
+     * @return AudioTrack[] Tableau des pistes audio.
      */
     public function getTracks(): array
     {
@@ -83,7 +93,10 @@ class AudioList implements Iterator {
     }
 
     /**
-     * @param int|null $id
+     * Affecte l'identifiant de la liste en base de données.
+     *
+     * @param int|null $id Identifiant à affecter, null si non persistée.
+     * @return void
      */
     public function setId(?int $id): void
     {

@@ -32,7 +32,9 @@ class AlbumTrack extends AudioTrack {
     protected int $trackNumber = 1;
 
     /**
-     * @return string|null
+     * Retourne le nom de l'artiste ou du groupe musical.
+     *
+     * @return string|null Nom de l'artiste, null si non renseigné.
      */
     public function getArtist(): ?string
     {
@@ -40,7 +42,9 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @return string
+     * Retourne le nom de l'album contenant le morceau.
+     *
+     * @return string Nom de l'album.
      */
     public function getAlbum(): string
     {
@@ -48,7 +52,9 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @return int|null
+     * Retourne l'année de parution de l'album.
+     *
+     * @return int|null Année de parution, null si non renseignée.
      */
     public function getYear(): ?int
     {
@@ -56,7 +62,9 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @return int
+     * Retourne le numéro de piste dans l'album.
+     *
+     * @return int Numéro de piste dans l'album.
      */
     public function getTrackNumber(): int
     {
@@ -64,7 +72,10 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @param string|null $artist
+     * Affecte le nom de l'artiste ou du groupe musical.
+     *
+     * @param string|null $artist Nom de l'artiste, null si non renseigné.
+     * @return void
      */
     public function setArtist(?string $artist): void
     {
@@ -72,15 +83,10 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @param string $album
-     */
-    public function setAlbum(string $album): void
-    {
-        $this->album = $album;
-    }
-
-    /**
-     * @param int|null $year
+     * Affecte l'année de parution de l'album.
+     *
+     * @param int|null $year Année de parution, null si non renseignée.
+     * @return void
      */
     public function setYear(?int $year): void
     {
@@ -88,7 +94,10 @@ class AlbumTrack extends AudioTrack {
     }
 
     /**
-     * @param int $trackNumber
+     * Affecte le numéro de piste dans l'album.
+     *
+     * @param int $trackNumber Numéro de piste dans l'album.
+     * @return void
      */
     public function setTrackNumber(int $trackNumber): void
     {
