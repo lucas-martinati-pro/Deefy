@@ -123,8 +123,6 @@ class Dispatcher {
                     <link rel="icon" type="image/x-icon" href="../image/favicon.ico">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
-                    <!-- Script pour garder la durée de l'audio sur plusieurs page -->
-                    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
                 </head>
                 <body class="d-flex flex-column min-vh-100">
                     <div class="flex-grow-1">
@@ -331,9 +329,8 @@ class Dispatcher {
                                     </div>
                                 </div>
 
-                                <!-- Section Centre : Lecteur Audio, l'ajout de data-turbo-permanent pour garder l'audio partout avec le script que j'ai importer (@hotwired/turbo)  -->
-                                <!-- https://turbo.hotwired.dev/handbook/page_refreshes -->
-                                <div class="flex-grow-1" id="persistent-audio-player" data-turbo-permanent>
+                                <!-- Section Centre : Lecteur Audio -->
+                                <div class="flex-grow-1">
                                     <media-theme-tailwind-audio class="audio-footer">
                                         <audio
                                             slot="media"
