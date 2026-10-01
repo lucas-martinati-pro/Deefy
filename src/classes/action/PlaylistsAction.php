@@ -71,7 +71,8 @@ class PlaylistsAction extends Action {
 
             $cardsHtml .= <<<HTML
                 <div class="col">
-                    <div class="card h-100">
+            <a href="?action=display-playlist&id={$pl->getId()}" style="all: unset">
+                    <div class="card h-100" role="button" title="Consulter la playlist">
                         <div class="position-relative" style="height: 180px;">
                             {$coverHtml}
                             <span class="position-absolute top-0 end-0 m-2 badge text-bg-dark">
@@ -85,10 +86,6 @@ class PlaylistsAction extends Action {
                                 <i class="bi bi-clock me-1"></i>Durée : <strong>{$totalDuration}s</strong>
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <a href="?action=display-playlist&id={$pl->getId()}" class="btn btn-outline-primary btn-sm stretched-link d-inline-flex align-items-center">
-                                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-circle-fill/ -->
-                                    <i class="bi bi-play-circle-fill me-1"></i>Consulter la playlist
-                                </a>
                                 <span class="text-muted small">
                                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-beamed/ -->
                                     <i class="bi bi-music-note-beamed me-1"></i>{$trackCount} piste(s)
@@ -96,6 +93,7 @@ class PlaylistsAction extends Action {
                             </div>
                         </div>
                     </div>
+                </a>
                 </div>
             HTML;
         }

@@ -104,14 +104,13 @@ abstract class AudioTrackRenderer implements Renderer {
         $playBtn = $this->renderPlayButton();
         $deleteBtn = $this->renderDeleteButton();
         $addToPlaylist = $this->renderAddToPlaylist();
-        $actionsHtml = (!empty($playBtn) || !empty($deleteBtn))
-            ? "<div class=\"mt-2 d-flex justify-content-between align-items-center gap-2\"><div>{$playBtn}</div><div>{$deleteBtn}</div></div>"
-            : '';
 
         return <<<HTML
             <div class="col">
                 <div class="card h-100">
                     {$imageHtml}
+                    {$deleteBtn}
+                    {$addToPlaylist}
                     <div class="card-body d-flex flex-column justify-content-between p-3">
                         <div>
                             <div class="d-flex justify-content-between align-items-start gap-1 mb-1">
@@ -125,8 +124,7 @@ abstract class AudioTrackRenderer implements Renderer {
                         </div>
                         <div class="mt-auto pt-2">
                             {$this->renderAudioPlayer(TypeRender::COMPACT)}
-                            {$actionsHtml}
-                            {$addToPlaylist}
+                            {$playBtn}
                         </div>
                     </div>
                 </div>
@@ -170,7 +168,6 @@ abstract class AudioTrackRenderer implements Renderer {
         $badge = $this->getBadge();
         $subtitle = $this->getSubtitle();
         $playBtn = $this->renderPlayButton();
-        $deleteBtn = $this->renderDeleteButton();
 
         return <<<HTML
             <div class="card mb-3">
@@ -184,7 +181,6 @@ abstract class AudioTrackRenderer implements Renderer {
                                     <div class="d-flex align-items-center gap-2">
                                         {$badge}
                                         {$playBtn}
-                                        {$deleteBtn}
                                     </div>
                                 </div>
                                 <h6 class="card-subtitle text-muted mb-2">
@@ -214,9 +210,10 @@ abstract class AudioTrackRenderer implements Renderer {
         return <<<HTML
             <form method="post" action="" class="d-inline">
                 <input type="hidden" name="add-player-track" value="{$idTrack}">
-                <button class="btn btn-outline-primary btn-sm" title="Ajouter le track {$idTrack} au lecteur">
+                <button class="btn btnAddToPlayer" title="Ajouter le track {$idTrack} au lecteur">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/play-fill/ -->
-                <i class="bi bi-play-fill me-1"></i>Lire
+                <i class="bi bi-play-fill me-1"></i>
+                Lire
                 </button>
             </form>
         HTML;
@@ -233,22 +230,19 @@ abstract class AudioTrackRenderer implements Renderer {
             return '';
         }
 
-        // Si on a un id de playlist -> on affiche "Retirer" avec id_pl
+        $href = "?action=delete-track&id={$idTrack}";
+        $title = "Supprimer de mes pistes";
+
+        // Si on a un id de playlist -> on delete avec id_pl
         if ($this->playlistId !== null) {
-            return <<<HTML
-                <a href="?action=delete-track&id={$idTrack}&id_pl={$this->playlistId}" class="btn btn-sm btn-outline-danger">
-                    <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-circle-fill/ -->
-                    <i class="bi bi-x-circle-fill me-1"></i>
-                    Retirer de la playlist
-                </a>
-            HTML;
+            $href = "?action=delete-track&id={$idTrack}&id_pl={$this->playlistId}";
+            $title = "Retirer de la playlist";
         }
-        // Sinon (Mes pistes) -> on affiche "Supprimer"
+        // Sinon (Mes pistes) -> on delete normalement
         return <<<HTML
-            <a href="?action=delete-track&id={$idTrack}" class="btn btn-sm btn-outline-danger">
+            <a href="{$href}" class="btn btn-sm btn-danger rounded-pill delButton" title="{$title}">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/trash-fill/ -->
-                <i class="bi bi-trash-fill me-1"></i>
-                Supprimer
+                <i class="bi bi-trash-fill"></i>
             </a>
         HTML;
     }
@@ -267,7 +261,7 @@ abstract class AudioTrackRenderer implements Renderer {
 
         return <<<HTML
             <div class="mt-2">
-                <a href="?action=move-track&id={$idTrack}" class="btn btn-sm btn-outline-primary w-100 d-inline-flex align-items-center justify-content-center" title="Ajouter cette piste à une playlist">
+                <a href="?action=move-track&id={$idTrack}" class="btn btn-sm btn-primary rounded-pill addPlaylistButton" title="Ajouter cette piste à une playlist">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle/ -->
                     <i class="bi bi-plus-circle me-1"></i>
                     Ajouter à une playlist

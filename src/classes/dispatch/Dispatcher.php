@@ -248,7 +248,7 @@ class Dispatcher {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-circle/ -->
                     <i class="bi bi-person-circle"></i>
                     <span class="navbar-text small text-muted me-2">{$user['email']}</span>
-                    <a class="btn btn-outline-danger btn-sm signout" href="?action=signout">
+                    <a class="btn btn-danger btn-sm signout rounded-3" href="?action=signout">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
                         <i class="bi bi-box-arrow-right me-1"></i>
                         Déconnexion
@@ -266,14 +266,16 @@ class Dispatcher {
                         </a>
                     </li>
                 </ul>
-                <div class="d-flex gap-2">
-                    <a class="btn btn-outline-primary btn-sm" href="?action=signin">
+                <div class="d-flex gap-2 align-items-center">
+                    <a class="btn btn-sm btn-dark rounded-3" href="?action=signin">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
+                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                        Connexion
                     </a>
-                    <a class="btn btn-primary btn-sm" href="?action=register">
+                    <a class="btn btn-sm btn-primary rounded-3" href="?action=register">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/ -->
-                        <i class="bi bi-person-plus-fill me-1"></i>Inscription
+                        <i class="bi bi-person-plus-fill me-1"></i>
+                        Inscription
                     </a>
                     {$toggleThemeButton}
                 </div>

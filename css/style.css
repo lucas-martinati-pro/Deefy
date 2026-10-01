@@ -115,6 +115,40 @@ body::after {
     box-shadow: 0 6px 20px rgba(128, 0, 128, 0.4);
 }
 
+.delButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var();
+}
+
+.addPlaylistButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.btnAddToPlayer {
+    background: linear-gradient(135deg, indigo, purple, deeppink);
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid black;
+    transition: transform 0.15s;
+}
+
+.btnAddToPlayer:hover {
+    border: 2px solid black;
+    transform: scale(1.05);
+}
+
+.signout {
+    transition: transform 0.2s ease;
+}
+
+.signout:hover {
+    transform: translateY(-1px);
+}
+
 /**========================================================================
  *                       Scrollbar
  *========================================================================**/
@@ -163,16 +197,6 @@ body::after {
     border-color: rgba(128, 0, 128, 0.35);
     font-weight: 600;
     box-shadow: 0 2px 12px rgba(128, 0, 128, 0.25);
-}
-
-.signout {
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.signout:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(220, 53, 70, 0.25);
 }
 
 /**========================================================================
