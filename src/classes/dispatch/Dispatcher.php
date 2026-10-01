@@ -123,9 +123,15 @@ class Dispatcher {
                     <link rel="icon" type="image/x-icon" href="../image/favicon.ico">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
+                    <!-- Script pour l'audio, Swup : change de page sans couper la musique -->
+                    <script src="https://unpkg.com/swup@4"></script>
+                    <script>
+                      const swup = new Swup();
+                    </script>
                 </head>
                 <body class="d-flex flex-column min-vh-100">
-                    <div class="flex-grow-1">
+                    <!-- Contenu rechargé à chaque page, le lecteur audio est en dehors donc il continue -->
+                    <div class="flex-grow-1" id="swup">
                         <nav class="navbar navbar-expand-lg">
                             <div class="container">
                                 <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
