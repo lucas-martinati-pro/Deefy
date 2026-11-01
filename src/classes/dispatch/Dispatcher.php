@@ -118,9 +118,9 @@ class Dispatcher {
                     <link rel="preconnect" href="https://fonts.googleapis.com">
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
-                    <link href="../css/style.css" rel="stylesheet">
+                    <link href="css/style.css" rel="stylesheet">
                     <!-- Icône personnalisée pour le site -->
-                    <link rel="icon" type="image/x-icon" href="../image/favicon.ico">
+                    <link rel="icon" type="image/x-icon" href="image/favicon.ico">
                     <!-- Script pour l'audio -->
                     <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/tailwind-audio/+esm"></script>
                     <!-- Script pour l'audio, Swup : change de page sans couper la musique -->
@@ -134,8 +134,8 @@ class Dispatcher {
                     <div class="flex-grow-1" id="swup">
                         <nav class="navbar navbar-expand-lg">
                             <div class="container">
-                                <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="main.php">
-                                    <img src="../image/favicon.ico" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
+                                <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="index.php">
+                                    <img src="image/favicon.ico" alt="Logo" width="24" height="24" class="d-inline-block me-2 logo">
                                     Deefy
                                 </a>
                                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,7 +155,7 @@ class Dispatcher {
                     </div>
                     $player
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-                    <script src="../js/script.js"></script>
+                    <script src="js/script.js"></script>
                 </body>
             </html>
         HTML;
@@ -219,7 +219,7 @@ class Dispatcher {
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {$activeAccueil}" href="main.php">
+                        <a class="nav-link {$activeAccueil}" href="index.php">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                             <i class="bi bi-house-door-fill me-1"></i>Accueil
                         </a>
@@ -260,7 +260,7 @@ class Dispatcher {
             return <<<HTML
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {$activeAccueil}" href="main.php">
+                        <a class="nav-link {$activeAccueil}" href="index.php">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                             <i class="bi bi-house-door-fill me-1"></i>Accueil
                         </a>

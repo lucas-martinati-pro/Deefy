@@ -19,7 +19,7 @@ class SignoutAction extends Action {
                 {$title}
                 <p>Vous n'êtes pas connecté.</p>
                 <p>
-                    <a class="btn btn-secondary d-inline-flex align-items-center" href="main.php">
+                    <a class="btn btn-secondary d-inline-flex align-items-center" href="index.php">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                         <i class="bi bi-house-door-fill me-1"></i>Retour à l'accueil
                     </a>
@@ -37,7 +37,7 @@ class SignoutAction extends Action {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
                     <i class="bi bi-box-arrow-right me-1"></i>Confirmer la déconnexion
                 </button>
-                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
+                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="index.php">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
                     <i class="bi bi-x-lg me-1"></i>Annuler
                 </a>
@@ -61,7 +61,7 @@ class SignoutAction extends Action {
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/ -->
                     <i class="bi bi-box-arrow-in-right me-1"></i>Se reconnecter
                 </a>
-                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
+                <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="index.php">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                     <i class="bi bi-house-door-fill me-1"></i>Retour à l'accueil
                 </a>

@@ -3,7 +3,7 @@ RewriteEngine On
 #
 # RewriteBase indispensable sur webetu :
 # à adapter à votre
-RewriteBase /www/votre-identifiant-ent-ici/deefy
+RewriteBase /www/e32772u/BUT_Info_S3/Deefy
 
 #
 # Pour interdire l'accès aux répertoires contenant du code

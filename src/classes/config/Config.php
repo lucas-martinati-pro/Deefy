@@ -7,17 +7,12 @@ namespace iutnc\deefy\config;
  */
 class Config {
     /**
-     * Répertoire racine du projet par rapport au dossier src.
-     */
-    public const string ROOT_DIR = '..' . DIRECTORY_SEPARATOR;
-
-    /**
      * Retourne le chemin système vers le répertoire des fichiers audio.
      *
      * @return string Chemin système du répertoire audio.
      */
     public static function getAudioDir(): string {
-        return self::ROOT_DIR . 'audio' . DIRECTORY_SEPARATOR;
+        return 'audio' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -26,7 +21,7 @@ class Config {
      * @return string Chemin système du répertoire des couvertures.
      */
     public static function getCoverDir(): string {
-        return self::ROOT_DIR . 'image' . DIRECTORY_SEPARATOR . 'covers' . DIRECTORY_SEPARATOR;
+        return 'image' . DIRECTORY_SEPARATOR . 'covers' . DIRECTORY_SEPARATOR;
     }
 
     // Chemins web (navigateur : attributs src dans le HTML)
@@ -36,7 +31,7 @@ class Config {
      * @return string Chemin web du répertoire audio.
      */
     public static function getAudioWebPath(): string {
-        return '../audio/';
+        return 'audio/';
     }
 
     /**
@@ -45,6 +40,6 @@ class Config {
      * @return string Chemin web du répertoire des couvertures.
      */
     public static function getCoverWebPath(): string {
-        return '../image/covers/';
+        return 'image/covers/';
     }
 }

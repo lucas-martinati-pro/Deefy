@@ -32,7 +32,7 @@ class SigninAction extends Action {
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/ -->
                         <i class="bi bi-box-arrow-right me-1"></i>Se déconnecter
                     </a>
-                    <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="main.php">
+                    <a class="btn btn-secondary ms-2 d-inline-flex align-items-center" href="index.php">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/house-door-fill/ -->
                         <i class="bi bi-house-door-fill me-1"></i>Accueil
                     </a>

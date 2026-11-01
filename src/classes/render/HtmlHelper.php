@@ -65,12 +65,12 @@ class HtmlHelper {
      *
      * @param string $title Titre affiché en tête de page (défaut: 'Erreur').
      * @param string|array $message Message d'erreur ou liste d'erreurs.
-     * @param string $backUrl URL du lien de retour (défaut: 'main.php').
+     * @param string $backUrl URL du lien de retour (défaut: 'index.php').
      * @param string $backLabel Libellé du bouton de retour (défaut: 'Retour à l'accueil').
      * @param string $type Type d'alerte Bootstrap ('danger', 'warning', etc. Défaut: 'danger').
      * @return string Balises HTML de la page d'erreur.
      */
-    public static function errorPage(string $title = "Erreur", string|array $message = "Une erreur inattendue est survenue.", string $backUrl = 'main.php', string $backLabel = "Retour à l'accueil", string $type = 'danger') : string {
+    public static function errorPage(string $title = "Erreur", string|array $message = "Une erreur inattendue est survenue.", string $backUrl = 'index.php', string $backLabel = "Retour à l'accueil", string $type = 'danger') : string {
         $alertHtml = self::alert($type, $message);
 
         $titleColor = match ($type) {
@@ -102,11 +102,11 @@ class HtmlHelper {
      * @param string $message Message explicatif (défaut: 'Vous devez être connecté pour accéder à cette page.').
      * @param string $loginUrl URL vers la page de connexion (défaut: '?action=signin').
      * @param string $loginLabel Libellé du bouton de connexion (défaut: 'Se connecter').
-     * @param string $backUrl URL du bouton retour (défaut: 'main.php').
+     * @param string $backUrl URL du bouton retour (défaut: 'index.php').
      * @param string $backLabel Libellé du bouton retour (défaut: 'Retour à l'accueil').
      * @return string Balises HTML de l'écran d'accès refusé.
      */
-    public static function authRequired(string $message = "Vous devez être connecté pour accéder à cette page.", string $loginUrl = "?action=signin", string $loginLabel = "Se connecter", string $backUrl = "main.php", string $backLabel = "Retour à l'accueil") : string {
+    public static function authRequired(string $message = "Vous devez être connecté pour accéder à cette page.", string $loginUrl = "?action=signin", string $loginLabel = "Se connecter", string $backUrl = "index.php", string $backLabel = "Retour à l'accueil") : string {
         $alert = self::alert('warning', $message);
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/shield-lock-fill/
         $titleHtml = self::title("Accès refusé", "bi-shield-lock-fill", "text-danger");
