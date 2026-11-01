@@ -7,3 +7,6 @@ Fichier avec les fichiers audio
 
 # IDE
 .idea
+
+# Configuration base de données
+src/config/deefy.db.ini
