@@ -326,38 +326,36 @@ class Dispatcher {
 
                     return <<<HTML
                         <div style="height: 85px;"></div>
-                        <footer class="audio-footer-bar py-2 px-3">
-                            <div class="container-fluid d-flex align-items-center justify-content-between gap-3">
-                                <!-- Section Gauche : Image + Titre/Artiste -->
-                                <div class="d-flex align-items-center gap-3 flex-shrink-0" style="max-width: 300px;">
-                                    {$coverHtml}
-                                    <div class="text-truncate">
-                                        <div class="fw-semibold text-body text-truncate small mb-0 d-none d-lg-flex" title="{$trackTitle}">{$trackTitle}</div>
-                                        <div class="text-body-secondary text-truncate d-none d-lg-flex" style="font-size: 0.78rem;" title="{$subtitle}">{$subtitle}</div>
-                                    </div>
+                        <footer class="audio-footer-bar py-2 px-3 container-fluid d-flex align-items-center justify-content-between gap-3">
+                            <!-- Section Gauche : Image + Titre/Artiste -->
+                            <div class="d-flex align-items-center gap-3 flex-shrink-0" style="max-width: 300px;">
+                                {$coverHtml}
+                                <div class="text-truncate">
+                                    <div class="fw-semibold text-body text-truncate small mb-0 d-none d-lg-flex" title="{$trackTitle}">{$trackTitle}</div>
+                                    <div class="text-body-secondary text-truncate d-none d-lg-flex" style="font-size: 0.78rem;" title="{$subtitle}">{$subtitle}</div>
                                 </div>
+                            </div>
 
-                                <!-- Section Centre : Lecteur Audio -->
-                                <div class="flex-grow-1">
-                                    <media-theme-tailwind-audio class="audio-footer">
-                                        <audio
-                                            slot="media"
-                                            src="{$audioDir}{$track->getFilename()}"
-                                            crossorigin="anonymous"
-                                            autoplay
-                                        ></audio>
-                                    </media-theme-tailwind-audio>
-                                </div>
+                            <!-- Section Centre : Lecteur Audio -->
+                            <div class="flex-grow-1">
+                                <media-theme-tailwind-audio class="audio-footer">
+                                    <audio
+                                        slot="media"
+                                        src="{$audioDir}{$track->getFilename()}"
+                                        crossorigin="anonymous"
+                                        autoplay
+                                    ></audio>
+                                </media-theme-tailwind-audio>
+                            </div>
 
-                                <!-- Section Droite : Fermer le lecteur -->
-                                <div>
-                                    <form method="post" action="">
-                                        <button class="btn btn-outline-secondary btn-sm" name="delete-player-track" title="Fermer le lecteur">
-                                            <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
-                                            <i class="bi bi-x-lg"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                            <!-- Section Droite : Fermer le lecteur -->
+                            <div>
+                                <form method="post" action="">
+                                    <button class="btn btn-outline-secondary btn-sm" name="delete-player-track" title="Fermer le lecteur">
+                                        <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/x-lg/ -->
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
                             </div>
                         </footer>
                     HTML;
