@@ -1,8 +1,6 @@
-# Tableau de bord des fonctionnalités — Projet Deefy
+# Tableau de bord des fonctionnalités - Projet Deefy
 
-**Ressource :** Développement Web (BUT Informatique S3 — IUT Nancy-Charlemagne)
-
-**Application :** Deefy (Plateforme de streaming audio)
+**Application :** Deefy
 
 ---
 
