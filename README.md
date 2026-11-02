@@ -52,7 +52,7 @@ cd src
 composer install
 ```
 
-Le dossier `vendor/` est créé seul. Il ne faut pas le versionner.
+Le dossier `vendor/` est créé seul.
 
 ## Ajout de la bibliothèque getID3
 
