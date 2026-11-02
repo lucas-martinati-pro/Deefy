@@ -66,24 +66,24 @@ class RegisterAction extends Action {
             return HtmlHelper::formError(errors: "Les deux mots de passe doivent être identiques.", backUrl: "?action=register", title: "Échec de l'inscription");
         }
 
-        $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
         try {
-            AuthnProvider::register($_POST['email'], $_POST['password']);
+            AuthnProvider::register($email, $_POST['password']);
         } catch (AuthnException $error) {
             return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register", title: "Échec de l'inscription");
         }
 
         if (isset($_POST['connect-auto'])) {
             try {
-                AuthnProvider::signin($_POST['email'], $_POST['password']);
+                AuthnProvider::signin($email, $_POST['password']);
             } catch (AuthnException $error) {
                 return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register", title: "Échec de la connexion");
             }
 
             return HtmlHelper::successPage(
                 title: "Connexion réussie",
-                message: "Bienvenue, <strong>{$_POST['email']}</strong> ! Vous êtes maintenant connecté à Deefy.",
+                message: "Bienvenue, <strong>$email</strong> ! Vous êtes maintenant connecté à Deefy.",
                 backLabel: "Accéder à mes playlists"
             );
         }

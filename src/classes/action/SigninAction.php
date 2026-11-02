@@ -78,8 +78,6 @@ class SigninAction extends Action {
             return HtmlHelper::formError(errors: $error->getMessage(), title: "Échec de la connexion");
         }
 
-        $_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-
         return HtmlHelper::successPage(
             title: "Connexion réussie",
             message: "Bienvenue, <strong>{$email}</strong> ! Vous êtes maintenant connecté à Deefy.",
