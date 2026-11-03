@@ -37,7 +37,7 @@ class AddPlaylistAction extends Action {
     #[Override]
     public function post() : string {
         if (!isset($_POST['title']) || trim($_POST['title']) === '') {
-            return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist");
+            return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist&form=1");
         }
 
         $w = DeefyRepository::getInstance();

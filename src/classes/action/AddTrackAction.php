@@ -208,7 +208,7 @@ class AddTrackAction extends Action {
         // Si des erreurs de formulaire sont présentes, on arrête avant d'écrire le fichier sur le disque
         if (!empty($error)) {
             $typeParam = !empty($type) ? "&type={$type}" : "";
-            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
         // 1. Enregistrement du fichier audio MP3
@@ -217,7 +217,7 @@ class AddTrackAction extends Action {
         if (!$audioFileName) {
             $error[] = $uploadError ?? "Erreur lors de l'envoi du fichier audio.";
             $typeParam = !empty($type) ? "&type={$type}" : "";
-            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
         // Analyse des métadonnées ID3
@@ -290,7 +290,7 @@ class AddTrackAction extends Action {
 
         if (!empty($error)) {
             $typeParam = !empty($type) ? "&type={$type}" : "";
-            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}");
+            return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
         // Propriétés communes
