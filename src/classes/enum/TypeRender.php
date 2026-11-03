@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\deefy\enums;
+namespace iutnc\deefy\enum;
 
 /**
  * Mode de rendu pour les renderers (vue compacte ou détaillée).

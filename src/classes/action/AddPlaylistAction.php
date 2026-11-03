@@ -6,7 +6,7 @@ use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\render\HtmlHelper;
-use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\enum\TypeRender;
 use Override;
 
 /**

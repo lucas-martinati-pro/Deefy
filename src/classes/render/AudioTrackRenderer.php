@@ -3,7 +3,7 @@
 namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\enum\TypeRender;
 use iutnc\deefy\config\Config;
 use Override;
 

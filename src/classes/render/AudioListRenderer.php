@@ -3,7 +3,7 @@
 namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\lists\AudioList;
-use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\enum\TypeRender;
 use Override;
 
 /**

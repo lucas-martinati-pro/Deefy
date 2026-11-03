@@ -2,7 +2,7 @@
 
 namespace iutnc\deefy\render;
 
-use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\enum\TypeRender;
 
 /**
  * Interface pour le rendu HTML des éléments de l'application.

@@ -6,7 +6,7 @@ use DateTime;
 use getID3;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\enums\TypeRender;
+use iutnc\deefy\enum\TypeRender;
 use iutnc\deefy\render\RendererFactory;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\audio\tracks\AlbumTrack;
