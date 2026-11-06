@@ -40,9 +40,9 @@ class DeefyRepository {
      * @return void
      * @throws ConfigIOException Si le fichier INI ne peut pas être lu ou analysé.
      */
-    public static function setConfig(string $file) : void {
+    public static function setConfig(string $file): void {
         $conf = parse_ini_file($file);
-        if ($conf === false) throw new ConfigIOException("Error reading configuration file");
+        if ($conf === false) throw new ConfigIOException('Error reading configuration file');
         self::$config = [
             'dsn' => "{$conf['driver']}:host={$conf['host']};dbname={$conf['database']}",
             'user' => $conf['username'],
@@ -55,7 +55,7 @@ class DeefyRepository {
      *
      * @return DeefyRepository Instance du repository.
      */
-    public static function getInstance() : DeefyRepository {
+    public static function getInstance(): DeefyRepository {
         if (is_null(self::$instance)) self::$instance = new DeefyRepository();
         return self::$instance;
     }
@@ -72,7 +72,7 @@ class DeefyRepository {
      *
      * @return Playlist[] Liste de toutes les playlists.
      */
-    public function findAllPlaylists() : array {
+    public function findAllPlaylists(): array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT *
             FROM playlist;
@@ -95,7 +95,7 @@ class DeefyRepository {
      * @param int $id Identifiant de la piste.
      * @return AudioTrack|null L'objet piste audio correspondant, ou null si introuvable.
      */
-    public function findTrackById(int $id) : ?AudioTrack {
+    public function findTrackById(int $id): ?AudioTrack {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT *
             FROM track
@@ -115,7 +115,7 @@ class DeefyRepository {
      * @param int $idPlaylist Identifiant unique de la playlist.
      * @return Playlist|null L'objet Playlist avec toutes ses pistes, ou null si introuvable.
      */
-    public function findPlaylistById(int $idPlaylist) : ?Playlist {
+    public function findPlaylistById(int $idPlaylist): ?Playlist {
         $stmtPlaylist = $this->pdo->prepare(<<<SQL
             SELECT *
             FROM playlist
@@ -153,7 +153,7 @@ class DeefyRepository {
      * @param array $res Tableau associatif représentant la ligne de la table `track`.
      * @return AudioTrack Instance d'AlbumTrack ou de PodcastTrack selon le champ `type`.
      */
-    private function rowToTrack(array $res) : AudioTrack {
+    private function rowToTrack(array $res): AudioTrack {
         if ($res['type'] === 'A') {
             $track = new AlbumTrack(
                 $res['titre'],
@@ -196,7 +196,7 @@ class DeefyRepository {
      * @param int $idUser Identifiant de l'utilisateur.
      * @return int[] Tableau des identifiants de playlists.
      */
-    public function findPlaylistsIdsByUserId(int $idUser) : array {
+    public function findPlaylistsIdsByUserId(int $idUser): array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id_pl
             FROM user2playlist
@@ -215,7 +215,7 @@ class DeefyRepository {
      * @param int $idUser Identifiant de l'utilisateur.
      * @return int[] Liste des identifiants de pistes.
      */
-    public function findTracksIdsByUserId(int $idUser) : array {
+    public function findTracksIdsByUserId(int $idUser): array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id_track
             FROM user2track
@@ -234,7 +234,7 @@ class DeefyRepository {
      * @param int $idUser Identifiant de l'utilisateur.
      * @return Playlist[] Tableau des playlists de l'utilisateur.
      */
-    public function findPlaylistsByUserId(int $idUser) : array {
+    public function findPlaylistsByUserId(int $idUser): array {
         $idPlaylists = $this->findPlaylistsIdsByUserId($idUser);
         $playlists = [];
 
@@ -254,7 +254,7 @@ class DeefyRepository {
      * @param int $idUser Identifiant de l'utilisateur.
      * @return AudioTrack[] Tableau des pistes audio.
      */
-    public function findTracksByUserId(int $idUser) : array {
+    public function findTracksByUserId(int $idUser): array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT DISTINCT track.*
             FROM track
@@ -283,7 +283,7 @@ class DeefyRepository {
      * @param string $email Adresse email recherchée.
      * @return array|null Données de l'utilisateur ou null si introuvable.
      */
-    public function findUserByEmail(string $email) : ?array {
+    public function findUserByEmail(string $email): ?array {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id, email, passwd, role
             FROM User
@@ -305,7 +305,7 @@ class DeefyRepository {
      * @param string $email Adresse email à vérifier.
      * @return bool True si l'email existe déjà, false sinon.
      */
-    public function existsByEmail(string $email) : bool {
+    public function existsByEmail(string $email): bool {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT id
             FROM User
@@ -331,7 +331,7 @@ class DeefyRepository {
      * @param Playlist $playlist Instance de la playlist à insérer.
      * @return Playlist La playlist avec son identifiant (id) mis à jour.
      */
-    public function saveEmptyPlaylist(Playlist $playlist) : Playlist {
+    public function saveEmptyPlaylist(Playlist $playlist): Playlist {
         $stmt = $this->pdo->prepare(<<<SQL
             INSERT INTO playlist (nom)
             VALUES (:name)
@@ -347,9 +347,9 @@ class DeefyRepository {
      * @param AudioTrack $track Piste audio à persister.
      * @return AudioTrack La piste avec son identifiant généré.
      */
-    public function saveAudioTrack(AudioTrack $track) : AudioTrack {
+    public function saveAudioTrack(AudioTrack $track): AudioTrack {
         $genreVal = $track->getGenre();
-        $genre = (!empty($genreVal) && trim($genreVal) !== '') ? trim($genreVal) : null;
+        $genre = (!empty($genreVal) && trim($genreVal) !== '') ? trim($genreVal): null;
 
         $durationVal = $track->getDuration();
         $duree = ($durationVal > 0) ? $durationVal : null;
@@ -368,10 +368,10 @@ class DeefyRepository {
         if ($track instanceof AlbumTrack) {
             $type = 'A';
             $artistVal = $track->getArtist();
-            $artist = (!empty($artistVal) && trim($artistVal) !== '') ? trim($artistVal) : null;
+            $artist = (!empty($artistVal) && trim($artistVal) !== '') ? trim($artistVal): null;
 
             $albumVal = $track->getAlbum();
-            $album = (!empty($albumVal) && trim($albumVal) !== '') ? trim($albumVal) : null;
+            $album = (!empty($albumVal) && trim($albumVal) !== '') ? trim($albumVal): null;
 
             $yearVal = $track->getYear();
             $year = (!empty($yearVal) && (int) $yearVal > 0) ? (int) $yearVal : null;
@@ -381,10 +381,10 @@ class DeefyRepository {
         } elseif ($track instanceof PodcastTrack) {
             $type = 'P';
             $authorVal = $track->getAuthor();
-            $author = (!empty($authorVal) && trim($authorVal) !== '') ? trim($authorVal) : null;
+            $author = (!empty($authorVal) && trim($authorVal) !== '') ? trim($authorVal): null;
 
             $dateVal = $track->getDate();
-            $date = (!empty($dateVal) && trim($dateVal) !== '') ? trim($dateVal) : null;
+            $date = (!empty($dateVal) && trim($dateVal) !== '') ? trim($dateVal): null;
         }
 
         $stmt = $this->pdo->prepare(<<<SQL
@@ -424,7 +424,7 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio.
      * @return void
      */
-    public function saveTrack2User(int $idUser, int $idTrack) : void {
+    public function saveTrack2User(int $idUser, int $idTrack): void {
         $stmt = $this->pdo->prepare(<<<SQL
             INSERT INTO user2track (id_user, id_track)
             VALUES (:idUser, :idTrack)
@@ -439,7 +439,7 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio.
      * @return bool True si la piste est déjà dans la playlist, false sinon.
      */
-    public function isTrackInPlaylist(int $idPlaylist, int $idTrack) : bool {
+    public function isTrackInPlaylist(int $idPlaylist, int $idTrack): bool {
         $stmt = $this->pdo->prepare(<<<SQL
             SELECT COUNT(*)
             FROM playlist2track
@@ -456,7 +456,7 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio à associer.
      * @return void
      */
-    public function addTrackToPlaylist(int $idPlaylist, int $idTrack) : void {
+    public function addTrackToPlaylist(int $idPlaylist, int $idTrack): void {
         if ($this->isTrackInPlaylist($idPlaylist, $idTrack)) {
             return;
         }
@@ -485,7 +485,7 @@ class DeefyRepository {
      * @param int $idPlaylist Identifiant de la playlist.
      * @return void
      */
-    public function savePlaylist2User(int $idUser, int $idPlaylist) : void {
+    public function savePlaylist2User(int $idUser, int $idPlaylist): void {
         // Le IGNGORE INTO pour ignorer si le track est déjà présent dans la playlist (doublon)
         $stmt = $this->pdo->prepare(<<<SQL
             INSERT IGNORE INTO user2playlist (id_user, id_pl)
@@ -504,7 +504,7 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio à retirer.
      * @return void
      */
-    public function removeTrackFromPlaylist(int $idPlaylist, int $idTrack) : void {
+    public function removeTrackFromPlaylist(int $idPlaylist, int $idTrack): void {
         // Supprimer les références de ce morceau dans toutes les playlists
         $stmt1 = $this->pdo->prepare(<<<SQL
             DELETE FROM playlist2track
@@ -520,7 +520,7 @@ class DeefyRepository {
      * @param int $idTrack Identifiant de la piste audio à supprimer.
      * @return void
      */
-    public function deleteTrackById(int $idTrack) : void {
+    public function deleteTrackById(int $idTrack): void {
         // Supprimer les références de ce morceau dans toutes les playlists
         $stmt1 = $this->pdo->prepare(<<<SQL
             DELETE FROM playlist2track
@@ -549,7 +549,7 @@ class DeefyRepository {
      * @param int $idPlaylist Identifiant de la playlist à supprimer.
      * @return void
      */
-    public function deletePlaylistById(int $idPlaylist) : void {
+    public function deletePlaylistById(int $idPlaylist): void {
         // Supprimer les tracks de cette playlist :
         $stmt1 = $this->pdo->prepare(<<<SQL
             SELECT track.id
@@ -599,7 +599,7 @@ class DeefyRepository {
      * @param string $password Mot de passe en clair à hacher.
      * @return void
      */
-    public function addUser(string $email, string $password) : void {
+    public function addUser(string $email, string $password): void {
         // Double par précaution;
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 

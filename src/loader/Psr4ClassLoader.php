@@ -31,17 +31,17 @@ class Psr4ClassLoader {
      * @param string $filename Nom complet et qualifié de la classe (ex: 'iutnc\\deefy\\audio\\tracks\\AudioTrack').
      * @return void
      */
-    public function loadClass(string $filename) : void {
+    public function loadClass(string $filename): void {
         if (str_starts_with($filename, $this->prefixe)) {
             $filename = substr($filename, strlen($this->prefixe));
-            $filename = $this->basefilename . "/" . str_replace("\\", "/", $filename) . ".php";
+            $filename = $this->basefilename . '/' . str_replace("\\", '/', $filename) . '.php';
             if (is_file($filename)) {
                 require_once $filename;
             }
         }
     }
 
-    public function register() : void {
+    public function register(): void {
         spl_autoload_register([$this, 'loadClass']);
     }
 }

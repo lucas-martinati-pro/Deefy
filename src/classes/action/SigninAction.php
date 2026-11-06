@@ -14,12 +14,12 @@ class SigninAction extends Action {
     protected bool $requireAuth = false;
 
     #[Override]
-    public function get() : string {
+    public function get(): string {
         try {
             $user = AuthnProvider::getSignedInUser();
 
             // Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/
-            $title = HtmlHelper::title("Déjà connecté", "bi-person-plus-fill");
+            $title = HtmlHelper::title('Déjà connecté', 'bi-person-plus-fill');
             return <<<HTML
                 {$title}
                 <p>Vous êtes déjà connecté avec l'adresse <strong>{$user['email']}</strong>.</p>
@@ -41,7 +41,7 @@ class SigninAction extends Action {
         } catch (AuthnException) {
             $require = '<span class="text-danger">*</span>';
             // Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-in-right/
-            $title = HtmlHelper::title("Connexion", "bi-box-arrow-in-right");
+            $title = HtmlHelper::title('Connexion', 'bi-box-arrow-in-right');
             return <<<HTML
                 {$title}
                 <form method="post" action="?action=signin">
@@ -65,9 +65,9 @@ class SigninAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         if (!isset($_POST['email'], $_POST['password'])) {
-            return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=signin&form=1", title: "Échec de la connexion");
+            return HtmlHelper::formError(errors: 'Tous les champs sont obligatoires.', backUrl: '?action=signin&form=1', title: 'Échec de la connexion');
         }
 
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -75,13 +75,13 @@ class SigninAction extends Action {
         try {
             AuthnProvider::signin($email, $_POST['password']);
         } catch (AuthnException $error) {
-            return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=signin&form=1", title: "Échec de la connexion");
+            return HtmlHelper::formError(errors: $error->getMessage(), backUrl: '?action=signin&form=1', title: 'Échec de la connexion');
         }
 
         return HtmlHelper::successPage(
-            title: "Connexion réussie",
+            title: 'Connexion réussie',
             message: "Bienvenue, <strong>{$email}</strong> ! Vous êtes maintenant connecté à Deefy.",
-            backLabel: "Accéder à mes playlists"
+            backLabel: 'Accéder à mes playlists'
         );
     }
 }

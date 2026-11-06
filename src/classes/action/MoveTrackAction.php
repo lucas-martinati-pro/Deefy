@@ -15,7 +15,7 @@ use Override;
 class MoveTrackAction extends Action {
 
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $idTrack = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
         $r = DeefyRepository::getInstance();
@@ -29,7 +29,7 @@ class MoveTrackAction extends Action {
             ? $trackHtml
             : '';
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/
-        $title = HtmlHelper::title("Ajouter à une playlist", "bi-music-note-list");
+        $title = HtmlHelper::title('Ajouter à une playlist', 'bi-music-note-list');
 
         if (empty($playlists)) {
             $alertHtml = HtmlHelper::alert(
@@ -61,7 +61,7 @@ class MoveTrackAction extends Action {
             $isAlreadyIn = $r->isTrackInPlaylist((int) $playlist->getId(), $idTrack);
             $playlistName = $playlist->getName();
             $trackCount = $playlist->getTrackCount();
-            $trackCountLabel = "{$trackCount} piste" . ($trackCount > 1 ? "s" : "");
+            $trackCountLabel = "{$trackCount} piste" . ($trackCount > 1 ? 's' : '');
 
             if ($isAlreadyIn) {
                 $playlistListHtml .= <<<HTML
@@ -154,7 +154,7 @@ class MoveTrackAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : 0;
 
         $r = DeefyRepository::getInstance();
@@ -162,10 +162,10 @@ class MoveTrackAction extends Action {
 
         if (empty($_POST['id_playlists'])) {
             return HtmlHelper::formError(
-                errors: "Veuillez sélectionner au moins une playlist.",
+                errors: 'Veuillez sélectionner au moins une playlist.',
                 backUrl: "?action=move-track&id={$idTrack}",
-                backLabel: "Retour à la sélection",
-                title: "Sélection requise"
+                backLabel: 'Retour à la sélection',
+                title: 'Sélection requise'
             );
         }
 
@@ -176,8 +176,8 @@ class MoveTrackAction extends Action {
             if (!Authz::checkPlaylistOwner((int) $playlistId)) {
                 return HtmlHelper::forbidden(
                     message: "Vous n'êtes pas autorisé à la playlist {$playlistId} l'une des playlists sélectionnées.",
-                    backUrl: "?action=tracks",
-                    backLabel: "Retour à mes pistes"
+                    backUrl: '?action=tracks',
+                    backLabel: 'Retour à mes pistes'
                 );
             }
 
@@ -200,11 +200,11 @@ class MoveTrackAction extends Action {
 
         if (empty($addedPlaylists)) {
             return HtmlHelper::errorPage(
-                title: "Piste non ajoutée",
-                message: "La piste est déjà présente dans la ou les playlists sélectionnées.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes",
-                type: "warning"
+                title: 'Piste non ajoutée',
+                message: 'La piste est déjà présente dans la ou les playlists sélectionnées.',
+                backUrl: '?action=tracks',
+                backLabel: 'Retour à mes pistes',
+                type: 'warning'
             );
         }
 
@@ -212,11 +212,11 @@ class MoveTrackAction extends Action {
 
         if ($countAdded === 1) {
             $playlist = $addedPlaylists[0];
-            $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? "s" : "");
+            $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? 's' : '');
             $msgHtml = "<p>La piste <strong>{$track->getTitle()}</strong> a été ajoutée avec succès à la playlist <strong>{$playlist->getName()}</strong> ({$countText}).</p>";
 
             $actionButtons = <<<HTML
-                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=display-playlist&id={$playlist->getId()}">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="?action=playlist&id={$playlist->getId()}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                     <i class="bi bi-music-note-list me-2"></i>
                     Consulter la playlist
@@ -230,7 +230,7 @@ class MoveTrackAction extends Action {
         } else {
             $listPlaylist = '';
             foreach ($addedPlaylists as $playlist) {
-                $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? "s" : "");
+                $countText = "{$playlist->getTrackCount()} piste" . ($playlist->getTrackCount() > 1 ? 's' : '');
                 $listPlaylist .= "<li><strong>{$playlist->getName()}</strong> ({$countText})</li>";
             }
 
@@ -273,15 +273,15 @@ class MoveTrackAction extends Action {
     }
 
     #[Override]
-    protected function check() : ?string {
+    protected function check(): ?string {
         $idTrack = isset($_POST['id_track']) ? (int) $_POST['id_track'] : (isset($_GET['id']) ? (int) $_GET['id'] : 0);
 
         if ($idTrack < 1) {
             return HtmlHelper::errorPage(
-                title: "Piste non spécifiée",
+                title: 'Piste non spécifiée',
                 message: "Aucun identifiant de piste valide n'a été fourni.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
+                backUrl: '?action=tracks',
+                backLabel: 'Retour à mes pistes'
             );
         }
 
@@ -290,18 +290,18 @@ class MoveTrackAction extends Action {
 
         if ($track === null) {
             return HtmlHelper::notFound(
-                item: "Piste",
+                item: 'Piste',
                 message: "La piste demandée n'existe pas.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
+                backUrl: '?action=tracks',
+                backLabel: 'Retour à mes pistes'
             );
         }
 
         if (!Authz::checkTrackOwner($idTrack)) {
             return HtmlHelper::forbidden(
                 message: "Vous n'êtes pas autorisé à manipuler cette piste.",
-                backUrl: "?action=tracks",
-                backLabel: "Retour à mes pistes"
+                backUrl: '?action=tracks',
+                backLabel: 'Retour à mes pistes'
             );
         }
 

@@ -13,15 +13,15 @@ use Override;
  */
 class DisplayPlaylistAction extends Action {
     #[Override]
-    public function get() : string {
+    public function get(): string {
         // CAS 1 : Aucun ID -> on affiche la playlist en session
         if (!isset($_GET['id'])) {
             if (!isset($_SESSION['playlist'])) {
                 return HtmlHelper::errorPage(
-                    title: "Playlist",
+                    title: 'Playlist',
                     message: "Aucune playlist n'existe actuellement en session.",
-                    backUrl: "?action=playlists",
-                    backLabel: "Retour à mes playlists"
+                    backUrl: '?action=playlists',
+                    backLabel: 'Retour à mes playlists'
                 );
             }
             $playlist = $_SESSION['playlist'];
@@ -32,7 +32,7 @@ class DisplayPlaylistAction extends Action {
             $playlist = $r->findPlaylistById($idPlaylist);
 
             if (!$playlist) {
-                return HtmlHelper::notFound(item: "Playlist", message: "La playlist demandée n'existe pas.");
+                return HtmlHelper::notFound(item: 'Playlist', message: "La playlist demandée n'existe pas.");
             }
 
             $_SESSION['playlist'] = $playlist;
@@ -66,7 +66,7 @@ class DisplayPlaylistAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         return '';
     }
 }

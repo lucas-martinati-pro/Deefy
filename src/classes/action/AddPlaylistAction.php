@@ -15,9 +15,9 @@ use Override;
 class AddPlaylistAction extends Action {
 
     #[Override]
-    public function get() : string {
+    public function get(): string {
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/folder-plus/
-        $title = HtmlHelper::title("Créer une playlist", "bi-folder-plus");
+        $title = HtmlHelper::title('Créer une playlist', 'bi-folder-plus');
         return <<<HTML
             {$title}
             <form method="post" action="?action=add-playlist">
@@ -35,9 +35,9 @@ class AddPlaylistAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         if (!isset($_POST['title']) || trim($_POST['title']) === '') {
-            return HtmlHelper::formError(errors: "Le nom de la playlist est obligatoire.", backUrl: "?action=add-playlist&form=1");
+            return HtmlHelper::formError(errors: 'Le nom de la playlist est obligatoire.', backUrl: '?action=add-playlist&form=1');
         }
 
         $w = DeefyRepository::getInstance();

@@ -105,9 +105,9 @@ class AlbumTrack extends AudioTrack {
     }
 
     #[Override]
-    public function __set(string $name, mixed $value) : void {
-        if (property_exists($this, $name) && $name !== "title" && $name !== "filename" && $name !== "album" && $name !== "trackNumber") {
-            if ($name === "duration" && $value < 0) {
+    public function __set(string $name, mixed $value): void {
+        if (property_exists($this, $name) && $name !== 'title' && $name !== 'filename' && $name !== 'album' && $name !== 'trackNumber') {
+            if ($name === 'duration' && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");
             } else $this->$name = $value;
         }

@@ -13,7 +13,7 @@ class DefaultAction extends Action {
     protected bool $requireAuth = false;
 
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $page = <<< HTML
             <h1 class="h2 fw-bold mb-2">
                 <img src="image/favicon.ico" width="40" height="40" alt="Logo" class="align-text-top">
@@ -25,11 +25,11 @@ class DefaultAction extends Action {
         try {
             AuthnProvider::getSignedInUser();
 
-            $currentPlaylist = "";
+            $currentPlaylist = '';
 
             if (isset($_SESSION['playlist'])) {
                 $currentPlaylist = <<<HTML
-                    <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=display-playlist">
+                    <a class="list-group-item list-group-item-action d-flex align-items-center" href="?action=playlist">
                         <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                         <i class="bi bi-music-note-list text-info me-2 fs-5"></i>
                         Afficher la playlist courante
@@ -83,7 +83,7 @@ class DefaultAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         return '';
     }
 }

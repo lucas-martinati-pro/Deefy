@@ -44,21 +44,21 @@ class Dispatcher {
      *
      * @return void
      */
-    public function run() : void {
+    public function run(): void {
         $this->handleUserActions();
 
         $html = match ($this->action) {
-            "playlists" => (new PlaylistsAction())(),
-            "tracks" => (new TracksAction())(),
-            "display-playlist" => (new DisplayPlaylistAction())(),
-            "add-playlist" => (new AddPlaylistAction())(),
-            "delete-playlist" => (new DeletePlaylistAction())(),
-            "add-track" => (new AddTrackAction())(),
-            "move-track" => (new MoveTrackAction())(),
-            "delete-track" => (new DeleteTrackAction())(),
-            "register" => (new RegisterAction())(),
-            "signin" => (new SigninAction())(),
-            "signout" => (new SignoutAction())(),
+            'playlists' => (new PlaylistsAction())(),
+            'tracks' => (new TracksAction())(),
+            'playlist' => (new DisplayPlaylistAction())(),
+            'add-playlist' => (new AddPlaylistAction())(),
+            'delete-playlist' => (new DeletePlaylistAction())(),
+            'add-track' => (new AddTrackAction())(),
+            'move-track' => (new MoveTrackAction())(),
+            'delete-track' => (new DeleteTrackAction())(),
+            'register' => (new RegisterAction())(),
+            'signin' => (new SigninAction())(),
+            'signout' => (new SignoutAction())(),
             default => (new DefaultAction())(),
         };
 
@@ -70,7 +70,7 @@ class Dispatcher {
      *
      * @return void
      */
-    private function handleUserActions() : void {
+    private function handleUserActions(): void {
         // Si l'utilisateur clique sur "Lire" pour écouter une piste spécifique dans le lecteur principal
         if (isset($_POST['add-player-track'])) {
             $r = DeefyRepository::getInstance();
@@ -98,7 +98,7 @@ class Dispatcher {
      * @param string $html Contenu HTML généré par l'action courante.
      * @return void
      */
-    private function renderPage(string $html) : void {
+    private function renderPage(string $html): void {
         $navbar = $this->renderNavbar();
         $player = $this->renderFooterPlayer();
         $theme = (($_COOKIE['theme'] ?? 'dark') === 'light') ? 'light' : 'dark';
@@ -164,7 +164,7 @@ class Dispatcher {
      *
      * @return string Balises HTML de la barre de navigation.
      */
-    private function renderNavbar() : string {
+    private function renderNavbar(): string {
         $toggleThemeButton = <<<HTML
             <button id="toggle-theme" class="btn btn-outline-secondary btn-sm d-flex align-items-center" title="Changer de thème">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/circle-half/ -->
@@ -191,7 +191,7 @@ class Dispatcher {
                 $activeAddPlaylist = 'active';
                 break;
             }
-            case 'display-playlist' : {
+            case 'playlist' : {
                 $activeCurrentPl = 'active';
                 break;
             }
@@ -201,12 +201,12 @@ class Dispatcher {
         try {
             $user = AuthnProvider::getSignedInUser();
 
-            $currentPlaylist = "";
+            $currentPlaylist = '';
 
             if (isset($_SESSION['playlist'])) {
                 $currentPlaylist = <<<HTML
                     <li class="nav-item">
-                        <a class="nav-link {$activeCurrentPl}" href="?action=display-playlist">
+                        <a class="nav-link {$activeCurrentPl}" href="?action=playlist">
                             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->
                             <i class="bi bi-music-note-list me-1"></i>Playlist courante
                         </a>
@@ -286,7 +286,7 @@ class Dispatcher {
      *
      * @return string Balises HTML du lecteur fixe en bas d'écran ou chaîne vide.
      */
-    private function renderFooterPlayer() : string {
+    private function renderFooterPlayer(): string {
         if (isset($_SESSION['playerTrack'])) {
             $track = $_SESSION['playerTrack'];
             if (!empty($track)) {
@@ -295,7 +295,7 @@ class Dispatcher {
                     $image = $track->getImage();
 
                     // Sous-titre : Artiste/Album pour un morceau d'album, Auteur pour un podcast
-                    $subtitle = "";
+                    $subtitle = '';
                     if ($track instanceof AlbumTrack) {
                         $artist = $track->getArtist() ?? 'Artiste inconnu';
                         $album = $track->getAlbum() ?? '';
@@ -357,6 +357,6 @@ class Dispatcher {
             }
         }
 
-        return "";
+        return '';
     }
 }

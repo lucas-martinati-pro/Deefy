@@ -10,11 +10,11 @@ use Override;
  */
 class SignoutAction extends Action {
     #[Override]
-    public function get() : string {
+    public function get(): string {
         // Si l'utilisateur n'est même pas connecté
         if (!isset($_SESSION['user'])) {
             // Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/
-            $title = HtmlHelper::title("Déconnexion", "bi-box-arrow-right", "secondary");
+            $title = HtmlHelper::title('Déconnexion', 'bi-box-arrow-right', 'secondary');
             return <<<HTML
                 {$title}
                 <p>Vous n'êtes pas connecté.</p>
@@ -28,7 +28,7 @@ class SignoutAction extends Action {
         }
 
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/box-arrow-right/
-        $title = HtmlHelper::title("Déconnexion", "bi-box-arrow-right", "danger");
+        $title = HtmlHelper::title('Déconnexion', 'bi-box-arrow-right', 'danger');
         return <<<HTML
             {$title}
             <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
@@ -46,7 +46,7 @@ class SignoutAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         unset($_SESSION['user']);
         unset($_SESSION['playlist']);
         unset($_SESSION['playerTrack']);

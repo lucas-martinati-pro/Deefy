@@ -9,13 +9,13 @@ use Override;
 class PodcastTrackRenderer extends AudioTrackRenderer {
 
     #[Override]
-    protected function getSubtitle() : string {
+    protected function getSubtitle(): string {
         $author = $this->track->getAuthor() ?? 'Auteur inconnu';
         return "par <span class=\"fw-semibold text-body\">{$author}</span>";
     }
 
     #[Override]
-    protected function getBadge() : string {
+    protected function getBadge(): string {
         return <<<HTML
             <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/mic-fill/ -->
@@ -25,13 +25,13 @@ class PodcastTrackRenderer extends AudioTrackRenderer {
     }
 
     #[Override]
-    protected function getDetails() : array {
+    protected function getDetails(): array {
         $details = [];
 
         $date = $this->track->getDate();
         if (!empty($date)) {
             $timestamp = strtotime($date);
-            $formattedDate = ($timestamp !== false) ? date('d/m/Y', $timestamp) : $date;
+            $formattedDate = ($timestamp !== false) ? date('d/m/Y', $timestamp): $date;
             $details[] = "Date : {$formattedDate}";
         }
 

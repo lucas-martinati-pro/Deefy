@@ -129,7 +129,7 @@ class AudioTrack {
      * @return void
      * @throws InvalidPropertyValueException Si la durée est négative.
      */
-    public function setDuration(int $duration) : void {
+    public function setDuration(int $duration): void {
         if ($duration < 0) {
             throw new InvalidPropertyValueException("duration : invalid value ($duration)");
         }
@@ -158,7 +158,7 @@ class AudioTrack {
      * @return mixed Valeur de la propriété demandée.
      * @throws InvalidPropertyNameException Si la propriété n'existe pas.
      */
-    public function __get(string $name) : mixed {
+    public function __get(string $name): mixed {
         if (property_exists($this, $name)) return $this->$name ?? null;
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
@@ -179,9 +179,9 @@ class AudioTrack {
      * @throws InvalidPropertyNameException Si la propriété n'existe pas ou n'est pas modifiable.
      * @throws InvalidPropertyValueException Si la valeur fournie est invalide (ex: durée négative).
      */
-    public function __set(string $name, mixed $value) : void {
-        if (property_exists($this, $name) && ($name !== "title" && $name !== "filename"))
-            if ($name === "duration" && $value < 0) {
+    public function __set(string $name, mixed $value): void {
+        if (property_exists($this, $name) && ($name !== 'title' && $name !== 'filename'))
+            if ($name === 'duration' && $value < 0) {
                 throw new InvalidPropertyValueException("$name : invalid value ($value)");
             } else $this->$name = $value;
         else throw new InvalidPropertyNameException("$name : invalid property");
@@ -203,7 +203,7 @@ class AudioTrack {
      *
      * @return string Représentation JSON des propriétés de l'objet.
      */
-    public function __toString() : string {
+    public function __toString(): string {
         return json_encode(get_object_vars($this));
     }
 }

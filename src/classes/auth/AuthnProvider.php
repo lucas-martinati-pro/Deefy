@@ -19,14 +19,14 @@ class AuthnProvider {
      * @return void
      * @throws AuthnException Si les identifiants sont invalides ou inexistants.
      */
-    public static function signin(string $email, string $password) : void {
+    public static function signin(string $email, string $password): void {
         $r = DeefyRepository::getInstance();
 
         $user = $r->findUserByEmail(filter_var($email, FILTER_SANITIZE_EMAIL));
 
         // Faire !$user au cas où user vaux false
         if (!$user || !password_verify($password, $user['passwd'])) {
-            throw new AuthnException("Auth error : invalid credentials");
+            throw new AuthnException('Auth error : invalid credentials');
         }
         $_SESSION['user'] = serialize($user);
     }
@@ -42,7 +42,7 @@ class AuthnProvider {
      * @return void
      * @throws AuthnException Si l'email est invalide, déjà utilisé, ou si le mot de passe ne respecte pas les critères de sécurité.
      */
-    public static function register(string $email, string $password) : void {
+    public static function register(string $email, string $password): void {
         $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
         if ($email === false) {
@@ -52,7 +52,7 @@ class AuthnProvider {
         $r = DeefyRepository::getInstance();
 
         if ($r->existsByEmail($email)) {
-            throw new AuthnException("Cette adresse email est déjà utilisée.");
+            throw new AuthnException('Cette adresse email est déjà utilisée.');
         }
 
         $minimumLength = 10;
@@ -61,16 +61,16 @@ class AuthnProvider {
             throw new AuthnException("Le mot de passe doit contenir au moins {$minimumLength} caractères.");
         }
         if (!preg_match("#\d#", $password)) {// au moins un digit
-            throw new AuthnException("Le mot de passe doit contenir au moins un chiffre.");
+            throw new AuthnException('Le mot de passe doit contenir au moins un chiffre.');
         }
         if (!preg_match("#\W#", $password)) { // au moins un car. spécial
-            throw new AuthnException("Le mot de passe doit contenir au moins un caractère spécial.");
+            throw new AuthnException('Le mot de passe doit contenir au moins un caractère spécial.');
         }
-        if (!preg_match("#[a-z]#", $password)) { // au moins une minuscule
-            throw new AuthnException("Le mot de passe doit contenir au moins une lettre minuscule.");
+        if (!preg_match('#[a-z]#', $password)) { // au moins une minuscule
+            throw new AuthnException('Le mot de passe doit contenir au moins une lettre minuscule.');
         }
-        if (!preg_match("#[A-Z]#", $password)) { // au moins une majuscule
-            throw new AuthnException("Le mot de passe doit contenir au moins une lettre majuscule.");
+        if (!preg_match('#[A-Z]#', $password)) { // au moins une majuscule
+            throw new AuthnException('Le mot de passe doit contenir au moins une lettre majuscule.');
         }
 
         $r->adduser($email, $password);
@@ -82,9 +82,9 @@ class AuthnProvider {
      * @return array Tableau associatif contenant les informations de l'utilisateur (id, email, passwd, role).
      * @throws AuthnException Si aucun utilisateur n'est connecté en session.
      */
-    public static function getSignedInUser() : array {
+    public static function getSignedInUser(): array {
         if (!isset($_SESSION['user']) || !isset(unserialize($_SESSION['user'])['id'])) {
-            throw new AuthnException("Vous devez être connecté pour accéder à cette page.");
+            throw new AuthnException('Vous devez être connecté pour accéder à cette page.');
         }
 
         return unserialize($_SESSION['user']);

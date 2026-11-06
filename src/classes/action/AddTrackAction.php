@@ -19,15 +19,15 @@ use Override;
  */
 class AddTrackAction extends Action {
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $idPlaylist = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
-        $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : "";
-        $backUrl = $idPlaylist !== null ? "?action=display-playlist&id={$idPlaylist}" : "?action=tracks";
-        $backLabel = $idPlaylist !== null ? "Retour à la playlist" : "Retour à mes pistes";
+        $idParam = $idPlaylist !== null ? "&id={$idPlaylist}" : '';
+        $backUrl = $idPlaylist !== null ? "?action=playlist&id={$idPlaylist}" : '?action=tracks';
+        $backLabel = $idPlaylist !== null ? 'Retour à la playlist' : 'Retour à mes pistes';
 
         if (!isset($_GET['type'])) {
-            $destLabel = $idPlaylist !== null ? "à ma playlist" : "à mes pistes";
+            $destLabel = $idPlaylist !== null ? 'à ma playlist' : 'à mes pistes';
             return <<<HTML
                 <h2 class="h3 fw-bold mb-3 d-flex align-items-center">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/plus-circle-fill/ -->
@@ -55,7 +55,7 @@ class AddTrackAction extends Action {
             HTML;
         }
 
-        $content = "";
+        $content = '';
 
         $retour = <<<HTML
             <p>
@@ -151,7 +151,7 @@ class AddTrackAction extends Action {
             }
         }
 
-        $contentId = $idPlaylist !== null ? "<input type=\"hidden\" name=\"id\" value=\"{$idPlaylist}\">" : "";
+        $contentId = $idPlaylist !== null ? "<input type=\"hidden\" name=\"id\" value=\"{$idPlaylist}\">" : '';
 
         // Le enctype="multipart/form-data" est obligatoire pour l'envoie des fichiers
         return <<<HTML
@@ -170,7 +170,7 @@ class AddTrackAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : null;
 
         $error = [];
@@ -192,22 +192,22 @@ class AddTrackAction extends Action {
             $d = DateTime::createFromFormat('Y-m-d', trim($_POST['date']));
 
             if (!$d) {
-                $error[] = "La date de sortie est invalide (format attendu : AAAA-MM-JJ).";
+                $error[] = 'La date de sortie est invalide (format attendu : AAAA-MM-JJ).';
             } elseif ($d > new DateTime()) {
                 // refuser une date dans le futur
-                $error[] = "La date de sortie ne peut pas être dans le futur.";
+                $error[] = 'La date de sortie ne peut pas être dans le futur.';
             }
         }
 
         if (!isset($_FILES['userfile']) || $_FILES['userfile']['error'] === UPLOAD_ERR_NO_FILE) {
-            $error[] = "Le fichier audio est obligatoire.";
+            $error[] = 'Le fichier audio est obligatoire.';
         }
 
-        $idParam = ($idPlaylist !== null) ? "&id={$idPlaylist}" : "";
+        $idParam = ($idPlaylist !== null) ? "&id={$idPlaylist}" : '';
 
         // Si des erreurs de formulaire sont présentes, on arrête avant d'écrire le fichier sur le disque
         if (!empty($error)) {
-            $typeParam = !empty($type) ? "&type={$type}" : "";
+            $typeParam = !empty($type) ? "&type={$type}" : '';
             return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
@@ -216,7 +216,7 @@ class AddTrackAction extends Action {
         $audioFileName = self::saveAudioFile($_FILES['userfile'], $uploadError);
         if (!$audioFileName) {
             $error[] = $uploadError ?? "Erreur lors de l'envoi du fichier audio.";
-            $typeParam = !empty($type) ? "&type={$type}" : "";
+            $typeParam = !empty($type) ? "&type={$type}" : '';
             return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
@@ -289,7 +289,7 @@ class AddTrackAction extends Action {
         }
 
         if (!empty($error)) {
-            $typeParam = !empty($type) ? "&type={$type}" : "";
+            $typeParam = !empty($type) ? "&type={$type}" : '';
             return HtmlHelper::formError(errors: $error, backUrl: "?action=add-track{$typeParam}{$idParam}&form=1");
         }
 
@@ -311,8 +311,8 @@ class AddTrackAction extends Action {
             $w->addTrackToPlaylist($idPlaylist, (int) $track->getId());
         }
 
-        $playlistMsg = "à vos pistes";
-        $totalTracksMsg = "";
+        $playlistMsg = 'à vos pistes';
+        $totalTracksMsg = '';
         $backLink = <<<HTML
             <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=tracks">
                 <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
@@ -330,7 +330,7 @@ class AddTrackAction extends Action {
                 $_SESSION['playlist'] = $playlist;
             }
             $backLink = <<<HTML
-                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=display-playlist&id={$idPlaylist}">
+                <a class="btn btn-secondary d-inline-flex align-items-center ms-2" href="?action=playlist&id={$idPlaylist}">
                     <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/arrow-left/ -->
                     <i class="bi bi-arrow-left me-2"></i>
                     Retour à la playlist
@@ -361,7 +361,7 @@ class AddTrackAction extends Action {
     }
 
     #[Override]
-    protected function check() : ?string {
+    protected function check(): ?string {
         $idPlaylist = isset($_POST['id']) ? (int) $_POST['id'] : (isset($_GET['id']) ? (int) $_GET['id'] : null);
 
         if ($idPlaylist !== null && !Authz::checkPlaylistOwner($idPlaylist)) {
@@ -378,7 +378,7 @@ class AddTrackAction extends Action {
      * @param string|null $uploadError Référence recevant le libellé de l'erreur en cas d'échec.
      * @return string|null Nom du fichier enregistré sur le serveur ou null en cas d'erreur.
      */
-    private static function saveAudioFile(array $file, ?string &$uploadError = null) : ?string {
+    private static function saveAudioFile(array $file, ?string &$uploadError = null): ?string {
         if (!isset($file['error'])) {
             $uploadError = "Aucun fichier audio n'a été reçu.";
             return null;
@@ -396,7 +396,7 @@ class AddTrackAction extends Action {
                 $uploadError = "Le fichier n'a été que partiellement téléversé.";
                 return null;
             case UPLOAD_ERR_NO_FILE:
-                $uploadError = "Veuillez sélectionner un fichier audio MP3.";
+                $uploadError = 'Veuillez sélectionner un fichier audio MP3.';
                 return null;
             default:
                 $uploadError = "Erreur lors du téléversement du fichier (code {$file['error']}).";
@@ -407,7 +407,7 @@ class AddTrackAction extends Action {
 
         if (!is_dir($audioDir)) {
             if (!mkdir($audioDir, 0777, true)) {
-                $uploadError = "Impossible de créer le dossier de stockage audio.";
+                $uploadError = 'Impossible de créer le dossier de stockage audio.';
                 return null;
             }
         }
@@ -416,7 +416,7 @@ class AddTrackAction extends Action {
         $destination = $audioDir . $newName;
 
         if (!move_uploaded_file($file['tmp_name'], $destination)) {
-            $uploadError = "Impossible de déplacer le fichier téléversé vers le dossier audio.";
+            $uploadError = 'Impossible de déplacer le fichier téléversé vers le dossier audio.';
             return null;
         }
 
@@ -430,7 +430,7 @@ class AddTrackAction extends Action {
      * @param array|null $coverFile Fichier image optionnel envoyé via le formulaire ($_FILES['coverfile']).
      * @return string|null Nom du fichier image généré ou null si aucune couverture n'est fournie.
      */
-    private static function saveCoverImage(array $fileInfo, ?array $coverFile) : ?string {
+    private static function saveCoverImage(array $fileInfo, ?array $coverFile): ?string {
         $coverDir = Config::getCoverDir();
 
         if (!is_dir($coverDir)) {

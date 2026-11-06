@@ -132,7 +132,7 @@ class AudioList implements Iterator {
      * @return mixed Valeur de la propriété.
      * @throws InvalidPropertyNameException Si la propriété demandée n'existe pas.
      */
-    public function __get(string $name) : mixed {
+    public function __get(string $name): mixed {
         if (property_exists($this, $name)) return $this->$name;
         else throw new InvalidPropertyNameException("$name : invalid property");
     }
@@ -149,8 +149,8 @@ class AudioList implements Iterator {
      * @return void
      * @throws InvalidPropertyNameException Si la propriété n'est pas modifiable.
      */
-    public function __set(string $name, mixed $value) : void {
-        if ($name === "artist" || $name === "date" || $name === "id") $this->$name = $value;
+    public function __set(string $name, mixed $value): void {
+        if ($name === 'artist' || $name === 'date' || $name === 'id') $this->$name = $value;
         else throw new InvalidPropertyNameException("cannot modify property : $name");
     }
 
@@ -159,28 +159,28 @@ class AudioList implements Iterator {
      *========================================================================**/
 
     #[Override]
-    public function current() : mixed {
+    public function current(): mixed {
         return $this->tracks[$this->position];
     }
 
     #[Override]
-    public function key() : int {
+    public function key(): int {
         return $this->position;
     }
 
     #[Override]
-    public function next() : void {
+    public function next(): void {
         $this->position++;
     }
 
     #[Override]
-    public function rewind() : void {
+    public function rewind(): void {
         $this->position = 0;
     }
 
     #[Override]
     // Vérifier que la variable existe
-    public function valid() : bool {
+    public function valid(): bool {
         return isset($this->tracks[$this->position]);
     }
 }

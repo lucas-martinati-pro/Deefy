@@ -26,7 +26,7 @@ class AudioListRenderer implements Renderer {
     }
 
     #[Override]
-    public function render(TypeRender $selector = TypeRender::COMPACT) : string {
+    public function render(TypeRender $selector = TypeRender::COMPACT): string {
         $res = <<<HTML
         <h2 class="mb-3 d-flex align-items-center">
             <!-- Icône Bootstrap - https://icons.getbootstrap.com/icons/music-note-list/ -->

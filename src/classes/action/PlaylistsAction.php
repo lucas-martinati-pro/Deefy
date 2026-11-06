@@ -12,7 +12,7 @@ use Override;
  */
 class PlaylistsAction extends Action {
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $r = DeefyRepository::getInstance();
         $playlists = $r->findPlaylistsByUserId((int) $this->user['id']);
 
@@ -71,7 +71,7 @@ class PlaylistsAction extends Action {
 
             $cardsHtml .= <<<HTML
                 <div class="col">
-            <a href="?action=display-playlist&id={$pl->getId()}" style="all: unset">
+            <a href="?action=playlist&id={$pl->getId()}" style="all: unset">
                     <div class="card h-100" role="button" title="Consulter la playlist">
                         <div class="position-relative" style="height: 180px;">
                             {$coverHtml}
@@ -118,7 +118,7 @@ class PlaylistsAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         return '';
     }
 }

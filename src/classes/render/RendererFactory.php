@@ -17,7 +17,7 @@ class RendererFactory {
      * @param int|null $playlistId Identifiant optionnel de la playlist parente.
      * @return Renderer|null Instance de Renderer adaptée, ou null si l'objet n'est pas pris en charge.
      */
-    public static function getRenderer(object $element, ?int $playlistId = null) : ?Renderer {
+    public static function getRenderer(object $element, ?int $playlistId = null): ?Renderer {
         if ($element instanceof AlbumTrack) return new AlbumTrackRenderer($element, $playlistId);
         else if ($element instanceof PodcastTrack) return new PodcastTrackRenderer($element, $playlistId);
         else if ($element instanceof AudioList) return new AudioListRenderer($element);

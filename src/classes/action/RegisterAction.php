@@ -14,10 +14,10 @@ class RegisterAction extends Action {
     protected bool $requireAuth = false;
 
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $require = '<span class="text-danger">*</span>';
         // Icône Bootstrap - https://icons.getbootstrap.com/icons/person-plus-fill/
-        $title = HtmlHelper::title("Inscription", "bi-person-plus-fill");
+        $title = HtmlHelper::title('Inscription', 'bi-person-plus-fill');
         return <<<HTML
         {$title}
         <form method="post" action="?action=register">
@@ -57,13 +57,13 @@ class RegisterAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         if (!isset($_POST['email'], $_POST['password'], $_POST['password-double'])) {
-            return HtmlHelper::formError(errors: "Tous les champs sont obligatoires.", backUrl: "?action=register&form=1", title: "Échec de l'inscription");
+            return HtmlHelper::formError(errors: 'Tous les champs sont obligatoires.', backUrl: '?action=register&form=1', title: "Échec de l'inscription");
         }
 
         if ($_POST['password'] !== $_POST['password-double']) {
-            return HtmlHelper::formError(errors: "Les deux mots de passe doivent être identiques.", backUrl: "?action=register&form=1", title: "Échec de l'inscription");
+            return HtmlHelper::formError(errors: 'Les deux mots de passe doivent être identiques.', backUrl: '?action=register&form=1', title: "Échec de l'inscription");
         }
 
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -71,28 +71,28 @@ class RegisterAction extends Action {
         try {
             AuthnProvider::register($email, $_POST['password']);
         } catch (AuthnException $error) {
-            return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register&form=1", title: "Échec de l'inscription");
+            return HtmlHelper::formError(errors: $error->getMessage(), backUrl: '?action=register&form=1', title: "Échec de l'inscription");
         }
 
         if (isset($_POST['connect-auto'])) {
             try {
                 AuthnProvider::signin($email, $_POST['password']);
             } catch (AuthnException $error) {
-                return HtmlHelper::formError(errors: $error->getMessage(), backUrl: "?action=register&form=1", title: "Échec de la connexion");
+                return HtmlHelper::formError(errors: $error->getMessage(), backUrl: '?action=register&form=1', title: 'Échec de la connexion');
             }
 
             return HtmlHelper::successPage(
-                title: "Connexion réussie",
+                title: 'Connexion réussie',
                 message: "Bienvenue, <strong>$email</strong> ! Vous êtes maintenant connecté à Deefy.",
-                backLabel: "Accéder à mes playlists"
+                backLabel: 'Accéder à mes playlists'
             );
         }
 
         return HtmlHelper::successPage(
-            title: "Inscription réussie",
-            message: "Votre compte a bien été créé.",
-            backUrl: "?action=signin",
-            backLabel: "Se connecter"
+            title: 'Inscription réussie',
+            message: 'Votre compte a bien été créé.',
+            backUrl: '?action=signin',
+            backLabel: 'Se connecter'
         );
     }
 }

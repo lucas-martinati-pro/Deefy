@@ -9,7 +9,7 @@ use Override;
 class AlbumTrackRenderer extends AudioTrackRenderer {
 
     #[Override]
-    protected function getSubtitle() : string {
+    protected function getSubtitle(): string {
         $artist = $this->track->getArtist();
         $album = $this->track->getAlbum();
         $artistStr = !empty($artist) ? $artist : 'Artiste inconnu';
@@ -17,7 +17,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
     }
 
     #[Override]
-    protected function getBadge() : string {
+    protected function getBadge(): string {
         $trackNumber = $this->track->getTrackNumber();
         $trackBadge = ($trackNumber > 0) ? "<span class=\"badge text-bg-secondary me-1\">#{$trackNumber}</span>" : '';
         return <<<HTML
@@ -29,7 +29,7 @@ class AlbumTrackRenderer extends AudioTrackRenderer {
     }
 
     #[Override]
-    protected function getDetails() : array {
+    protected function getDetails(): array {
         $details = [];
 
         $year = $this->track->getYear();

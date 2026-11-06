@@ -12,13 +12,13 @@ use Override;
  */
 class TracksAction extends Action {
     #[Override]
-    public function get() : string {
+    public function get(): string {
         $r = DeefyRepository::getInstance();
         $tracks = $r->findTracksByUserId((int) $this->user['id']);
 
-        $playlist = new Playlist("Mes pistes", $tracks);
+        $playlist = new Playlist('Mes pistes', $tracks);
         $renderer = RendererFactory::getRenderer($playlist);
-        $playlistHtml = $renderer ? $renderer->render() : '';
+        $playlistHtml = $renderer ? $renderer->render(): '';
 
         return <<<HTML
             {$playlistHtml}
@@ -32,7 +32,7 @@ class TracksAction extends Action {
     }
 
     #[Override]
-    public function post() : string {
+    public function post(): string {
         return '';
     }
 }

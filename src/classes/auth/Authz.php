@@ -15,7 +15,7 @@ class Authz {
      * @param int $role Valeur du rôle requis (ex: 100 pour administrateur, 1 pour standard).
      * @return bool True si l'utilisateur est connecté et possède le rôle requis, false sinon.
      */
-    public static function checkRole(int $role) : bool {
+    public static function checkRole(int $role): bool {
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {
@@ -30,7 +30,7 @@ class Authz {
      * @param int $idPlaylist Identifiant unique de la playlist.
      * @return bool True si l'utilisateur est autorisé à manipuler cette playlist, false sinon.
      */
-    public static function checkPlaylistOwner(int $idPlaylist) : bool {
+    public static function checkPlaylistOwner(int $idPlaylist): bool {
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {
@@ -53,7 +53,7 @@ class Authz {
      * @param int $idTrack Identifiant unique de la piste audio.
      * @return bool True si la piste appartient à l'utilisateur, false sinon.
      */
-    public static function checkTrackOwner(int $idTrack) : bool {
+    public static function checkTrackOwner(int $idTrack): bool {
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthnException) {

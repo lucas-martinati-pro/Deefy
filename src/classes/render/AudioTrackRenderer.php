@@ -34,8 +34,8 @@ abstract class AudioTrackRenderer implements Renderer {
     }
 
     #[Override]
-    public function render(TypeRender $selector = TypeRender::COMPACT) : string {
-        return ($selector === TypeRender::LONG) ? $this->renderLong() : $this->renderCompact();
+    public function render(TypeRender $selector = TypeRender::COMPACT): string {
+        return ($selector === TypeRender::LONG) ? $this->renderLong(): $this->renderCompact();
     }
 
     /**
@@ -43,21 +43,21 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML du sous-titre.
      */
-    abstract protected function getSubtitle() : string;
+    abstract protected function getSubtitle(): string;
 
     /**
      * Retourne le badge HTML identifiant le type de piste (Podcast, Album/numéro de piste, etc.).
      *
      * @return string Balises HTML du badge.
      */
-    abstract protected function getBadge() : string;
+    abstract protected function getBadge(): string;
 
     /**
      * Retourne la liste des métadonnées sous forme de tableau de chaînes.
      *
      * @return string[]
      */
-    protected function getDetails() : array {
+    protected function getDetails(): array {
         $details = [];
 
         $duration = $this->track->getDuration();
@@ -78,7 +78,7 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML de la carte compacte.
      */
-    protected function renderCompact() : string {
+    protected function renderCompact(): string {
         $details = $this->getDetails();
         $infos = implode(' | ', $details);
         $infosHtml = !empty($infos) ? "<div class=\"small text-body-secondary mb-2\">{$infos}</div>" : '';
@@ -137,7 +137,7 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML de la carte longue.
      */
-    protected function renderLong() : string {
+    protected function renderLong(): string {
         $details = $this->getDetails();
         $infos = implode(' | ', $details);
         $infosHtml = !empty($infos) ? "<p class=\"card-text text-body-secondary small mb-3\">{$infos}</p>" : '';
@@ -203,7 +203,7 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML du bouton de lecture.
      */
-    protected function renderPlayButton() : string {
+    protected function renderPlayButton(): string {
         $idTrack = $this->track->getId();
         if (empty($idTrack)) return '';
 
@@ -224,19 +224,19 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML du bouton de suppression.
      */
-    protected function renderDeleteButton() : string {
+    protected function renderDeleteButton(): string {
         $idTrack = $this->track->getId();
         if (empty($idTrack)) {
             return '';
         }
 
         $href = "?action=delete-track&id={$idTrack}";
-        $title = "Supprimer de mes pistes";
+        $title = 'Supprimer de mes pistes';
 
         // Si on a un id de playlist -> on delete avec id_pl
         if ($this->playlistId !== null) {
             $href = "?action=delete-track&id={$idTrack}&id_pl={$this->playlistId}";
-            $title = "Retirer de la playlist";
+            $title = 'Retirer de la playlist';
         }
         // Sinon (Mes pistes) -> on delete normalement
         return <<<HTML
@@ -252,7 +252,7 @@ abstract class AudioTrackRenderer implements Renderer {
      *
      * @return string Balises HTML du bouton d'ajout à une playlist.
      */
-    protected function renderAddToPlaylist() : string {
+    protected function renderAddToPlaylist(): string {
         $idTrack = $this->track->getId();
         if (empty($idTrack)) {
             return '';
@@ -276,7 +276,7 @@ abstract class AudioTrackRenderer implements Renderer {
      * @param TypeRender $selector Mode d'affichage souhaité (TypeRender::COMPACT ou TypeRender::LONG).
      * @return string Balises HTML du lecteur audio.
      */
-    protected function renderAudioPlayer(TypeRender $selector) : string {
+    protected function renderAudioPlayer(TypeRender $selector): string {
         $audioDir = Config::getAudioWebPath();
 
         if ($selector === TypeRender::COMPACT) {

@@ -14,7 +14,7 @@ class Playlist extends AudioList {
      * @param AudioTrack $track Piste audio à ajouter.
      * @return void
      */
-    public function addTrack(AudioTrack $track) : void {
+    public function addTrack(AudioTrack $track): void {
         $this->tracks[] = $track;
         $this->totalDuration += $track->getDuration();
         $this->trackCount++;
@@ -26,7 +26,7 @@ class Playlist extends AudioList {
      * @param int $indice Index de la piste à retirer dans le tableau.
      * @return void
      */
-    public function removeTrack(int $indice) : void {
+    public function removeTrack(int $indice): void {
         // Le isset permet de vérifier si l'indice existe
         if (isset($this->tracks[$indice])) {
             $this->totalDuration -= $this->tracks[$indice]->getDuration();
@@ -43,7 +43,7 @@ class Playlist extends AudioList {
      * @param AudioTrack[] $tracks Tableau de pistes à ajouter.
      * @return void
      */
-    public function addTracks(array $tracks) : void {
+    public function addTracks(array $tracks): void {
         foreach ($tracks as $track) {
             if (!in_array($track, $this->tracks, true)) {
                 $this->addTrack($track);
