@@ -4,7 +4,7 @@ Application web de streaming audio. Elle est codée en PHP. Elle utilise Bootstr
 
 ---
 
-## Depôt [Webetu](https://webetu.iutnc.univ-lorraine.fr/~e32772u/BUT_Info_S3/Deefy/)
+## Depôt [Webetu](https://webetu.iutnc.univ-lorraine.fr/www/e32772u/BUT_Info_S3/DevWeb/Deefy/)
 
 ---
 
